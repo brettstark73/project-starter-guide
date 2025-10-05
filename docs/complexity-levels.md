@@ -90,7 +90,7 @@ Backend: Node.js (Express/Fastify), Python (FastAPI), Go
 Database: PostgreSQL, MongoDB, MySQL (managed services)
 Auth: NextAuth.js, Auth0, Clerk, Supabase Auth
 Storage: AWS S3, Cloudinary, Uploadcare
-Hosting: Vercel + PlanetScale, Railway, Render
+Hosting: Vercel + Neon/Supabase, Railway, Render
 ```
 
 ### Examples

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name - Web Developer</title>
+  <meta name="description" content="Experienced web developer specializing in modern web technologies, building fast and accessible applications.">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Your Name - Web Developer">
+  <meta property="og:description" content="Experienced web developer specializing in modern web technologies.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://yoursite.com">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your Name - Web Developer">
+  <meta name="twitter:description" content="Experienced web developer specializing in modern web technologies.">
+  <meta name="twitter:image" content="/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <nav class="nav" aria-label="Main navigation">
+      <div class="nav-container">
+        <a href="#" class="logo">YourName</a>
+        <ul class="nav-menu" role="list">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <img src="assets/placeholder-avatar.png" alt="Your Name profile photo" class="hero-avatar">
+          <h1 class="hero-title">Hi, I'm <span class="highlight">Your Name</span></h1>
+          <p class="hero-subtitle">Full-Stack Web Developer</p>
+          <p class="hero-description">
+            I build fast, accessible, and user-friendly web applications using modern technologies.
+          </p>
+          <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary">Get In Touch</a>
+            <a href="#projects" class="btn btn-secondary">View My Work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>
+              I'm a passionate web developer with <strong>5+ years of experience</strong> building modern web applications.
+              I specialize in creating performant, accessible, and user-friendly experiences.
+            </p>
+            <p>
+              My expertise includes frontend development with React and Vue, backend systems with Node.js,
+              and deploying scalable applications to the cloud. I'm committed to writing clean, maintainable code
+              and staying current with the latest web technologies.
+            </p>
+            <p>
+              When I'm not coding, you'll find me contributing to open source, writing technical blog posts,
+              or exploring new technologies and frameworks.
+            </p>
+          </div>
+
+          <div class="skills">
+            <h3>Skills & Technologies</h3>
+            <div class="skills-grid">
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">React</span>
+              <span class="skill-tag">Next.js</span>
+              <span class="skill-tag">Vue.js</span>
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">MongoDB</span>
+              <span class="skill-tag">Docker</span>
+              <span class="skill-tag">AWS</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">CI/CD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+      <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+
+          <!-- Project 1 -->
+          <article class="project-card">
+            <div class="project-image">
+              <img src="assets/placeholder-project.png" alt="Project 1 screenshot" loading="lazy">
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">E-Commerce Platform</h3>
+              <p class="project-description">
+                A full-stack e-commerce solution built with Next.js, Stripe, and PostgreSQL.
+                Features include cart management, payment processing, and admin dashboard.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Next.js</span>
+                <span class="tech-badge">Stripe</span>
+                <span class="tech-badge">PostgreSQL</span>
+              </div>
+              <div class="project-links">
+                <a href="https://demo.example.com" class="project-link" target="_blank" rel="noopener">
+                  Live Demo →
+                </a>
+                <a href="https://github.com/yourusername/project" class="project-link" target="_blank" rel="noopener">
+                  GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card">
+            <div class="project-image">
+              <img src="assets/placeholder-project.png" alt="Project 2 screenshot" loading="lazy">
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Task Management App</h3>
+              <p class="project-description">
+                Real-time collaborative task management tool with team features,
+                built using React, Node.js, and WebSockets.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">WebSockets</span>
+              </div>
+              <div class="project-links">
+                <a href="https://demo.example.com" class="project-link" target="_blank" rel="noopener">
+                  Live Demo →
+                </a>
+                <a href="https://github.com/yourusername/project" class="project-link" target="_blank" rel="noopener">
+                  GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card">
+            <div class="project-image">
+              <img src="assets/placeholder-project.png" alt="Project 3 screenshot" loading="lazy">
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Developer Portfolio Template</h3>
+              <p class="project-description">
+                Open source portfolio template for developers. Fully responsive,
+                accessible, and customizable with dark mode support.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">HTML</span>
+                <span class="tech-badge">CSS</span>
+                <span class="tech-badge">JavaScript</span>
+              </div>
+              <div class="project-links">
+                <a href="https://demo.example.com" class="project-link" target="_blank" rel="noopener">
+                  Live Demo →
+                </a>
+                <a href="https://github.com/yourusername/project" class="project-link" target="_blank" rel="noopener">
+                  GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="contact-intro">
+          I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+        </p>
+
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="contact-item">
+              <h3>Email</h3>
+              <a href="mailto:your.email@example.com" class="contact-link">your.email@example.com</a>
+            </div>
+            <div class="contact-item">
+              <h3>Social</h3>
+              <div class="social-links">
+                <a href="https://github.com/yourusername" class="social-link" target="_blank" rel="noopener" aria-label="GitHub">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                </a>
+                <a href="https://linkedin.com/in/yourusername" class="social-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                </a>
+                <a href="https://twitter.com/yourusername" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contact-form">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required aria-required="true"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Your Name. All rights reserved.</p>
+      <p class="footer-note">Built with HTML, CSS, and JavaScript</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>

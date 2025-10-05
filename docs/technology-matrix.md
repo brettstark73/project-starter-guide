@@ -9,6 +9,11 @@
 | **Nuxt.js (Vue)** | 2-4 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Developer experience focused |
 | **SvelteKit** | 2-4 | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Small bundles, fast sites |
 | **Astro** | 1-2 | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Content sites, multi-framework |
+| **Hugo** | 1-2 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Blogs, docs, fastest builds |
+| **Remix** | 2-4 | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Server-first React, SEO-focused |
+| **SolidJS** | 2-4 | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Fine-grained reactivity |
+| **Qwik** | 2-3 | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | Resumability, instant loading |
+| **Fresh (Deno)** | 2-3 | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | Island architecture, zero runtime |
 | **Angular** | 3-5 | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | Enterprise applications |
 
 ## Backend Technology Selection
@@ -21,9 +26,11 @@
 | **Nest.js** | 3-5 | ⭐⭐⭐ | ⭐⭐⭐ | Enterprise, TypeScript-first |
 | **Next.js API** | 2-3 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | Full-stack React apps |
 
-### Other Languages
-| Language | Framework | Level | Performance | Enterprise Ready |
-|----------|-----------|--------|-------------|------------------|
+### Modern Runtimes & Frameworks
+| Runtime/Language | Framework | Level | Performance | Enterprise Ready |
+|------------------|-----------|--------|-------------|------------------|
+| **Bun** | Hono/Elysia | 2-4 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Deno** | Fresh/Oak | 2-4 | ⭐⭐⭐⭐ | ⭐⭐⭐ |
 | **Python** | FastAPI | 2-4 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | **Python** | Django | 3-5 | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | **Go** | Gin/Fiber | 3-5 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
@@ -39,7 +46,7 @@
 ```
 File-based: JSON files, Markdown
 Local Storage: Browser localStorage/indexedDB
-Headless CMS: Contentful, Strapi, Sanity
+Headless CMS: Contentful, Strapi, Sanity, Payload CMS
 ```
 
 #### Level 2: Dynamic Frontend
@@ -51,10 +58,10 @@ API-First: Airtable, Notion API
 
 #### Level 3: Full-Stack
 ```
-PostgreSQL: Vercel Postgres, Railway, Supabase
+PostgreSQL: Neon, Vercel Postgres, Railway, Supabase
 MongoDB: MongoDB Atlas, Railway
-MySQL: PlanetScale, Railway
-SQLite: Turso, local development
+MySQL: Railway, Render
+SQLite: Turso, Cloudflare D1, local development
 ```
 
 #### Level 4: Scalable
@@ -73,6 +80,45 @@ Real-time: Apache Kafka + stream processing
 Multi-model: CosmosDB, Amazon DynamoDB
 ```
 
+### Modern Database Providers (2025)
+
+**Neon (Serverless Postgres)**
+- Branching databases for development workflows
+- Generous free tier with 0.5 GB storage
+- Auto-scaling, scale-to-zero
+- Great for: Development, staging, small production apps
+
+**Turso (Serverless SQLite)**
+- Edge database with global replication
+- Free tier: 9 GB storage, 1B row reads/month
+- LibSQL (SQLite fork) with extensions
+- Great for: Read-heavy apps, edge computing
+
+**Cloudflare D1 (Serverless SQLite)**
+- Built on Cloudflare's edge network
+- Free tier: 5 GB storage, 5M reads/day
+- Low latency worldwide
+- Great for: Globally distributed apps
+
+## Build Tools & Bundlers
+
+### Modern Build Tools (2025)
+
+| Tool | Speed | Level | Use Case |
+|------|-------|-------|----------|
+| **Vite** | ⭐⭐⭐⭐⭐ | 1-4 | Fast dev server, modern apps |
+| **Turbopack** | ⭐⭐⭐⭐⭐ | 2-5 | Next.js bundler (Rust-based) |
+| **esbuild** | ⭐⭐⭐⭐⭐ | 2-4 | Ultra-fast Go-based bundler |
+| **Bun** | ⭐⭐⭐⭐⭐ | 2-4 | All-in-one: runtime + bundler + test |
+| **Webpack** | ⭐⭐ | 2-5 | Legacy, still widely used |
+| **Rollup** | ⭐⭐⭐ | 2-4 | Library bundling, tree-shaking |
+
+**Key Features:**
+- **Vite**: Pre-bundles with esbuild, HMR, plugin ecosystem
+- **Turbopack**: Incremental bundling, optimized for Next.js
+- **Bun**: 3x faster than Node.js, built-in TypeScript
+- **esbuild**: 10-100x faster than JS bundlers
+
 ## Hosting & Deployment Matrix
 
 ### Static Sites (Level 1)
@@ -86,8 +132,8 @@ Multi-model: CosmosDB, Amazon DynamoDB
 ### Full-Stack Apps (Level 2-3)
 | Provider | Free Tier | Databases | Serverless | Container Support |
 |----------|-----------|-----------|------------|-------------------|
-| **Vercel** | Generous | PostgreSQL | ✅ | Limited |
-| **Railway** | $5/month | All major | ❌ | ✅ |
+| **Vercel** | Hobby (non-commercial) | PostgreSQL | ✅ | Limited |
+| **Railway** | $5 trial, then $5/mo | All major | ❌ | ✅ |
 | **Render** | Free tier | PostgreSQL | ❌ | ✅ |
 | **Fly.io** | Free tier | PostgreSQL | ❌ | ✅ |
 
@@ -106,6 +152,7 @@ Multi-model: CosmosDB, Amazon DynamoDB
 #### Level 1-2: Simple Auth
 ```
 NextAuth.js: Social logins, easy setup
+Better Auth: Modern, lightweight, TypeScript-first (emerging)
 Auth0: Managed service, free tier
 Clerk: Modern UX, generous free tier
 Supabase Auth: Part of backend service
@@ -132,8 +179,8 @@ Zero Trust Architecture: Modern security
 ### Simple Integration (Level 1-3)
 | Provider | Fees | International | Complexity |
 |----------|------|---------------|------------|
-| **Stripe** | 2.9% + 30¢ | ✅ | Simple |
-| **PayPal** | 2.9% + 30¢ | ✅ | Moderate |
+| **Stripe** | 3.4% + 30¢ (online) | ✅ | Simple |
+| **PayPal** | 3.5% + 49¢ | ✅ | Moderate |
 | **Square** | 2.9% + 30¢ | Limited | Simple |
 | **Lemonsqueezy** | 5% + fees | ✅ | Very Simple |
 
@@ -164,9 +211,10 @@ Enterprise → Need compliance, support, enterprise features
 
 ### 3. Budget Constraints
 ```
-$0-50/month → Static sites, serverless, managed databases
-$50-500/month → VPS, managed cloud services, basic scaling
-$500-5000/month → Full cloud services, multiple environments
+$0-20/month → Static sites (hobby/non-commercial)
+$20-100/month → Full-stack apps, serverless, managed databases
+$100-1000/month → VPS, managed cloud services, basic scaling
+$1000-5000/month → Full cloud services, multiple environments
 $5000+/month → Enterprise features, dedicated support, SLAs
 ```
 
@@ -183,8 +231,8 @@ $5000+/month → Enterprise features, dedicated support, SLAs
 ```
 Frontend: Next.js + Tailwind CSS
 Backend: Next.js API Routes + Supabase
-Database: PostgreSQL (Supabase)
-Auth: NextAuth.js or Supabase Auth
+Database: PostgreSQL (Supabase, Neon) or SQLite (Turso)
+Auth: NextAuth.js, Better Auth, or Supabase Auth
 Payments: Stripe
 Hosting: Vercel
 ```

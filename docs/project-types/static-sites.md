@@ -82,6 +82,36 @@ npx create-next-app@latest my-site
 - Image optimization
 - API routes for build-time data
 
+**Note for Next.js 15:**
+- App Router (default): Use `generateStaticParams()` for SSG with dynamic routes
+- Pages Router: Use `getStaticProps()` and `getStaticPaths()`
+- For static export: Add `output: 'export'` to `next.config.js`
+- App Router provides better performance with React Server Components
+
+#### Hugo (Recommended for Blogs)
+```bash
+# Install Hugo (macOS)
+brew install hugo
+
+# Create new site
+hugo new site my-blog
+cd my-blog
+```
+
+**Benefits:**
+- **Fastest build times** (built in Go)
+- Zero dependencies (single binary)
+- Excellent for blogs and documentation
+- Huge theme ecosystem
+- Markdown-native with powerful templating
+- Live reload during development
+
+**Perfect for:**
+- Personal blogs (like brettstark.com)
+- Documentation sites
+- Portfolio with blog
+- Content-heavy sites
+
 #### Gatsby
 ```bash
 npm install -g gatsby-cli

@@ -69,7 +69,7 @@
 
 ### Databases
 - **Level 1-2:** Flat files, LocalStorage, Supabase
-- **Level 3:** PostgreSQL, MongoDB, PlanetScale
+- **Level 3:** PostgreSQL (Neon, Supabase), MongoDB, MySQL
 - **Level 4:** Multiple databases, Redis cache, search engines
 - **Level 5:** Distributed databases, data lakes, analytics
 

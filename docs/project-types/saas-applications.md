@@ -63,7 +63,7 @@ Hosting: Vercel
 Frontend: React/Next.js + Tailwind
 Backend: Node.js (Express/Fastify) or Python (FastAPI)
 Database: PostgreSQL (Railway/Render/Supabase)
-Auth: NextAuth.js or Auth0
+Auth: NextAuth.js, Better Auth, or Auth0
 Payments: Stripe
 Hosting: Frontend (Vercel) + Backend (Railway/Render)
 ```
