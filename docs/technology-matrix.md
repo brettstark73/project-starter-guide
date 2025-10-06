@@ -121,6 +121,8 @@ Multi-model: CosmosDB, Amazon DynamoDB
 
 ## Hosting & Deployment Matrix
 
+> **Note on Pricing**: Service pricing and free tier availability change frequently. All pricing information was last verified in October 2025. Please check provider websites for current pricing.
+
 ### Static Sites (Level 1)
 | Provider | Cost | CDN | Custom Domain | Build Time |
 |----------|------|-----|---------------|------------|
