@@ -1,53 +1,132 @@
 # API Service Template
 
-**Status:** 🚧 Coming Soon
+A minimal, production-ready REST API starter with Express, TypeScript, and best practices.
 
-This template is under development. It will provide a production-ready REST API starter with best practices.
+## Stack
 
-## Planned Stack
-
-### Option A: Node.js
-- **Framework:** Fastify or Hono
+- **Framework:** Express.js
 - **Language:** TypeScript
-- **Database:** PostgreSQL
-- **Validation:** Zod
-- **Documentation:** OpenAPI/Swagger
-- **Testing:** Vitest
-- **Deployment:** Docker
+- **Runtime:** Node.js
+- **Security:** Helmet.js, CORS
+- **Database:** Ready for PostgreSQL/MongoDB
+- **Validation:** Ready for Zod integration
+- **Testing:** Ready for Vitest/Jest
+- **Deployment:** Docker-ready
 
-### Option B: Python
-- **Framework:** FastAPI
-- **Database:** PostgreSQL
-- **Validation:** Pydantic
-- **Documentation:** Auto-generated
-- **Testing:** pytest
-- **Deployment:** Docker
+## Quick Start
 
-## Features (Planned)
+```bash
+# Install dependencies
+npm install
 
-- [ ] Health check endpoints
-- [ ] JWT authentication
-- [ ] Rate limiting
-- [ ] Request validation
-- [ ] Error handling
-- [ ] Logging (structured)
-- [ ] OpenAPI documentation
-- [ ] Database migrations
-- [ ] Docker setup
-- [ ] CI/CD examples
+# Copy environment variables
+cp .env.example .env
 
-## Timeline
+# Run in development mode (with auto-reload)
+npm run dev
 
-Estimated completion: Q2 2025
+# Build for production
+npm run build
 
-## Want to Contribute?
+# Run production build
+npm start
+```
 
-This template is open for community contributions! See the [Contributing Guide](../../CONTRIBUTING.md).
+The API will be available at [http://localhost:3000](http://localhost:3000).
 
-## In the Meantime
+## Features
 
-Check out these resources:
+- ✅ Health check endpoint (`/healthz`)
+- ✅ TypeScript with strict mode
+- ✅ Express with security middleware (Helmet, CORS)
+- ✅ Error handling
+- ✅ Environment variables
+- ✅ Hot reload in development
+- 🚧 JWT authentication (integration needed)
+- 🚧 Rate limiting (integration needed)
+- 🚧 Request validation (integration needed)
+- 🚧 Database integration (integration needed)
+- 🚧 OpenAPI/Swagger docs (integration needed)
+
+## API Endpoints
+
+### Health Check
+```bash
+GET /healthz
+```
+
+Returns server health status, timestamp, and uptime.
+
+### Root
+```bash
+GET /
+```
+
+Returns API information and available endpoints.
+
+### Status
+```bash
+GET /api/v1/status
+```
+
+Returns API status and environment.
+
+### Echo (Example POST)
+```bash
+POST /api/v1/echo
+Content-Type: application/json
+
+{
+  "message": "Hello API"
+}
+```
+
+## Project Structure
+
+```
+api-service/
+├── src/
+│   └── index.ts         # Main server file
+├── .env.example         # Environment variables template
+├── tsconfig.json        # TypeScript configuration
+└── package.json
+```
+
+## Next Steps
+
+1. **Database**: Add PostgreSQL or MongoDB
+   - Install a database client (pg, mongoose)
+   - Create connection module
+   - Add migrations
+
+2. **Validation**: Add request validation
+   - Install Zod or Joi
+   - Create validation middleware
+   - Validate request bodies
+
+3. **Authentication**: Add JWT auth
+   - Install jsonwebtoken
+   - Create auth middleware
+   - Add login/register endpoints
+
+4. **Documentation**: Add OpenAPI/Swagger
+   - Install swagger-ui-express
+   - Define API schemas
+   - Generate documentation
+
+5. **Deploy**: Containerize with Docker
+   ```dockerfile
+   FROM node:20-alpine
+   WORKDIR /app
+   COPY package*.json ./
+   RUN npm ci --only=production
+   COPY dist ./dist
+   CMD ["node", "dist/index.js"]
+   ```
+
+## Resources
+
 - [APIs & Microservices Guide](../../docs/project-types/apis.md)
 - [Technology Matrix](../../docs/technology-matrix.md)
-- [Fastify Documentation](https://fastify.dev/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Express Documentation](https://expressjs.com/)
+- [TypeScript Documentation](https://www.typescriptlang.org/)

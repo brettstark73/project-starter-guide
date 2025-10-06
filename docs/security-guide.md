@@ -1,5 +1,15 @@
 # 🔒 Security Guide
 
+**Last updated:** 2025-10-05
+
+## Prerequisites
+
+- Basic understanding of web application architecture
+- Familiarity with HTTP and web protocols
+- Knowledge of authentication and authorization concepts
+- Understanding of common web vulnerabilities (OWASP Top 10)
+- For advanced sections: cryptography basics and infrastructure security
+
 ## Overview
 
 Security is critical at every level of application development. This guide covers essential security practices organized by complexity level and application type.

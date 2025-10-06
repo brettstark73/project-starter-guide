@@ -10,9 +10,9 @@
 
 New to the guide? Follow this path:
 
-1. **[Quick Start](#-quick-start)** → Find your project type
-2. **[Complexity Levels](#️-complexity-levels)** → Determine your scale
-3. **[Detailed Guides](#-detailed-guides)** → Get specific instructions
+1. **[Quick Start](#quick-start)** → Find your project type
+2. **[Complexity Levels](#complexity-levels)** → Determine your scale
+3. **[Detailed Guides](#detailed-guides)** → Get specific instructions
 4. **[Technology Matrix](docs/technology-matrix.md)** → Choose your stack
 5. **[Templates & Examples](#templates--examples)** → Start coding
 

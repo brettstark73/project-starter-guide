@@ -1,66 +1,118 @@
 # Mobile App Starter Template
 
-**Status:** 🚧 Coming Soon
+A minimal React Native starter with Expo, TypeScript, and a working counter example.
 
-This template is under development. It will provide a complete React Native starter with Expo.
+## Stack
 
-## Planned Stack
-
-- **Framework:** React Native with Expo
+- **Framework:** React Native with Expo SDK 52
 - **Language:** TypeScript
-- **Navigation:** React Navigation
-- **State:** Zustand
-- **API Client:** React Query (TanStack Query)
-- **Backend:** Supabase or custom API
-- **UI Library:** React Native Paper or NativeBase
-- **Testing:** Jest + React Native Testing Library
+- **Architecture:** Expo Managed Workflow
+- **Navigation:** Ready for React Navigation
+- **State:** Ready for Zustand/Redux
+- **API Client:** Ready for React Query
+- **Backend:** Ready for Supabase/Firebase
+- **UI Library:** Ready for React Native Paper
 
-## Features (Planned)
+## Quick Start
 
-- [ ] Authentication (email/password, OAuth)
-- [ ] Tab navigation
-- [ ] Stack navigation
-- [ ] API integration
-- [ ] Offline support
-- [ ] Push notifications
-- [ ] Image upload
-- [ ] Dark mode
-- [ ] Responsive design
-- [ ] Form validation
-- [ ] Error boundaries
-- [ ] E2E tests (Detox)
+```bash
+# Install dependencies
+npm install
 
-## Timeline
+# Start development server
+npm start
 
-Estimated completion: Q2 2025
+# Or run on specific platform
+npm run ios       # iOS Simulator
+npm run android   # Android Emulator
+npm run web       # Web browser
+```
 
-## Want to Contribute?
+Scan the QR code with Expo Go app (iOS/Android) to preview on your device.
 
-This template is open for community contributions! See the [Contributing Guide](../../CONTRIBUTING.md).
+## Features
 
-## In the Meantime
+- ✅ TypeScript configuration
+- ✅ Working counter example
+- ✅ Expo Router ready
+- ✅ Status bar component
+- ✅ Responsive styling
+- 🚧 Authentication (integration needed)
+- 🚧 Navigation (React Navigation)
+- 🚧 State management (Zustand/Redux)
+- 🚧 API integration
+- 🚧 Push notifications
+- 🚧 Dark mode
 
-Check out these resources:
+## Project Structure
+
+```
+mobile-app/
+├── App.tsx              # Main app component
+├── app.json             # Expo configuration
+├── assets/              # Images, fonts, etc.
+├── tsconfig.json        # TypeScript configuration
+└── package.json
+```
+
+## Development Tips
+
+1. **Run on Physical Device**:
+   - Install Expo Go from App Store/Play Store
+   - Scan QR code from terminal
+
+2. **iOS Simulator** (macOS only):
+   ```bash
+   npm run ios
+   ```
+
+3. **Android Emulator**:
+   ```bash
+   npm run android
+   ```
+
+4. **Web Browser**:
+   ```bash
+   npm run web
+   ```
+
+## Next Steps
+
+1. **Navigation**: Add React Navigation
+   ```bash
+   npm install @react-navigation/native @react-navigation/native-stack
+   npx expo install react-native-screens react-native-safe-area-context
+   ```
+
+2. **State Management**: Add Zustand
+   ```bash
+   npm install zustand
+   ```
+
+3. **Backend**: Integrate Supabase
+   ```bash
+   npm install @supabase/supabase-js
+   npx expo install @react-native-async-storage/async-storage
+   ```
+
+4. **UI Library**: Add React Native Paper
+   ```bash
+   npm install react-native-paper react-native-safe-area-context
+   ```
+
+5. **Build for Production**:
+   ```bash
+   # iOS
+   eas build --platform ios
+
+   # Android
+   eas build --platform android
+   ```
+
+## Resources
+
 - [Mobile Applications Guide](../../docs/project-types/mobile-apps.md)
 - [Technology Matrix](../../docs/technology-matrix.md)
 - [Expo Documentation](https://docs.expo.dev/)
 - [React Native Documentation](https://reactnative.dev/)
-
-## Quick Start (Manual Setup)
-
-```bash
-# Create new Expo app
-npx create-expo-app@latest my-app
-
-# Navigate to project
-cd my-app
-
-# Start development server
-npx expo start
-
-# Run on iOS
-npx expo start --ios
-
-# Run on Android
-npx expo start --android
-```
+- [React Navigation Docs](https://reactnavigation.org/)

@@ -1,5 +1,16 @@
 # 📊 Data & Analytics Guide
 
+**Last updated:** 2025-10-05
+
+## Prerequisites
+
+- Programming fundamentals (Python or JavaScript preferred)
+- Basic understanding of databases and SQL
+- Familiarity with data structures and algorithms
+- Understanding of statistics basics
+- For advanced sections: knowledge of distributed systems and machine learning concepts
+- Experience with data visualization libraries helpful
+
 ## Overview
 
 Data and analytics applications process, analyze, and visualize data to provide insights and drive decision-making. This guide covers everything from simple dashboards to complex data pipelines and machine learning platforms.

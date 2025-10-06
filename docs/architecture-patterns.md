@@ -1,5 +1,15 @@
 # 🏗️ Architecture Patterns Guide
 
+**Last updated:** 2025-10-05
+
+## Prerequisites
+
+- Understanding of basic software design principles
+- Familiarity with backend and frontend development concepts
+- Knowledge of APIs and web services
+- Basic understanding of databases
+- For advanced patterns: experience with distributed systems helpful
+
 ## Overview
 
 Architecture patterns are proven solutions to common design problems in software systems. This guide covers essential patterns for building scalable, maintainable, and reliable applications.

@@ -1,5 +1,15 @@
 # 🔌 APIs & Microservices Guide
 
+**Last updated:** 2025-10-05
+
+## Prerequisites
+
+- Basic understanding of HTTP and REST principles
+- Familiarity with at least one programming language (JavaScript, Python, Go, etc.)
+- Understanding of JSON data format
+- Basic command line skills
+- For advanced sections: knowledge of databases and async programming
+
 ## Overview
 
 APIs (Application Programming Interfaces) and microservices are the backbone of modern software architecture, enabling communication between systems, third-party integrations, and scalable distributed applications.

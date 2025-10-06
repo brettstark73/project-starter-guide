@@ -1,5 +1,16 @@
 # 📱 Mobile Applications Guide
 
+**Last updated:** 2025-10-05
+
+## Prerequisites
+
+- JavaScript/TypeScript fundamentals
+- Basic understanding of React (for React Native) or Dart (for Flutter)
+- Node.js and npm installed
+- For iOS development: macOS with Xcode
+- For Android development: Android Studio and SDK
+- Mobile device or emulator for testing
+
 ## Overview
 
 Mobile applications are software designed for smartphones and tablets. This guide covers native, cross-platform, and hybrid approaches for building modern mobile apps for iOS and Android.

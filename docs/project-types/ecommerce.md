@@ -1,5 +1,16 @@
 # 🛒 E-commerce Platforms Guide
 
+**Last updated:** 2025-10-05
+
+## Prerequisites
+
+- Web development fundamentals (HTML, CSS, JavaScript)
+- Understanding of frontend frameworks (React, Vue, etc.)
+- Basic backend knowledge (APIs, databases)
+- Familiarity with payment processing concepts
+- Understanding of user authentication
+- For advanced sections: knowledge of inventory management and order fulfillment
+
 ## Overview
 
 E-commerce platforms enable online buying and selling of products or services. This guide covers everything from simple online stores to complex multi-vendor marketplaces.
