@@ -136,13 +136,21 @@ api-service/
    - A basic `openapi.yaml` stub is included
    - Validate it:
      ```bash
+     # Quick validation (uses npx, no install needed)
+     npm run openapi:lint
+
+     # Or install for better performance
      npm install -D @redocly/cli
-     npx @redocly/cli lint openapi.yaml
+     npm run openapi:validate
+     ```
+   - Bundle for deployment:
+     ```bash
+     npm run openapi:bundle
      ```
    - Serve interactive docs:
      ```bash
      npm install swagger-ui-express
-     # Add route in src/app.ts to serve docs
+     # Then add route in src/app.ts to serve docs
      ```
 
 5. **Deploy**: Build and run with Docker

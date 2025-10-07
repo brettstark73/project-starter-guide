@@ -12,8 +12,9 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "test": "vitest run",
     "test:watch": "vitest",
-    "openapi:validate": "echo 'OpenAPI validation - install @redocly/cli or swagger-cli to validate openapi.yaml'",
-    "openapi:serve": "echo 'OpenAPI docs - install swagger-ui-express or redoc to serve docs'"
+    "openapi:lint": "npx -y @redocly/cli lint openapi.yaml || echo 'Install @redocly/cli for proper validation: npm install -D @redocly/cli'",
+    "openapi:validate": "npm run openapi:lint",
+    "openapi:bundle": "npx -y @redocly/cli bundle openapi.yaml -o openapi.bundled.yaml || echo 'Install @redocly/cli: npm install -D @redocly/cli'"
   },
   "keywords": ["api", "express", "typescript"],
   "author": "Your Name <your.email@example.com>",

@@ -114,6 +114,41 @@ New to the guide? Follow this path:
 4. **Follow the Detailed Guide** - Get step-by-step instructions
 5. **Use Templates** - Start with proven patterns
 
+## 🧪 Run CI Locally
+
+Before pushing changes, you can run the same validation that CI does:
+
+### Documentation Validation
+```bash
+# Install dependencies
+npm install
+
+# Run all validation checks
+npm run validate
+
+# Or run individually
+npm run lint:md           # Markdown linting
+npm run check:links       # Check README links
+npm run check:links:all   # Check all doc links (slower)
+npm run format:check      # Check code formatting
+```
+
+### Template Validation
+Each template has its own validation:
+
+```bash
+cd templates/api-service
+
+npm install
+npm run lint           # ESLint
+npm run format:check   # Prettier
+npm test               # Run tests
+npm run build          # TypeScript build
+npm run openapi:lint   # Validate OpenAPI spec
+```
+
+Similar commands work for `saas-level-1` and `mobile-app` (except mobile doesn't have a build step).
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
