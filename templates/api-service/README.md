@@ -49,11 +49,12 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 - ✅ Environment variables
 - ✅ Hot reload in development
 - ✅ Vitest test setup with sample health check tests
+- ✅ OpenAPI 3.0 spec stub (`openapi.yaml`)
+- ✅ Docker support with multi-stage build
 - 🚧 JWT authentication (integration needed)
 - 🚧 Rate limiting (integration needed)
 - 🚧 Request validation (integration needed)
 - 🚧 Database integration (integration needed)
-- 🚧 OpenAPI/Swagger docs (integration needed)
 
 ## Testing
 
@@ -131,10 +132,18 @@ api-service/
    - Create auth middleware
    - Add login/register endpoints
 
-4. **Documentation**: Add OpenAPI/Swagger
-   - Install swagger-ui-express
-   - Define API schemas
-   - Generate documentation
+4. **Documentation**: Complete the OpenAPI spec
+   - A basic `openapi.yaml` stub is included
+   - Validate it:
+     ```bash
+     npm install -D @redocly/cli
+     npx @redocly/cli lint openapi.yaml
+     ```
+   - Serve interactive docs:
+     ```bash
+     npm install swagger-ui-express
+     # Add route in src/app.ts to serve docs
+     ```
 
 5. **Deploy**: Build and run with Docker
    ```bash

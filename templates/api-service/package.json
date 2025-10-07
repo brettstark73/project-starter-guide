@@ -11,7 +11,9 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "openapi:validate": "echo 'OpenAPI validation - install @redocly/cli or swagger-cli to validate openapi.yaml'",
+    "openapi:serve": "echo 'OpenAPI docs - install swagger-ui-express or redoc to serve docs'"
   },
   "keywords": ["api", "express", "typescript"],
   "author": "Your Name <your.email@example.com>",

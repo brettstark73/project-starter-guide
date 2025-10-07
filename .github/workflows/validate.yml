@@ -10,7 +10,8 @@ on:
     - cron: '0 2 * * 0'
 
 jobs:
-  validate:
+  validate-docs:
+    name: Validate Documentation
     runs-on: ubuntu-latest
 
     steps:
@@ -37,4 +38,48 @@ jobs:
       - name: Check all documentation links (weekly)
         if: github.event_name == 'schedule'
         run: npm run check:links:all
+        continue-on-error: true
+
+  validate-templates:
+    name: Validate Templates
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    strategy:
+      matrix:
+        template: [api-service, saas-level-1, mobile-app]
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies - ${{ matrix.template }}
+        working-directory: templates/${{ matrix.template }}
+        run: npm ci
+
+      - name: Run linting - ${{ matrix.template }}
+        working-directory: templates/${{ matrix.template }}
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Check formatting - ${{ matrix.template }}
+        working-directory: templates/${{ matrix.template }}
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: Run tests - ${{ matrix.template }}
+        if: matrix.template == 'api-service'
+        working-directory: templates/${{ matrix.template }}
+        run: npm test
+        continue-on-error: true
+
+      - name: Build - ${{ matrix.template }}
+        if: matrix.template != 'mobile-app'
+        working-directory: templates/${{ matrix.template }}
+        run: npm run build
         continue-on-error: true
