@@ -1,23 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import request from 'supertest';
-import express from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-
-// Create a test app instance
-const app = express();
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-
-// Health check endpoint
-app.get('/healthz', (_req, res) => {
-  res.status(200).json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-  });
-});
+import app from '../app';
 
 describe('Health Check Endpoint', () => {
   it('should return 200 status', async () => {
@@ -41,5 +24,22 @@ describe('Health Check Endpoint', () => {
     expect(response.body.uptime).toBeDefined();
     expect(typeof response.body.uptime).toBe('number');
     expect(response.body.uptime).toBeGreaterThan(0);
+  });
+});
+
+describe('Root Endpoint', () => {
+  it('should return API information', async () => {
+    const response = await request(app).get('/');
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('API Service is running');
+    expect(response.body.version).toBe('1.0.0');
+  });
+});
+
+describe('404 Handler', () => {
+  it('should return 404 for unknown routes', async () => {
+    const response = await request(app).get('/nonexistent');
+    expect(response.status).toBe(404);
+    expect(response.body.error).toBe('Not Found');
   });
 });

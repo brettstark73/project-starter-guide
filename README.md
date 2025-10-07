@@ -5,6 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/brettstark73/project-starter-guide?style=flat-square)](https://github.com/brettstark73/project-starter-guide/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Validate Documentation](https://github.com/brettstark73/project-starter-guide/actions/workflows/validate.yml/badge.svg)](https://github.com/brettstark73/project-starter-guide/actions/workflows/validate.yml)
 
 ## 🗺️ Start Here
 

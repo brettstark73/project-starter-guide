@@ -136,15 +136,18 @@ api-service/
    - Define API schemas
    - Generate documentation
 
-5. **Deploy**: Containerize with Docker
-   ```dockerfile
-   FROM node:20-alpine
-   WORKDIR /app
-   COPY package*.json ./
-   RUN npm ci --only=production
-   COPY dist ./dist
-   CMD ["node", "dist/index.js"]
+5. **Deploy**: Build and run with Docker
+   ```bash
+   # Build the Docker image
+   docker build -t api-service .
+
+   # Run the container
+   docker run -p 3000:3000 --env-file .env api-service
+
+   # Or use docker-compose (create docker-compose.yml as needed)
    ```
+
+   The included `Dockerfile` uses multi-stage builds for optimal image size and includes health checks.
 
 ## Resources
 
