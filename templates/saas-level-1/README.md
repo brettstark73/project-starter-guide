@@ -2,6 +2,12 @@
 
 A minimal, production-ready SaaS starter template with Next.js 15, Tailwind CSS, and TypeScript.
 
+## Prerequisites
+
+- **Node.js:** >=20.0.0
+- **npm:** >=10.0.0
+- Basic understanding of React and Next.js
+
 ## Stack
 
 - **Frontend:** Next.js 15 (App Router) + Tailwind CSS
@@ -41,6 +47,7 @@ Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 - 🚧 Subscription billing (integration needed)
 - 🚧 User dashboard (to be built)
 - 🚧 Email notifications (integration needed)
+- 🚧 Testing (add Vitest or Jest when ready)
 
 ## Project Structure
 
@@ -83,3 +90,9 @@ saas-level-1/
 - [Next.js Documentation](https://nextjs.org/)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Stripe Documentation](https://stripe.com/docs)
+
+## License
+
+MIT License - see [LICENSE](../../LICENSE) for details.
+
+**Author:** Customize the `author` field in `package.json` for your project.

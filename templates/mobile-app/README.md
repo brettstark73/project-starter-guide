@@ -2,6 +2,14 @@
 
 A minimal React Native starter with Expo, TypeScript, and a working counter example.
 
+## Prerequisites
+
+- **Node.js:** >=20.0.0
+- **npm:** >=10.0.0
+- **Expo CLI:** Latest (installed automatically with npx)
+- iOS Simulator (macOS only) or Android Emulator or Expo Go app on physical device
+- Basic understanding of React and React Native
+
 ## Stack
 
 - **Framework:** React Native with Expo SDK 52
@@ -43,6 +51,7 @@ Scan the QR code with Expo Go app (iOS/Android) to preview on your device.
 - 🚧 API integration
 - 🚧 Push notifications
 - 🚧 Dark mode
+- 🚧 Testing (add Jest + React Native Testing Library when ready)
 
 ## Project Structure
 
@@ -116,3 +125,9 @@ mobile-app/
 - [Expo Documentation](https://docs.expo.dev/)
 - [React Native Documentation](https://reactnative.dev/)
 - [React Navigation Docs](https://reactnavigation.org/)
+
+## License
+
+MIT License - see [LICENSE](../../LICENSE) for details.
+
+**Author:** Customize the `author` field in `package.json` for your project.

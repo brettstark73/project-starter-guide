@@ -5,6 +5,9 @@ on:
     branches: [master, main]
   push:
     branches: [master, main]
+  schedule:
+    # Run weekly on Sundays at 2am UTC to check all docs links
+    - cron: '0 2 * * 0'
 
 jobs:
   validate:
@@ -27,6 +30,11 @@ jobs:
         run: npm run lint:md
         continue-on-error: true
 
-      - name: Check internal links
+      - name: Check README links
         run: npm run check:links
+        continue-on-error: true
+
+      - name: Check all documentation links (weekly)
+        if: github.event_name == 'schedule'
+        run: npm run check:links:all
         continue-on-error: true

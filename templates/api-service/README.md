@@ -2,6 +2,12 @@
 
 A minimal, production-ready REST API starter with Express, TypeScript, and best practices.
 
+## Prerequisites
+
+- **Node.js:** >=20.0.0
+- **npm:** >=10.0.0
+- Basic understanding of TypeScript and REST APIs
+
 ## Stack
 
 - **Framework:** Express.js
@@ -42,11 +48,27 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 - ✅ Error handling
 - ✅ Environment variables
 - ✅ Hot reload in development
+- ✅ Vitest test setup with sample health check tests
 - 🚧 JWT authentication (integration needed)
 - 🚧 Rate limiting (integration needed)
 - 🚧 Request validation (integration needed)
 - 🚧 Database integration (integration needed)
 - 🚧 OpenAPI/Swagger docs (integration needed)
+
+## Testing
+
+```bash
+# Run tests once
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+The project includes a sample test suite for the health check endpoint demonstrating:
+- HTTP status code testing
+- Response body validation
+- Timestamp and uptime verification
 
 ## API Endpoints
 
@@ -130,3 +152,9 @@ api-service/
 - [Technology Matrix](../../docs/technology-matrix.md)
 - [Express Documentation](https://expressjs.com/)
 - [TypeScript Documentation](https://www.typescriptlang.org/)
+
+## License
+
+MIT License - see [LICENSE](../../LICENSE) for details.
+
+**Author:** Customize the `author` field in `package.json` for your project.

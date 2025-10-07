@@ -2,6 +2,8 @@
   "name": "mobile-app-starter",
   "version": "1.0.0",
   "main": "expo/AppEntry.js",
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
