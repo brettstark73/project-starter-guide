@@ -83,6 +83,58 @@ saas-level-1/
    vercel
    ```
 
+## Security & Data Handling
+
+### Secure Logging
+
+**❌ Never log sensitive data:**
+- User passwords, session tokens
+- API keys (Supabase, Stripe secrets)
+- Payment information
+- Personal identifiable information (PII)
+
+**✅ Safe logging practices:**
+```typescript
+// Safe: Log user actions without sensitive data
+console.log('User action:', {
+  userId: user.id,  // ID only
+  action: 'checkout',
+  timestamp: new Date().toISOString(),
+  // Never log: user.email, user.paymentMethod, tokens
+});
+```
+
+### Environment Variables
+
+Next.js supports two types of environment variables:
+
+```bash
+# .env.local (never commit!)
+# Server-side only (no NEXT_PUBLIC_ prefix)
+SUPABASE_SERVICE_KEY="secret_key_here"
+STRIPE_SECRET_KEY="sk_live_xxx"
+
+# Client-side (NEXT_PUBLIC_ prefix - exposed to browser)
+NEXT_PUBLIC_SUPABASE_URL="https://xxx.supabase.co"
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_xxx"
+```
+
+**Important:**
+- Never put secrets in `NEXT_PUBLIC_*` variables (they're exposed to the browser)
+- Add `.env.local` to `.gitignore` (already done)
+- Commit `.env.example` with placeholder values
+- Set environment variables in Vercel dashboard for production
+
+### Data Privacy & Compliance
+
+- **User Data**: Store minimal PII, hash sensitive fields
+- **GDPR**: Provide data export and deletion for EU users
+- **Supabase RLS**: Enable Row Level Security for data isolation
+- **Stripe Compliance**: Never store full credit card numbers
+- **Session Management**: Use secure, HttpOnly cookies for sessions
+
+See the [Security Guide](../../docs/security-guide.md) for detailed best practices.
+
 ## Resources
 
 - [SaaS Applications Guide](../../docs/project-types/saas-applications.md)

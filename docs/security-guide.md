@@ -202,6 +202,64 @@ export default NextAuth({
 });
 ```
 
+### Auth Token Storage Best Practices
+
+**Where to store tokens:**
+
+| Storage Method | Security | Persistence | Use Case |
+|----------------|----------|-------------|----------|
+| **Memory (React state)** | ✅ High | ❌ Lost on refresh | Short sessions, high security |
+| **HttpOnly Cookies** | ✅ High | ✅ Persists | Recommended for web apps |
+| **LocalStorage** | ⚠️ Low (XSS risk) | ✅ Persists | Avoid for sensitive tokens |
+| **SessionStorage** | ⚠️ Medium | ❌ Lost on tab close | Acceptable for temporary data |
+
+**Recommended approach for web applications:**
+
+```typescript
+// ✅ RECOMMENDED: HttpOnly cookies for refresh tokens
+// Set on server
+res.cookie('refreshToken', refreshToken, {
+  httpOnly: true,        // Cannot be accessed by JavaScript (prevents XSS)
+  secure: true,          // HTTPS only in production
+  sameSite: 'strict',    // CSRF protection
+  maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
+  path: '/api/auth',     // Limit cookie scope
+});
+
+// ✅ Access tokens in memory (React state/context)
+// Short-lived, automatically cleared on page refresh
+const [accessToken, setAccessToken] = useState<string | null>(null);
+
+// ❌ AVOID: Storing sensitive tokens in LocalStorage
+// localStorage.setItem('token', token);  // Vulnerable to XSS attacks!
+```
+
+**For mobile applications:**
+
+```typescript
+// React Native: Use secure storage
+import * as SecureStore from 'expo-secure-store';
+
+// Store token securely (encrypted)
+await SecureStore.setItemAsync('refreshToken', token);
+
+// Retrieve token
+const token = await SecureStore.getItemAsync('refreshToken');
+
+// Delete token on logout
+await SecureStore.deleteItemAsync('refreshToken');
+```
+
+**Token security checklist:**
+- ✅ Use short expiration for access tokens (5-15 minutes)
+- ✅ Use longer expiration for refresh tokens (7-30 days)
+- ✅ Implement token rotation (issue new refresh token on each use)
+- ✅ Store refresh tokens in database for revocation
+- ✅ Clear tokens immediately on logout
+- ✅ Implement token blacklisting for compromised tokens
+- ✅ Use secure, HttpOnly cookies for web applications
+- ✅ Never log tokens in application logs
+
 ### Role-Based Access Control (RBAC)
 
 ```typescript
@@ -482,6 +540,61 @@ app.use(async (req, res, next) => {
 });
 ```
 
+### Rate Limiting Best Practices
+
+**Recommended rate limits by endpoint type:**
+
+| Endpoint Type | Rate Limit | Window | Notes |
+|---------------|------------|--------|-------|
+| **Login/Auth** | 5 attempts | 15 min | Prevent brute force |
+| **Password Reset** | 3 attempts | 1 hour | High security |
+| **API (Authenticated)** | 1000 requests | 1 hour | Per user |
+| **API (Public)** | 100 requests | 15 min | Per IP |
+| **File Upload** | 10 uploads | 1 hour | Resource-intensive |
+| **Search/Query** | 30 requests | 1 min | Expensive operations |
+
+**Implementation tips:**
+```typescript
+// Different limits for different endpoints
+import rateLimit from 'express-rate-limit';
+
+// Strict auth rate limit
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  skipSuccessfulRequests: true,  // Only count failed attempts
+  standardHeaders: true,
+  message: { error: 'Too many login attempts, please try again later' }
+});
+
+// Standard API rate limit
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply to specific routes
+app.post('/api/login', authLimiter, loginHandler);
+app.post('/api/register', authLimiter, registerHandler);
+app.use('/api', apiLimiter);
+
+// Rate limit by user ID (after authentication)
+const createAccountLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  keyGenerator: (req) => req.user?.id || req.ip,  // Use user ID if authenticated
+});
+```
+
+**For the API template**, install and configure:
+```bash
+npm install express-rate-limit
+```
+
+See [API template README](../../templates/api-service/README.md) for integration examples.
+
 ### DDoS Protection (Cloudflare)
 
 ```typescript
@@ -592,12 +705,38 @@ function verifySignature(req, res, next) {
 
 ## Secrets Management
 
+### 12-Factor App Principles for Secrets
+
+The [12-Factor App](https://12factor.net/) methodology provides clear guidance for secret management:
+
+**Key principles:**
+- ✅ Store config in environment variables (never in code)
+- ✅ Never commit secrets to version control
+- ✅ Use different secrets for each environment (dev, staging, prod)
+- ✅ Rotate secrets regularly
+- ✅ Use secret management tools for production
+- ✅ Validate all required secrets at startup
+
 ### Environment Variables (Basic)
 
+**❌ Never do this:**
+```typescript
+// WRONG: Hardcoded secrets in code
+const API_KEY = 'sk_live_abc123';  // NEVER!
+const dbPassword = 'password123';  // NEVER!
+```
+
+**✅ Do this:**
 ```bash
-# .env (never commit!)
+# .env (never commit! add to .gitignore)
 DATABASE_URL="postgresql://user:pass@localhost:5432/db"
 JWT_SECRET="random-secret-key-change-in-production"
+STRIPE_SECRET_KEY="sk_test_xxx"
+NEXT_PUBLIC_API_URL="https://api.example.com"  # Public vars prefix: NEXT_PUBLIC_
+
+# .env.example (commit this for documentation)
+DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"
+JWT_SECRET="your-secret-here"
 STRIPE_SECRET_KEY="sk_test_xxx"
 ```
 
@@ -605,12 +744,24 @@ STRIPE_SECRET_KEY="sk_test_xxx"
 // Load with dotenv
 import 'dotenv/config';
 
-const dbUrl = process.env.DATABASE_URL;
+// Validate required secrets at startup
+const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET', 'STRIPE_SECRET_KEY'];
 
-if (!dbUrl) {
-  throw new Error('DATABASE_URL is required');
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
 }
+
+const dbUrl = process.env.DATABASE_URL;
 ```
+
+**Best practices:**
+- Add `.env` to `.gitignore` immediately
+- Commit `.env.example` with placeholder values
+- Use different `.env.development`, `.env.staging`, `.env.production` files
+- Never log full environment variables (redact secrets in logs)
+- Generate secrets with: `openssl rand -base64 32`
 
 ### HashiCorp Vault (Production)
 
@@ -772,6 +923,84 @@ app.post('/login', async (req, res) => {
   }
 });
 ```
+
+### Secure Logging Practices
+
+**❌ Never log sensitive data:**
+```typescript
+// WRONG: Logging sensitive information
+console.log('User login:', {
+  email: user.email,
+  password: req.body.password,  // NEVER log passwords!
+  ssn: user.ssn,                // NEVER log PII!
+  creditCard: user.card,        // NEVER log payment info!
+  token: req.headers.authorization  // NEVER log tokens!
+});
+
+// WRONG: Logging full environment variables
+console.log('Environment:', process.env);  // Contains secrets!
+```
+
+**✅ Do this - Redact sensitive data:**
+```typescript
+// Safe logging with redaction
+function redactSensitive(data: any): any {
+  const redacted = { ...data };
+
+  // Redact password fields
+  if (redacted.password) redacted.password = '[REDACTED]';
+  if (redacted.passwordConfirm) redacted.passwordConfirm = '[REDACTED]';
+
+  // Redact tokens
+  if (redacted.token) redacted.token = redacted.token.slice(0, 10) + '...';
+  if (redacted.authorization) redacted.authorization = '[REDACTED]';
+
+  // Redact PII
+  if (redacted.ssn) redacted.ssn = '***-**-' + redacted.ssn.slice(-4);
+  if (redacted.creditCard) redacted.creditCard = '****-****-****-' + redacted.creditCard.slice(-4);
+
+  // Mask email
+  if (redacted.email) {
+    const [user, domain] = redacted.email.split('@');
+    redacted.email = user.slice(0, 2) + '***@' + domain;
+  }
+
+  return redacted;
+}
+
+// Usage
+logger.info('User login attempt', redactSensitive({
+  email: req.body.email,
+  ip: req.ip,
+  userAgent: req.headers['user-agent'],
+}));
+```
+
+**What to log safely:**
+- ✅ User IDs (not emails or usernames in plaintext)
+- ✅ IP addresses (for security monitoring)
+- ✅ Timestamps
+- ✅ HTTP status codes
+- ✅ Request paths (not query parameters with sensitive data)
+- ✅ Error types (not full error messages with data)
+- ✅ Rate limit violations
+- ✅ Authentication successes/failures (not credentials)
+
+**What NEVER to log:**
+- ❌ Passwords (plain text or hashed)
+- ❌ API keys, tokens, secrets
+- ❌ Credit card numbers
+- ❌ Social security numbers
+- ❌ Full email addresses (mask them)
+- ❌ Authorization headers
+- ❌ Session IDs
+- ❌ Private encryption keys
+
+**Compliance considerations:**
+- **GDPR**: PII must be protected in logs; consider log retention policies
+- **PCI DSS**: Never log full credit card numbers or CVV
+- **HIPAA**: Health information must not appear in logs
+- **SOC 2**: Audit logs must be tamper-proof and retained
 
 ### Intrusion Detection
 

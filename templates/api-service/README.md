@@ -166,6 +166,65 @@ api-service/
 
    The included `Dockerfile` uses multi-stage builds for optimal image size and includes health checks.
 
+## Security & Data Handling
+
+### Secure Logging
+
+**❌ Never log sensitive data:**
+- Passwords, API keys, tokens
+- Credit card numbers, SSN
+- Full email addresses (mask them)
+- Authorization headers
+
+**✅ Safe logging practices:**
+```typescript
+// Redact sensitive fields
+logger.info('API request', {
+  method: req.method,
+  path: req.path,
+  ip: req.ip,
+  userId: req.user?.id,  // ID only, not full user object
+  // Never log: req.headers.authorization, req.body.password, etc.
+});
+```
+
+### Rate Limiting
+
+Protect your API from abuse:
+
+```bash
+npm install express-rate-limit
+```
+
+```typescript
+import rateLimit from 'express-rate-limit';
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,  // 15 minutes
+  max: 100,  // Limit each IP to 100 requests per window
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api', limiter);
+```
+
+### Environment Variables
+
+- Never commit `.env` files (already in `.gitignore`)
+- Use `.env.example` for documentation
+- Validate required environment variables at startup
+- Use different secrets for dev/staging/prod
+
+### Data Privacy
+
+- **PII**: Hash or encrypt personally identifiable information
+- **Compliance**: Follow GDPR, CCPA requirements for user data
+- **Retention**: Implement data retention policies
+- **Deletion**: Provide user data deletion mechanisms
+
+See the [Security Guide](../../docs/security-guide.md) for detailed best practices.
+
 ## Resources
 
 - [APIs & Microservices Guide](../../docs/project-types/apis.md)

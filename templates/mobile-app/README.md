@@ -118,6 +118,82 @@ mobile-app/
    eas build --platform android
    ```
 
+## Security & Data Handling
+
+### Secure Storage
+
+**Use Expo SecureStore for sensitive data:**
+
+```typescript
+import * as SecureStore from 'expo-secure-store';
+
+// Store auth token securely (encrypted)
+await SecureStore.setItemAsync('userToken', token);
+
+// Retrieve token
+const token = await SecureStore.getItemAsync('userToken');
+
+// Delete on logout
+await SecureStore.deleteItemAsync('userToken');
+```
+
+**❌ Never use AsyncStorage for:**
+- Authentication tokens
+- API keys
+- User passwords
+- Payment information
+
+**✅ AsyncStorage is OK for:**
+- User preferences (theme, language)
+- Non-sensitive cache data
+- UI state
+
+### Secure Logging
+
+**❌ Never log sensitive data:**
+- User credentials, tokens
+- Personal information (email, phone, address)
+- Payment details
+- API keys
+
+**✅ Safe logging in development:**
+```typescript
+if (__DEV__) {
+  console.log('User action:', {
+    userId: user.id,  // ID only, not full user object
+    action: 'button_press',
+    screen: 'HomeScreen',
+    // Never log: user.email, user.token, etc.
+  });
+}
+```
+
+**Production:** Use analytics services (Firebase Analytics, Mixpanel) instead of console logs.
+
+### API Security
+
+```typescript
+// Store API URL in environment config
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://api.example.com';
+
+// Send auth token in headers (not in URL)
+const response = await fetch(`${API_URL}/user`, {
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  },
+});
+```
+
+### Data Privacy
+
+- **Permissions**: Request only necessary permissions (camera, location, etc.)
+- **GDPR/CCPA**: Implement user data deletion
+- **Offline Data**: Encrypt sensitive cached data
+- **Biometric Auth**: Use for sensitive operations
+
+See the [Security Guide](../../docs/security-guide.md) and [Mobile Apps Guide](../../docs/project-types/mobile-apps.md) for detailed best practices.
+
 ## Resources
 
 - [Mobile Applications Guide](../../docs/project-types/mobile-apps.md)
