@@ -153,6 +153,8 @@ Similar commands work for `saas-level-1` and `mobile-app` (except mobile doesn't
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
+**Contributors:** Run `nvm use` to ensure you're using Node.js 20.18.0 before working on this project.
+
 - 🐛 [Report bugs](https://github.com/brettstark73/project-starter-guide/issues)
 - 💡 [Suggest features](https://github.com/brettstark73/project-starter-guide/issues)
 - 📖 [Improve documentation](https://github.com/brettstark73/project-starter-guide/pulls)

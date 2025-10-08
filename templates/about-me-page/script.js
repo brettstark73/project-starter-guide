@@ -65,8 +65,10 @@ function highlightNavigation() {
 
     if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
       navLink?.classList.add('active');
+      navLink?.setAttribute('aria-current', 'page');
     } else {
       navLink?.classList.remove('active');
+      navLink?.removeAttribute('aria-current');
     }
   });
 }
