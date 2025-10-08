@@ -18,6 +18,8 @@ APIs (Application Programming Interfaces) and microservices are the backbone of 
 **Timeline:** 1 week - 6+ months
 **Budget:** $20 - $5000+/month
 
+> **Note:** Pricing and service limits mentioned in this guide are subject to change. See the [Technology Matrix pricing disclaimer](../technology-matrix.md#hosting--deployment-matrix) for more details.
+
 ---
 
 ## API Types & Use Cases

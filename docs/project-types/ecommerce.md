@@ -19,6 +19,8 @@ E-commerce platforms enable online buying and selling of products or services. T
 **Timeline:** 1 week - 12+ months
 **Budget:** $20 - $20,000+/month
 
+> **Note:** Pricing and service limits mentioned in this guide are subject to change. See the [Technology Matrix pricing disclaimer](../technology-matrix.md#hosting--deployment-matrix) for more details.
+
 ---
 
 ## E-commerce Approaches

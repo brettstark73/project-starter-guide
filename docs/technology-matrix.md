@@ -90,7 +90,7 @@ Multi-model: CosmosDB, Amazon DynamoDB
 
 **Turso (Serverless SQLite)**
 - Edge database with global replication
-- Free tier: 9 GB storage, 1B row reads/month
+- Free tier: 5 GB storage, 500M row reads/month, 10M writes/month
 - LibSQL (SQLite fork) with extensions
 - Great for: Read-heavy apps, edge computing
 
@@ -121,7 +121,7 @@ Multi-model: CosmosDB, Amazon DynamoDB
 
 ## Hosting & Deployment Matrix
 
-> **Note on Pricing**: Service pricing and free tier availability change frequently. All pricing information was last verified in October 2025. Please check provider websites for current pricing.
+> **📌 Pricing Disclaimer**: Service pricing, free tier limits, and feature availability change frequently. All pricing and technical specifications in this guide were last verified in **January 2025**. Always check provider websites for current pricing, terms, and available features before making technology decisions. Free tiers may have usage limits, non-commercial restrictions, or require credit card verification.
 
 ### Static Sites (Level 1)
 | Provider | Cost | CDN | Custom Domain | Build Time |
@@ -181,10 +181,12 @@ Zero Trust Architecture: Modern security
 ### Simple Integration (Level 1-3)
 | Provider | Fees | International | Complexity |
 |----------|------|---------------|------------|
-| **Stripe** | 3.4% + 30¢ (online) | ✅ | Simple |
-| **PayPal** | 3.5% + 49¢ | ✅ | Moderate |
+| **Stripe** | 3.4% + 30¢ (CNP*) | ✅ | Simple |
+| **PayPal** | 2.99-3.49% + 49¢ | ✅ | Moderate |
 | **Square** | 2.9% + 30¢ | Limited | Simple |
 | **Lemonsqueezy** | 5% + fees | ✅ | Very Simple |
+
+_*CNP = Card-Not-Present (online transactions)_
 
 ### Enterprise (Level 4-5)
 - Custom payment processors

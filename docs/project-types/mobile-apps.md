@@ -19,6 +19,8 @@ Mobile applications are software designed for smartphones and tablets. This guid
 **Timeline:** 2 weeks - 8+ months
 **Budget:** $100 - $10,000+/month
 
+> **Note:** Pricing and service limits mentioned in this guide are subject to change. See the [Technology Matrix pricing disclaimer](../technology-matrix.md#hosting--deployment-matrix) for more details.
+
 ---
 
 ## Mobile Development Approaches

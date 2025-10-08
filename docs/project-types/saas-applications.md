@@ -8,6 +8,8 @@ Software as a Service (SaaS) applications are subscription-based software soluti
 **Timeline:** 2 weeks - 12+ months
 **Budget:** $50 - $10,000+/month
 
+> **Note:** Pricing and service limits mentioned in this guide are subject to change. See the [Technology Matrix pricing disclaimer](../technology-matrix.md#hosting--deployment-matrix) for more details.
+
 ---
 
 ## SaaS Complexity Breakdown
