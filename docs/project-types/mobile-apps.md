@@ -218,21 +218,16 @@ Comprehensive testing (unit, integration, E2E)
 ### React Native with Expo (Easiest)
 
 ```bash
-# Install Expo CLI
-npm install -g expo-cli
+npm install -g expo-cli  # Install Expo CLI
 
-# Create new app
-npx create-expo-app my-app
+npx create-expo-app my-app  # Create new app
 cd my-app
 
-# Start development server
-npx expo start
+npx expo start  # Start development server
 
-# Run on iOS simulator
-npx expo start --ios
+npx expo start --ios  # Run on iOS simulator
 
-# Run on Android emulator
-npx expo start --android
+npx expo start --android  # Run on Android emulator
 
 # Run on physical device (scan QR code with Expo Go app)
 ```
@@ -240,39 +235,30 @@ npx expo start --android
 ### React Native CLI (More Control)
 
 ```bash
-# Install React Native CLI
-npm install -g react-native-cli
+npm install -g react-native-cli  # Install React Native CLI
 
-# Create new app
-npx react-native init MyApp --template react-native-template-typescript
+npx react-native init MyApp --template react-native-template-typescript  # Create new app
 
-# iOS
-cd ios && pod install && cd ..
+cd ios && pod install && cd ..  # iOS
 npx react-native run-ios
 
-# Android
-npx react-native run-android
+npx react-native run-android  # Android
 ```
 
 ### Flutter Setup
 
 ```bash
-# Install Flutter SDK (macOS)
-brew install flutter
+brew install flutter  # Install Flutter SDK (macOS)
 
-# Create new app
-flutter create my_app
+flutter create my_app  # Create new app
 cd my_app
 
-# Run on iOS
-flutter run -d ios
+flutter run -d ios  # Run on iOS
 
-# Run on Android
-flutter run -d android
+flutter run -d android  # Run on Android
 
-# Build for production
-flutter build apk  # Android
-flutter build ios  # iOS
+flutter build apk  # Build for production - Android
+flutter build ios  # Build for production - iOS
 ```
 
 ---
@@ -633,7 +619,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 npx expo build:ios  # Expo
 # or
 xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp archive
-
 # 3. Upload to App Store Connect
 # 4. Submit for review
 ```
@@ -657,7 +642,6 @@ xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp archive
 npx expo build:android  # Expo
 # or
 cd android && ./gradlew bundleRelease
-
 # 2. Upload to Play Console
 # 3. Fill out store listing
 # 4. Submit for review

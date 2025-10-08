@@ -728,14 +728,12 @@ const dbPassword = 'password123';  // NEVER!
 
 **✅ Do this:**
 ```bash
-# .env (never commit! add to .gitignore)
-DATABASE_URL="postgresql://user:pass@localhost:5432/db"
+DATABASE_URL="postgresql://user:pass@localhost:5432/db"  # .env (never commit! add to .gitignore)
 JWT_SECRET="random-secret-key-change-in-production"
 STRIPE_SECRET_KEY="sk_test_xxx"
 NEXT_PUBLIC_API_URL="https://api.example.com"  # Public vars prefix: NEXT_PUBLIC_
 
-# .env.example (commit this for documentation)
-DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"
+DATABASE_URL="postgresql://user:pass@localhost:5432/dbname"  # .env.example (commit this for documentation)
 JWT_SECRET="your-secret-here"
 STRIPE_SECRET_KEY="sk_test_xxx"
 ```
@@ -1039,22 +1037,18 @@ async function detectSuspiciousActivity(userId: string, ip: string) {
 ### Automated Scanning
 
 ```bash
-# npm audit
-npm audit
+npm audit  # npm audit
 npm audit fix
 
-# Snyk (comprehensive)
-npm install -g snyk
+npm install -g snyk  # Snyk (comprehensive)
 snyk test
 snyk monitor
 
-# Dependabot (GitHub)
-# Automatically creates PRs for vulnerable dependencies
+# Dependabot (GitHub) - Automatically creates PRs for vulnerable dependencies
 ```
 
 ```yaml
-# .github/dependabot.yml
-version: 2
+version: 2  # .github/dependabot.yml
 updates:
   - package-ecosystem: "npm"
     directory: "/"

@@ -120,13 +120,10 @@ Before pushing changes, you can run the same validation that CI does:
 
 ### Documentation Validation
 ```bash
-# Install dependencies
-npm install
+npm install  # Install dependencies
+npm run validate  # Run all validation checks
 
-# Run all validation checks
-npm run validate
-
-# Or run individually
+# Run individually:
 npm run lint:md           # Markdown linting
 npm run check:links       # Check README links
 npm run check:links:all   # Check all doc links (slower)

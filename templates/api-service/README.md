@@ -22,20 +22,11 @@ A minimal, production-ready REST API starter with Express, TypeScript, and best 
 ## Quick Start
 
 ```bash
-# Install dependencies
-npm install
-
-# Copy environment variables
-cp .env.example .env
-
-# Run in development mode (with auto-reload)
-npm run dev
-
-# Build for production
-npm run build
-
-# Run production build
-npm start
+npm install  # Install dependencies
+cp .env.example .env  # Copy environment variables
+npm run dev  # Run in development mode (with auto-reload)
+npm run build  # Build for production
+npm start  # Run production build
 ```
 
 The API will be available at [http://localhost:3000](http://localhost:3000).
@@ -59,11 +50,8 @@ The API will be available at [http://localhost:3000](http://localhost:3000).
 ## Testing
 
 ```bash
-# Run tests once
-npm test
-
-# Run tests in watch mode
-npm run test:watch
+npm test  # Run tests once
+npm run test:watch  # Run tests in watch mode
 ```
 
 The project includes a sample test suite for the health check endpoint demonstrating:
@@ -190,23 +178,22 @@ logger.info('API request', {
 
 ### Rate Limiting
 
-Protect your API from abuse:
+**Default protection included:** All `/api/*` routes are rate-limited to **100 requests per 15 minutes** per IP address.
 
-```bash
-npm install express-rate-limit
-```
+The rate limiter is already configured in `src/app.ts`:
+- Window: 15 minutes
+- Max requests: 100 per IP
+- Applies to: All `/api/*` routes
 
+**To add stricter limits for auth endpoints:**
 ```typescript
-import rateLimit from 'express-rate-limit';
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,  // 15 minutes
-  max: 100,  // Limit each IP to 100 requests per window
-  standardHeaders: true,
-  legacyHeaders: false,
+const authLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,  // 5 minutes
+  max: 10,  // Stricter limit for sensitive endpoints
+  skipSuccessfulRequests: true,  // Only count failed attempts
 });
 
-app.use('/api', limiter);
+app.post('/api/v1/login', authLimiter, loginHandler);
 ```
 
 ### Environment Variables

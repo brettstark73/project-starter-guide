@@ -24,13 +24,10 @@ A minimal React Native starter with Expo, TypeScript, and a working counter exam
 ## Quick Start
 
 ```bash
-# Install dependencies
-npm install
+npm install  # Install dependencies
+npm start  # Start development server
 
-# Start development server
-npm start
-
-# Or run on specific platform
+# Or run on specific platform:
 npm run ios       # iOS Simulator
 npm run android   # Android Emulator
 npm run web       # Web browser

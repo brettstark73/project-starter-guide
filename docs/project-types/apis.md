@@ -159,12 +159,10 @@ PUT    /api/v1/users/:id      # Update user
 PATCH  /api/v1/users/:id      # Partial update
 DELETE /api/v1/users/:id      # Delete user
 
-# Nested resources
-GET    /api/v1/users/:id/posts      # User's posts
+GET    /api/v1/users/:id/posts      # Nested resources - User's posts
 POST   /api/v1/users/:id/posts      # Create post for user
 
-# Filtering & pagination
-GET    /api/v1/posts?limit=10&offset=20&status=published
+GET    /api/v1/posts?limit=10&offset=20&status=published  # Filtering & pagination
 ```
 
 ### Step 2: Implementation Example (Express.js)

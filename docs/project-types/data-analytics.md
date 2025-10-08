@@ -558,23 +558,20 @@ await consumer.run({
 ### Stream Processing (Apache Flink/Spark)
 
 ```python
-# PySpark Streaming
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession  # PySpark Streaming
 from pyspark.sql.functions import window, col, count, avg
 
 spark = SparkSession.builder \
     .appName("RealtimeAnalytics") \
     .getOrCreate()
 
-# Read from Kafka
-events = spark.readStream \
+events = spark.readStream \  # Read from Kafka
     .format("kafka") \
     .option("kafka.bootstrap.servers", "localhost:9092") \
     .option("subscribe", "user-events") \
     .load()
 
-# Parse JSON
-from pyspark.sql.functions import from_json
+from pyspark.sql.functions import from_json  # Parse JSON
 from pyspark.sql.types import StructType, StringType, TimestampType
 
 schema = StructType() \
@@ -586,8 +583,7 @@ parsed = events.select(
     from_json(col("value").cast("string"), schema).alias("data")
 ).select("data.*")
 
-# Windowed aggregation
-windowed = parsed \
+windowed = parsed \  # Windowed aggregation
     .withWatermark("timestamp", "10 minutes") \
     .groupBy(
         window("timestamp", "5 minutes"),
@@ -595,8 +591,7 @@ windowed = parsed \
     ) \
     .count()
 
-# Write to sink
-query = windowed.writeStream \
+query = windowed.writeStream \  # Write to sink
     .outputMode("update") \
     .format("console") \
     .start()
@@ -615,24 +610,20 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-# Load data
-df = pd.read_csv('customer_data.csv')
+df = pd.read_csv('customer_data.csv')  # Load data
 
 # Feature engineering
 df['days_since_signup'] = (pd.Timestamp.now() - df['signup_date']).dt.days
 df['avg_order_value'] = df['total_spent'] / df['order_count']
 df['is_churned'] = df['last_order_date'] < (pd.Timestamp.now() - pd.Timedelta(days=90))
 
-# Encode categoricals
-df = pd.get_dummies(df, columns=['country', 'plan_type'])
+df = pd.get_dummies(df, columns=['country', 'plan_type'])  # Encode categoricals
 
-# Scale features
-scaler = StandardScaler()
+scaler = StandardScaler()  # Scale features
 feature_cols = ['days_since_signup', 'avg_order_value', 'order_count']
 df[feature_cols] = scaler.fit_transform(df[feature_cols])
 
-# Train/test split
-X = df.drop(['is_churned', 'user_id'], axis=1)
+X = df.drop(['is_churned', 'user_id'], axis=1)  # Train/test split
 y = df['is_churned']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 ```
@@ -640,26 +631,21 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 ### Model Training & Serving
 
 ```python
-# Train model
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier  # Train model
 import mlflow
 
 mlflow.set_experiment("churn_prediction")
 
 with mlflow.start_run():
-    # Train
-    model = RandomForestClassifier(n_estimators=100, max_depth=10)
+    model = RandomForestClassifier(n_estimators=100, max_depth=10)  # Train
     model.fit(X_train, y_train)
 
-    # Evaluate
-    accuracy = model.score(X_test, y_test)
+    accuracy = model.score(X_test, y_test)  # Evaluate
     mlflow.log_metric("accuracy", accuracy)
 
-    # Log model
-    mlflow.sklearn.log_model(model, "model")
+    mlflow.sklearn.log_model(model, "model")  # Log model
 
-# Serve predictions
-from fastapi import FastAPI
+from fastapi import FastAPI  # Serve predictions
 import joblib
 
 app = FastAPI()

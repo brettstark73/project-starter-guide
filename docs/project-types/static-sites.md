@@ -72,8 +72,7 @@ npm create astro@latest my-site
 
 #### Next.js Static Export
 ```bash
-npx create-next-app@latest my-site
-# Configure for static export in next.config.js
+npx create-next-app@latest my-site  # Configure for static export in next.config.js
 ```
 
 **Benefits:**
@@ -90,11 +89,9 @@ npx create-next-app@latest my-site
 
 #### Hugo (Recommended for Blogs)
 ```bash
-# Install Hugo (macOS)
-brew install hugo
+brew install hugo  # Install Hugo (macOS)
 
-# Create new site
-hugo new site my-blog
+hugo new site my-blog  # Create new site
 cd my-blog
 ```
 
@@ -278,14 +275,11 @@ npm run dev
 
 #### Vercel
 ```bash
-# Install Vercel CLI
-npm i -g vercel
+npm i -g vercel  # Install Vercel CLI
 
-# Deploy
-vercel
+vercel  # Deploy
 
-# Custom domain (free)
-vercel --prod
+vercel --prod  # Custom domain (free)
 ```
 
 **Pros:** Automatic deployments, CDN, great performance
@@ -293,8 +287,7 @@ vercel --prod
 
 #### Netlify
 ```bash
-# Deploy via Git or drag-and-drop
-# netlify.toml for configuration
+# Deploy via Git or drag-and-drop - netlify.toml for configuration
 ```
 
 **Pros:** Form handling, split testing, edge functions
@@ -302,8 +295,7 @@ vercel --prod
 
 #### GitHub Pages
 ```yaml
-# .github/workflows/deploy.yml
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages  # .github/workflows/deploy.yml
 on:
   push:
     branches: [ main ]

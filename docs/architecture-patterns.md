@@ -700,8 +700,7 @@ Infrastructure layer for service-to-service communication with built-in features
 
 ### Implementation (Istio)
 ```yaml
-# Service definition
-apiVersion: v1
+apiVersion: v1  # Service definition
 kind: Service
 metadata:
   name: user-service
@@ -712,8 +711,7 @@ spec:
     app: user-service
 
 ---
-# Virtual Service (routing rules)
-apiVersion: networking.istio.io/v1beta1
+apiVersion: networking.istio.io/v1beta1  # Virtual Service (routing rules)
 kind: VirtualService
 metadata:
   name: user-service

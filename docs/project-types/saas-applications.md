@@ -406,9 +406,7 @@ const getCachedUserPlan = async (tenantId: string) => {
 
 ### MVP Deployment (Level 3)
 ```yaml
-# Vercel deployment
-# vercel.json
-{
+{  # Vercel deployment - vercel.json
   "functions": {
     "app/api/**/*.js": {
       "maxDuration": 30
@@ -423,8 +421,7 @@ const getCachedUserPlan = async (tenantId: string) => {
 
 ### Production Deployment (Level 4-5)
 ```yaml
-# Docker + Kubernetes
-apiVersion: apps/v1
+apiVersion: apps/v1  # Docker + Kubernetes
 kind: Deployment
 metadata:
   name: saas-app
