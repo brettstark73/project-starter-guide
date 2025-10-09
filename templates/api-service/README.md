@@ -196,12 +196,67 @@ const authLimiter = rateLimit({
 app.post('/api/v1/login', authLimiter, loginHandler);
 ```
 
+### CORS Configuration
+
+**Default:** CORS is enabled for all origins in development.
+
+**For production, configure an allowlist:**
+```typescript
+import cors from 'cors';
+
+const allowedOrigins = [
+  'https://yourdomain.com',
+  'https://app.yourdomain.com',
+  process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null,
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,  // Allow cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+```
+
+**Best practices:**
+- Never use `origin: '*'` in production
+- Use environment variables for allowed origins
+- Enable `credentials: true` only if using cookies/sessions
+- Whitelist specific methods and headers
+
 ### Environment Variables
 
 - Never commit `.env` files (already in `.gitignore`)
 - Use `.env.example` for documentation
 - Validate required environment variables at startup
 - Use different secrets for dev/staging/prod
+
+**Environment validation example:**
+```typescript
+// src/config/env.ts
+import { z } from 'zod';
+
+const envSchema = z.object({
+  NODE_ENV: z.enum(['development', 'production', 'test']),
+  PORT: z.string().transform(Number).pipe(z.number().min(1000).max(65535)),
+  DATABASE_URL: z.string().url(),
+  JWT_SECRET: z.string().min(32),
+  API_KEY: z.string().optional(),
+});
+
+export const env = envSchema.parse(process.env);
+```
+
+Add this validation at the top of `src/index.ts` to fail fast if configuration is invalid.
 
 ### Data Privacy
 

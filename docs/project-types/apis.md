@@ -638,6 +638,66 @@ describe('User Flow', () => {
 
 ---
 
+## ✅ Pre-Deployment Verification Checklist
+
+### API Functionality
+- [ ] All endpoints return correct status codes (200, 201, 400, 401, 404, 500)
+- [ ] Request validation working (reject invalid data)
+- [ ] Response format consistent across all endpoints
+- [ ] Error messages are helpful and don't expose sensitive info
+- [ ] Pagination working correctly
+- [ ] Filtering and sorting working as expected
+
+### Security
+- [ ] Authentication required on protected endpoints
+- [ ] Authorization checks prevent unauthorized access
+- [ ] Rate limiting configured and tested (429 response)
+- [ ] CORS configured correctly (not `*` in production)
+- [ ] Input sanitization prevents SQL injection
+- [ ] Sensitive data not logged
+- [ ] API keys/secrets in environment variables only
+
+### Documentation
+- [ ] OpenAPI/Swagger spec up to date
+- [ ] All endpoints documented with examples
+- [ ] Authentication flow documented
+- [ ] Error codes explained
+- [ ] Rate limits documented
+
+### Performance & Reliability
+- [ ] Database connection pooling configured
+- [ ] Query performance optimized (use indexes)
+- [ ] Caching implemented where appropriate
+- [ ] Health check endpoint responds quickly
+- [ ] Load testing performed for expected traffic
+
+### Testing Commands
+```bash
+# Run tests
+npm test
+
+# Build check
+npm run build
+
+# Lint code
+npm run lint
+
+# Validate OpenAPI spec
+npm run openapi:lint
+
+# Load testing (example with autocannon)
+npx autocannon -c 100 -d 30 http://localhost:3000/api/health
+```
+
+### Monitoring
+- [ ] Error tracking configured (Sentry, etc.)
+- [ ] Performance monitoring enabled
+- [ ] Request logging configured
+- [ ] Uptime monitoring set up
+- [ ] Alerts configured for critical issues
+
+---
+
 ## Further Reading
 
 - [REST API Best Practices](https://restfulapi.net/)

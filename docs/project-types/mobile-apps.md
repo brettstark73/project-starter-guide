@@ -821,6 +821,81 @@ class MyWidget extends StatelessWidget {
 
 ---
 
+## ✅ Pre-Launch Verification Checklist
+
+### Core Functionality
+- [ ] App launches without crashes on iOS and Android
+- [ ] All main features work as expected
+- [ ] Navigation flows correctly between screens
+- [ ] Forms submit and validate properly
+- [ ] API calls handle errors gracefully
+- [ ] Offline functionality works (if applicable)
+
+### Platform-Specific
+- [ ] iOS: Tested on latest iOS version and one version back
+- [ ] Android: Tested on multiple screen sizes and API levels
+- [ ] Permissions requested correctly (camera, location, etc.)
+- [ ] Deep linking/universal links work
+- [ ] Push notifications deliver correctly
+- [ ] App works on both phones and tablets
+
+### Performance
+- [ ] App launches in < 3 seconds
+- [ ] No memory leaks (check with profiler)
+- [ ] Images optimized and load quickly
+- [ ] Animations run at 60fps
+- [ ] Bundle size is reasonable (< 50MB preferred)
+- [ ] Battery usage is acceptable
+
+### Security & Privacy
+- [ ] Sensitive data stored securely (SecureStore/Keychain)
+- [ ] API keys not hardcoded in app
+- [ ] HTTPS only for network requests
+- [ ] Auth tokens expire and refresh correctly
+- [ ] User data encrypted at rest (if applicable)
+- [ ] Privacy policy and terms accessible in-app
+
+### Testing Commands
+```bash
+# Run tests
+npm test
+
+# Type checking
+npx tsc --noEmit
+
+# Lint code
+npm run lint
+
+# Build for production
+# iOS
+eas build --platform ios
+
+# Android
+eas build --platform android
+
+# Test production build locally (Expo)
+eas build --platform android --profile preview
+```
+
+### Store Requirements
+- [ ] App icons in all required sizes
+- [ ] Screenshots prepared (multiple devices)
+- [ ] App description written
+- [ ] Privacy policy URL ready
+- [ ] Age rating determined
+- [ ] App Store/Play Store accounts set up
+- [ ] Compliance with store guidelines reviewed
+
+### User Experience
+- [ ] Onboarding flow is clear
+- [ ] Loading states shown appropriately
+- [ ] Error messages are helpful
+- [ ] Accessibility features tested (VoiceOver, TalkBack)
+- [ ] Dark mode support (if applicable)
+- [ ] Localization complete (if multi-language)
+
+---
+
 ## Further Resources
 
 - [React Native Documentation](https://reactnative.dev/)

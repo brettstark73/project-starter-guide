@@ -2,6 +2,8 @@
 
 **Last updated:** 2025-01 (January 2025)
 
+> 📌 **Keeping This Current:** This matrix includes pricing and technical specifications that change frequently. See the [Pricing Disclaimer](#pricing-disclaimer) for verification details and the [Maintenance Guide](MAINTENANCE.md) for update cadence.
+
 ## Frontend Framework Selection
 
 | Framework | Level | Learning Curve | Ecosystem | Performance | Use Case |

@@ -525,7 +525,7 @@ POST /api/billing/upgrade
 
 ---
 
-## ⚠️ Common Pitfalls to Avoid
+## ⚠️ Known Pitfalls & Gotchas
 
 ### 1. Over-engineering Early
 **Problem:** Building for scale before achieving product-market fit
