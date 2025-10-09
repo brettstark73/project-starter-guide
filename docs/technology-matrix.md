@@ -82,22 +82,25 @@ Multi-model: CosmosDB, Amazon DynamoDB
 
 ### Modern Database Providers (2025)
 
+> See [Pricing Disclaimer](#pricing-disclaimer) for current limits and terms.
+
 **Neon (Serverless Postgres)**
 - Branching databases for development workflows
-- Generous free tier with 0.5 GB storage
-- Auto-scaling, scale-to-zero
+- Free tier (2025): 20 projects, 0.5 GB storage/branch, 100 CU-hours/project/month, 5 GB egress/month
+- Auto-scaling, scale-to-zero, up to 6 hours point-in-time recovery
 - Great for: Development, staging, small production apps
 
 **Turso (Serverless SQLite)**
 - Edge database with global replication
-- Free tier: 5 GB storage, 500M row reads/month, 10M writes/month
+- Free tier (2025): 500 databases, 5 GB storage, 500M row reads/month, 10M writes/month
 - LibSQL (SQLite fork) with extensions
 - Great for: Read-heavy apps, edge computing
 
 **Cloudflare D1 (Serverless SQLite)**
 - Built on Cloudflare's edge network
-- Free tier: 5 GB storage, 5M reads/day
-- Low latency worldwide
+- Free tier (2025): 10 databases, 5 GB total storage (500 MB/database), 5M reads/day, 100K writes/day
+- Free tier limits enforced from Feb 10, 2025
+- Low latency worldwide, no egress charges
 - Great for: Globally distributed apps
 
 ## Build Tools & Bundlers
@@ -121,7 +124,9 @@ Multi-model: CosmosDB, Amazon DynamoDB
 
 ## Hosting & Deployment Matrix
 
-> **📌 Pricing Disclaimer**: Service pricing, free tier limits, and feature availability change frequently. All pricing and technical specifications in this guide were last verified in **January 2025**. Always check provider websites for current pricing, terms, and available features before making technology decisions. Free tiers may have usage limits, non-commercial restrictions, or require credit card verification.
+<a id="pricing-disclaimer"></a>
+
+> **📌 Pricing & Free Tier Disclaimer**: Service pricing, free tier limits, and feature availability change frequently. All pricing and technical specifications in this guide were last verified in **January 2025**. Always check provider websites for current pricing, terms, and available features before making technology decisions. Free tiers may have usage limits, non-commercial restrictions, require credit card verification, or be discontinued without notice. Database limits, API quotas, and deployment minutes are subject to change.
 
 ### Static Sites (Level 1)
 | Provider | Cost | CDN | Custom Domain | Build Time |
@@ -178,6 +183,8 @@ Zero Trust Architecture: Modern security
 
 ## Payment Processing
 
+> See [Pricing Disclaimer](#pricing-disclaimer) for notes on fees and terms.
+
 ### Simple Integration (Level 1-3)
 | Provider | Fees | International | Complexity |
 |----------|------|---------------|------------|
@@ -214,6 +221,9 @@ Enterprise → Need compliance, support, enterprise features
 ```
 
 ### 3. Budget Constraints
+
+> See [Pricing Disclaimer](#pricing-disclaimer) for current costs and limits.
+
 ```
 $0-20/month → Static sites (hobby/non-commercial)
 $20-100/month → Full-stack apps, serverless, managed databases

@@ -85,7 +85,9 @@ npx create-next-app@latest my-site  # Configure for static export in next.config
 - App Router (default): Use `generateStaticParams()` for SSG with dynamic routes
 - Pages Router: Use `getStaticProps()` and `getStaticPaths()`
 - For static export: Add `output: 'export'` to `next.config.js`
-- App Router provides better performance with React Server Components
+- React Server Components (RSC) run during build, rendering to static HTML + payload
+- No changes needed for Server Components unless using dynamic server functions
+- Turbopack dev server now stable for faster builds
 
 #### Hugo (Recommended for Blogs)
 ```bash

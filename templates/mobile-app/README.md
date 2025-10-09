@@ -14,12 +14,19 @@ A minimal React Native starter with Expo, TypeScript, and a working counter exam
 
 - **Framework:** React Native with Expo SDK 52
 - **Language:** TypeScript
-- **Architecture:** Expo Managed Workflow
+- **Architecture:** Expo Managed Workflow with New Architecture (default)
 - **Navigation:** Ready for React Navigation
 - **State:** Ready for Zustand/Redux
 - **API Client:** Ready for React Query
 - **Backend:** Ready for Supabase/Firebase
 - **UI Library:** Ready for React Native Paper
+
+**SDK 52 Notes:**
+- New Architecture enabled by default (React Native 0.77)
+- Minimum iOS 15.1, Android SDK 24
+- Expo Go only supports New Architecture in SDK 52+
+- Opt-out available: set `newArchEnabled: false` in app.json (requires dev build)
+- Future SDK versions may remove old architecture support
 
 ## Quick Start
 
