@@ -232,6 +232,17 @@ npx expo start --android  # Run on Android emulator
 
 Run on physical device by scanning the QR code with Expo Go app.
 
+**Expo SDK 52 Notes (Current as of 2025):**
+- **New Architecture**: Enabled by default for new projects (React Native 0.77)
+- **Platform Requirements**: Minimum iOS 15.1, Android SDK 24 (compileSdkVersion 35)
+- **Expo Go**: Only supports New Architecture in SDK 52+
+- **Migration**: Existing projects can opt-in to New Architecture (not automatic)
+- **Opt-out**: Set `newArchEnabled: false` in app.json (requires development build)
+- **Future**: Old architecture may be removed in 2025; SDK 53+ will likely require New Architecture
+- **New Features**: expo-video (stable), expo-audio (beta), expo/fetch, React Navigation v7
+
+See [Expo SDK 52 Changelog](https://expo.dev/changelog/2024-11-12-sdk-52) for full details.
+
 ### React Native CLI (More Control)
 
 ```bash

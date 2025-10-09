@@ -1,5 +1,7 @@
 # ⚡ Technology Decision Matrix
 
+**Last updated:** 2025-01 (January 2025)
+
 ## Frontend Framework Selection
 
 | Framework | Level | Learning Curve | Ecosystem | Performance | Use Case |

@@ -1,5 +1,7 @@
 # 📄 Static Sites & Portfolios
 
+**Last updated:** 2025-01 (January 2025)
+
 ## Overview
 
 Static sites are perfect for content that doesn't change frequently and doesn't require user-specific data. They're fast, secure, SEO-friendly, and cost-effective to host.
@@ -271,6 +273,68 @@ npm run dev
 
 ---
 
+## ⚠️ Known Pitfalls & Gotchas
+
+### Next.js Static Export Limitations
+
+**Dynamic Routes Without SSG:**
+```javascript
+// ❌ This won't work with output: 'export' without generateStaticParams
+export default function Page({ params }) {
+  return <div>Post {params.id}</div>
+}
+
+// ✅ Add generateStaticParams to pre-render all routes
+export async function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }]
+}
+```
+
+**Image Optimization:**
+- Next.js Image component requires a server for optimization by default
+- Use `unoptimized: true` in next.config.js for static export, OR
+- Use a CDN like Cloudinary/Imgix for image optimization
+
+**API Routes:**
+- API routes (`/pages/api/*` or `/app/api/*`) don't work with static export
+- Move API logic to external services or serverless functions
+
+### Form Handling
+
+**Problem:** Static sites can't process form submissions server-side
+
+**Solutions:**
+- Use form services: Formspree, Netlify Forms, Google Forms
+- Client-side validation only (add server validation if using services)
+- Consider serverless functions for custom logic
+
+### Dynamic Content
+
+**Problem:** Content updates require rebuilds
+
+**Solutions:**
+- Use a headless CMS with webhooks (Contentful, Sanity)
+- Implement Incremental Static Regeneration (ISR) if using Next.js
+- Client-side data fetching for frequently changing content
+
+### SEO & Social Sharing
+
+**Common Issues:**
+- Missing or incorrect meta tags
+- Images not loading in social previews
+- Absolute URLs required for og:image (not relative paths)
+
+**Fix:**
+```html
+<!-- ❌ Won't work for social sharing -->
+<meta property="og:image" content="/og-image.png">
+
+<!-- ✅ Use absolute URLs -->
+<meta property="og:image" content="https://yourdomain.com/og-image.png">
+```
+
+---
+
 ## Hosting Options
 
 ### Free Hosting (Recommended for Level 1)
@@ -420,6 +484,51 @@ jobs:
   </footer>
 </body>
 </html>
+```
+
+---
+
+## ✅ Pre-Deployment Verification Checklist
+
+### Build & Code Quality
+- [ ] `npm run build` completes successfully with no errors
+- [ ] `npm run lint` passes (if using linter)
+- [ ] No console errors in browser dev tools
+- [ ] All images load correctly
+- [ ] All internal links work (check anchors)
+
+### SEO & Performance
+- [ ] Meta tags present on all pages (title, description, og:image)
+- [ ] Open Graph images use absolute URLs
+- [ ] Lighthouse score > 90 for Performance, Accessibility, SEO
+- [ ] Mobile responsive (test on actual devices)
+- [ ] Fonts and external resources load correctly
+
+### Content & Accessibility
+- [ ] All text is readable and formatted correctly
+- [ ] Images have alt text
+- [ ] Color contrast meets WCAG AA standards
+- [ ] Keyboard navigation works
+- [ ] Screen reader compatibility tested
+
+### Deployment
+- [ ] Production environment variables configured
+- [ ] Custom domain configured (if applicable)
+- [ ] HTTPS enabled
+- [ ] 404 page exists and styled
+- [ ] Site indexed by search engines (robots.txt, sitemap.xml)
+
+### Testing
+```bash
+# Test build locally
+npm run build
+npx serve out  # or npx serve dist
+
+# Check links
+npx broken-link-checker http://localhost:3000
+
+# Lighthouse audit
+npx lighthouse http://localhost:3000 --view
 ```
 
 ---

@@ -1,5 +1,7 @@
 # 🎯 Project Complexity Levels
 
+**Last updated:** 2025-01 (January 2025)
+
 ## Overview
 
 This guide breaks down project complexity into 5 distinct levels, each with specific characteristics, technology recommendations, and typical use cases. Understanding your project's complexity level is crucial for making the right architectural decisions.
