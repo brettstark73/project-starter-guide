@@ -43,3 +43,24 @@ describe('404 Handler', () => {
     expect(response.body.error).toBe('Not Found');
   });
 });
+
+describe('Rate Limiting', () => {
+  it('should rate limit /api routes after 100 requests', async () => {
+    // Make 101 requests to exceed the limit (100 per 15 minutes)
+    const requests = Array(101)
+      .fill(null)
+      .map(() => request(app).get('/api/v1/status'));
+
+    const responses = await Promise.all(requests);
+
+    // At least one response should be rate limited (429)
+    const rateLimitedResponses = responses.filter((r) => r.status === 429);
+    expect(rateLimitedResponses.length).toBeGreaterThan(0);
+
+    // Check rate limit response format
+    if (rateLimitedResponses.length > 0) {
+      const rateLimitedResponse = rateLimitedResponses[0];
+      expect(rateLimitedResponse.body.error).toMatch(/too many requests/i);
+    }
+  });
+});
