@@ -1043,9 +1043,9 @@ npm audit fix
 npm install -g snyk  # Snyk (comprehensive)
 snyk test
 snyk monitor
-
-# Dependabot (GitHub) - Automatically creates PRs for vulnerable dependencies
 ```
+
+**Dependabot (GitHub)** - Automatically creates PRs for vulnerable dependencies:
 
 ```yaml
 version: 2  # .github/dependabot.yml

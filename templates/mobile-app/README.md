@@ -27,8 +27,7 @@ A minimal React Native starter with Expo, TypeScript, and a working counter exam
 npm install  # Install dependencies
 npm start  # Start development server
 
-# Or run on specific platform:
-npm run ios       # iOS Simulator
+npm run ios       # iOS Simulator (or run on specific platform)
 npm run android   # Android Emulator
 npm run web       # Web browser
 ```

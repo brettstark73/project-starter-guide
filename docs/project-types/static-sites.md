@@ -286,9 +286,8 @@ vercel --prod  # Custom domain (free)
 **Cons:** Limited to JAMstack
 
 #### Netlify
-```bash
-# Deploy via Git or drag-and-drop - netlify.toml for configuration
-```
+
+Deploy via Git or drag-and-drop. Use `netlify.toml` for configuration.
 
 **Pros:** Form handling, split testing, edge functions
 **Cons:** Build minutes limit on free plan

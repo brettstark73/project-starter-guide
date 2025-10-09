@@ -123,7 +123,6 @@ Before pushing changes, you can run the same validation that CI does:
 npm install  # Install dependencies
 npm run validate  # Run all validation checks
 
-# Run individually:
 npm run lint:md           # Markdown linting
 npm run check:links       # Check README links
 npm run check:links:all   # Check all doc links (slower)

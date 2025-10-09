@@ -228,9 +228,9 @@ npx expo start  # Start development server
 npx expo start --ios  # Run on iOS simulator
 
 npx expo start --android  # Run on Android emulator
-
-# Run on physical device (scan QR code with Expo Go app)
 ```
+
+Run on physical device by scanning the QR code with Expo Go app.
 
 ### React Native CLI (More Control)
 
@@ -613,15 +613,15 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 - Provisioning profiles and certificates
 
 **Steps:**
-```bash
-# 1. Update version in Info.plist or package.json
-# 2. Build release version
-npx expo build:ios  # Expo
-# or
-xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp archive
-# 3. Upload to App Store Connect
-# 4. Submit for review
-```
+1. Update version in Info.plist or package.json
+2. Build release version:
+   ```bash
+   npx expo build:ios  # Expo
+   # or
+   xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp archive
+   ```
+3. Upload to App Store Connect
+4. Submit for review
 
 **Review Guidelines:**
 - App must be functional and bug-free
@@ -637,15 +637,15 @@ xcodebuild -workspace ios/MyApp.xcworkspace -scheme MyApp archive
 - Android Studio or CLI tools
 
 **Steps:**
-```bash
-# 1. Generate signed APK/AAB
-npx expo build:android  # Expo
-# or
-cd android && ./gradlew bundleRelease
-# 2. Upload to Play Console
-# 3. Fill out store listing
-# 4. Submit for review
-```
+1. Generate signed APK/AAB:
+   ```bash
+   npx expo build:android  # Expo
+   # or
+   cd android && ./gradlew bundleRelease
+   ```
+2. Upload to Play Console
+3. Fill out store listing
+4. Submit for review
 
 **Review Guidelines:**
 - App must be stable

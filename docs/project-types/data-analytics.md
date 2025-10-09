@@ -612,8 +612,7 @@ from sklearn.model_selection import train_test_split
 
 df = pd.read_csv('customer_data.csv')  # Load data
 
-# Feature engineering
-df['days_since_signup'] = (pd.Timestamp.now() - df['signup_date']).dt.days
+df['days_since_signup'] = (pd.Timestamp.now() - df['signup_date']).dt.days  # Feature engineering
 df['avg_order_value'] = df['total_spent'] / df['order_count']
 df['is_churned'] = df['last_order_date'] < (pd.Timestamp.now() - pd.Timedelta(days=90))
 

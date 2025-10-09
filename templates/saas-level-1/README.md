@@ -22,8 +22,7 @@ A minimal, production-ready SaaS starter template with Next.js 15, Tailwind CSS,
 
 ```bash
 npm install  # Install dependencies
-cp .env.example .env  # Copy environment variables
-# Add your environment variables to .env
+cp .env.example .env  # Copy environment variables and add your values
 npm run dev  # Run development server
 ```
 
@@ -102,8 +101,8 @@ console.log('User action:', {
 
 Next.js supports two types of environment variables:
 
+`.env.local` (never commit!):
 ```bash
-# .env.local (never commit!)
 SUPABASE_SERVICE_KEY="secret_key_here"  # Server-side only
 STRIPE_SECRET_KEY="sk_live_xxx"  # Server-side only
 
