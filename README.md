@@ -17,6 +17,8 @@ New to the guide? Follow this path:
 4. **[Technology Matrix](docs/technology-matrix.md)** → Choose your stack
 5. **[Templates & Examples](#templates--examples)** → Start coding
 
+> 💡 **New to choosing stacks?** Read **[Using This Guide Effectively](docs/using-this-guide.md)** to learn how to combine this guide with AI chat for maximum speed and quality.
+
 ## 🎯 Quick Start
 
 **Need to start a new project?** Use this decision matrix:
@@ -95,10 +97,12 @@ New to the guide? Follow this path:
 - [📊 Data & Analytics](docs/project-types/data-analytics.md)
 
 ### Architecture Guides
+- [💡 Using This Guide Effectively](docs/using-this-guide.md)
 - [🎯 Complexity Levels Explained](docs/complexity-levels.md)
 - [⚡ Technology Decision Matrix](docs/technology-matrix.md)
 - [🏗️ Architecture Patterns](docs/architecture-patterns.md)
 - [🔒 Security Considerations](docs/security-guide.md)
+- [🔧 Maintenance Guide](docs/MAINTENANCE.md)
 
 ### Templates & Examples
 - [🌐 About Me Page Template](templates/about-me-page/)
