@@ -896,6 +896,45 @@ eas build --platform android --profile preview
 
 ---
 
+## 🔍 Local Validation
+
+Test your mobile app before submitting to app stores:
+
+```bash
+# Run tests
+npm test
+
+# Type checking (TypeScript)
+npx tsc --noEmit
+
+# Linting
+npm run lint
+
+# iOS build test (macOS only)
+eas build --platform ios --profile preview --local
+
+# Android build test
+eas build --platform android --profile preview --local
+
+# Check bundle size
+npx react-native-bundle-visualizer
+
+# Security audit
+npm audit
+
+# Check for unused dependencies
+npx depcheck
+```
+
+**Manual Testing:**
+- Test on multiple device sizes and OS versions
+- Test with slow network (throttle in dev tools)
+- Test offline functionality (airplane mode)
+- Test with screen readers (VoiceOver/TalkBack)
+- Test battery usage (iOS: Xcode Instruments, Android: Battery Historian)
+
+---
+
 ## Further Resources
 
 - [React Native Documentation](https://reactnative.dev/)

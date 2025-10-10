@@ -952,6 +952,47 @@ mypy src/
 
 ---
 
+## 🔍 Local Validation
+
+Validate your data pipelines and analytics before production:
+
+```bash
+# Run data pipeline tests
+python -m pytest tests/
+
+# Type checking (Python)
+mypy src/
+
+# Linting
+flake8 src/
+black --check src/
+
+# SQL linting
+sqlfluff lint models/
+
+# Test data quality
+python scripts/validate_data.py
+
+# Test ETL pipeline locally
+python scripts/run_etl.py --env=dev --dry-run
+
+# Check query performance
+# Use EXPLAIN ANALYZE for slow queries
+
+# Check dependencies
+pip list --outdated
+```
+
+**Data Quality Checks:**
+- Verify schema consistency
+- Check for data completeness (no unexpected nulls)
+- Validate data freshness timestamps
+- Test edge cases (empty datasets, duplicates)
+- Verify aggregations match source data
+- Check dashboard load times
+
+---
+
 ## Further Resources
 
 - [Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp)

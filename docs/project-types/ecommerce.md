@@ -884,4 +884,44 @@ npx observatory-cli https://your-store.com
 
 ---
 
+## 🔍 Local Validation
+
+Validate your e-commerce site before launch:
+
+```bash
+# Run tests
+npm test
+
+# Type checking
+npx tsc --noEmit
+
+# Linting
+npm run lint
+
+# Build for production
+npm run build
+
+# Lighthouse (performance + accessibility + SEO)
+npx lighthouse https://localhost:3000 --view
+
+# Security audit
+npm audit
+
+# Check Core Web Vitals
+npx unlighthouse --site https://localhost:3000
+
+# Test payment flow (use Stripe test mode)
+# Verify webhook endpoints work
+```
+
+**Critical Manual Tests:**
+- Complete checkout flow with test cards
+- Test cart persistence across sessions
+- Verify inventory updates after purchase
+- Test mobile responsiveness on real devices
+- Check email delivery (order confirmation, shipping)
+- Test refund process
+
+---
+
 *Next: Check out [SaaS Applications](saas-applications.md) or [APIs & Microservices](apis.md)*

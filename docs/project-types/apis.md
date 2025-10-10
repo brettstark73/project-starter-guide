@@ -698,6 +698,38 @@ npx autocannon -c 100 -d 30 http://localhost:3000/api/health
 
 ---
 
+## 🔍 Local Validation
+
+Validate your API before deployment:
+
+```bash
+# Run tests
+npm test
+
+# Type checking
+npx tsc --noEmit
+
+# Linting
+npm run lint
+
+# Build check
+npm run build
+
+# Validate OpenAPI spec
+npm run openapi:lint
+
+# Security audit
+npm audit
+
+# Load testing (optional)
+npx autocannon -c 100 -d 30 http://localhost:3000/api/health
+
+# Check for unused dependencies
+npx depcheck
+```
+
+---
+
 ## Further Reading
 
 - [REST API Best Practices](https://restfulapi.net/)

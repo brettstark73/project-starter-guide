@@ -533,6 +533,32 @@ npx lighthouse http://localhost:3000 --view
 
 ---
 
+## 🔍 Local Validation
+
+Before deploying, run these checks locally:
+
+```bash
+# Build the site
+npm run build
+
+# Lint markdown (if using a generator)
+npx markdownlint '**/*.md'
+
+# Check links
+npx broken-link-checker http://localhost:3000
+
+# Lighthouse audit
+npx lighthouse http://localhost:3000 --view
+
+# Accessibility check
+npx @axe-core/cli http://localhost:3000
+
+# HTML validation
+npx html-validator --file=dist/index.html
+```
+
+---
+
 ## Next Steps
 
 Once your static site is live:

@@ -197,6 +197,49 @@ const response = await fetch(`${API_URL}/user`, {
 
 See the [Security Guide](../../docs/security-guide.md) and [Mobile Apps Guide](../../docs/project-types/mobile-apps.md) for detailed best practices.
 
+## ♿ Accessibility Checklist
+
+Mobile accessibility is critical for reaching all users:
+
+### Screen Reader Support
+- [ ] All touchable elements have accessible labels
+- [ ] Images have `accessibilityLabel` props
+- [ ] Headings use `accessibilityRole="header"`
+- [ ] Test with iOS VoiceOver and Android TalkBack
+- [ ] Form inputs have labels and hints
+
+### Touch Targets
+- [ ] Minimum touch target size 44x44 points (iOS) or 48x48dp (Android)
+- [ ] Adequate spacing between interactive elements
+- [ ] Buttons clearly indicate their purpose
+
+### Visual Accessibility
+- [ ] Color contrast meets WCAG AA (4.5:1)
+- [ ] Text resizable via OS settings
+- [ ] Don't rely solely on color to convey information
+- [ ] Support for OS-level font size preferences
+
+### Keyboard & Focus (for users with external keyboards)
+- [ ] Focus order logical
+- [ ] Focus indicators visible
+- [ ] All interactive elements keyboard accessible
+
+### Testing
+```bash
+# React Native accessibility testing
+npm test
+
+# Manual testing
+# iOS: Enable VoiceOver in Settings > Accessibility
+# Android: Enable TalkBack in Settings > Accessibility
+# Navigate entire app with screen reader enabled
+```
+
+**Resources:**
+- [React Native Accessibility](https://reactnative.dev/docs/accessibility)
+- [iOS Accessibility Guidelines](https://developer.apple.com/accessibility/)
+- [Android Accessibility Guidelines](https://developer.android.com/guide/topics/ui/accessibility)
+
 ## Resources
 
 - [Mobile Applications Guide](../../docs/project-types/mobile-apps.md)

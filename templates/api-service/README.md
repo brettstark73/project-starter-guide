@@ -267,6 +267,41 @@ Add this validation at the top of `src/index.ts` to fail fast if configuration i
 
 See the [Security Guide](../../docs/security-guide.md) for detailed best practices.
 
+## ♿ API Accessibility & Documentation
+
+While APIs don't have UI, ensure your API documentation and error messages are accessible:
+
+### Documentation Accessibility
+- [ ] OpenAPI/Swagger UI navigable by keyboard
+- [ ] Code examples have proper syntax highlighting
+- [ ] Error messages are clear and actionable
+- [ ] API docs work with screen readers
+- [ ] Examples include descriptive variable names
+
+### Error Responses
+- [ ] HTTP status codes used correctly
+- [ ] Error messages are human-readable (not just codes)
+- [ ] Include helpful suggestions in error responses
+- [ ] Consistent error response format
+
+**Example accessible error response:**
+```json
+{
+  "error": {
+    "code": "INVALID_EMAIL",
+    "message": "The email address format is invalid",
+    "details": "Email must contain '@' and a valid domain",
+    "field": "email"
+  }
+}
+```
+
+### Developer Experience
+- [ ] Clear naming conventions (RESTful, consistent)
+- [ ] Comprehensive examples in docs
+- [ ] Rate limit headers included in responses
+- [ ] Versioning clear in URL or headers
+
 ## Resources
 
 - [APIs & Microservices Guide](../../docs/project-types/apis.md)

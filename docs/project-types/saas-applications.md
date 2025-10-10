@@ -808,4 +808,33 @@ npm run start  # or serve production build
 
 ---
 
+## 🔍 Local Validation
+
+Run these checks before deploying to catch issues early:
+
+```bash
+# Type checking
+npm run type-check  # or npx tsc --noEmit
+
+# Linting
+npm run lint
+
+# Tests
+npm test
+
+# Build check
+npm run build
+
+# Lighthouse (performance + accessibility)
+npx lighthouse http://localhost:3000 --view
+
+# Check for security vulnerabilities
+npm audit
+
+# Check for outdated dependencies
+npm outdated
+```
+
+---
+
 *Next: Explore [API development guide](apis.md) for building SaaS backends or check out [SaaS Level 1 Template](../../templates/saas-level-1/)*

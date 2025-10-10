@@ -126,6 +126,44 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_xxx"  # Client-side
 
 See the [Security Guide](../../docs/security-guide.md) for detailed best practices.
 
+## ♿ Accessibility Checklist
+
+Ensure your SaaS application is accessible to all users:
+
+### Keyboard Navigation
+- [ ] All forms and buttons accessible via keyboard
+- [ ] Focus indicators visible on all interactive elements
+- [ ] Modals/dialogs can be closed with Escape key
+- [ ] No keyboard traps in navigation or forms
+
+### Screen Readers
+- [ ] All images have descriptive `alt` text
+- [ ] Form inputs have associated labels
+- [ ] Error messages announced to screen readers
+- [ ] Loading states communicated (`aria-live` regions)
+- [ ] Button purposes clear (not just "Click here")
+
+### Visual Accessibility
+- [ ] Color contrast meets WCAG AA standards
+- [ ] Text resizable without breaking layout
+- [ ] Error states don't rely solely on color (use icons + text)
+- [ ] Focus indicators clearly visible
+
+### Forms & Validation
+- [ ] Required fields marked with `aria-required`
+- [ ] Validation errors associated with inputs (`aria-describedby`)
+- [ ] Success messages announced
+- [ ] Input types appropriate (email, tel, number)
+
+### Testing
+```bash
+# Run Lighthouse accessibility audit
+npx lighthouse http://localhost:3000 --only-categories=accessibility --view
+
+# Check with axe-core
+npx @axe-core/cli http://localhost:3000
+```
+
 ## Resources
 
 - [SaaS Applications Guide](../../docs/project-types/saas-applications.md)

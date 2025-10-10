@@ -82,6 +82,41 @@ Update these meta tags:
 - Safari 14+
 - Edge 90+
 
+## ♿ Accessibility Checklist
+
+This template includes accessibility features out-of-the-box. Verify these remain intact:
+
+### Keyboard Navigation
+- [ ] All interactive elements focusable via Tab key
+- [ ] Focus indicators visible on all elements
+- [ ] Skip navigation link works (try Tab on page load)
+- [ ] No keyboard traps
+
+### Screen Readers
+- [ ] All images have meaningful `alt` text
+- [ ] Headings follow logical hierarchy (H1 → H2 → H3)
+- [ ] Landmarks present (`<nav>`, `<main>`, `<footer>`)
+- [ ] `aria-label` on navigation and icons
+- [ ] Form inputs have associated `<label>` elements
+
+### Visual Accessibility
+- [ ] Color contrast meets WCAG AA (4.5:1 for text)
+- [ ] Text resizable up to 200% without breaking layout
+- [ ] No content relies solely on color
+- [ ] Focus indicators clearly visible
+
+### Testing
+```bash
+# Test with Lighthouse
+npx lighthouse http://localhost:8000 --view
+
+# Test with axe
+npx @axe-core/cli http://localhost:8000
+
+# Manual keyboard test
+# Tab through entire page, ensure all links/buttons reachable
+```
+
 ## License
 
 MIT License - feel free to use for personal or commercial projects.
