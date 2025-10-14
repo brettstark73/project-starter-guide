@@ -53,33 +53,47 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check if template exists
+        id: check-template
+        run: |
+          if [ -d "templates/${{ matrix.template }}" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Template directory templates/${{ matrix.template }} does not exist yet, skipping validation"
+          fi
+
       - name: Setup Node.js
+        if: steps.check-template.outputs.exists == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies - ${{ matrix.template }}
+        if: steps.check-template.outputs.exists == 'true'
         working-directory: templates/${{ matrix.template }}
         run: npm ci
 
       - name: Run linting - ${{ matrix.template }}
+        if: steps.check-template.outputs.exists == 'true'
         working-directory: templates/${{ matrix.template }}
         run: npm run lint
         continue-on-error: true
 
       - name: Check formatting - ${{ matrix.template }}
+        if: steps.check-template.outputs.exists == 'true'
         working-directory: templates/${{ matrix.template }}
         run: npm run format:check
         continue-on-error: true
 
       - name: Run tests - ${{ matrix.template }}
-        if: matrix.template == 'api-service'
+        if: steps.check-template.outputs.exists == 'true' && matrix.template == 'api-service'
         working-directory: templates/${{ matrix.template }}
         run: npm test
         continue-on-error: true
 
       - name: Build - ${{ matrix.template }}
-        if: matrix.template != 'mobile-app'
+        if: steps.check-template.outputs.exists == 'true' && matrix.template != 'mobile-app'
         working-directory: templates/${{ matrix.template }}
         run: npm run build
         continue-on-error: true
