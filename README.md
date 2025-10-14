@@ -23,42 +23,47 @@ New to the guide? Follow this path:
 
 **Need to start a new project?** Use this decision matrix:
 
-| Project Type | Complexity | Recommended Stack | Time to MVP |
-|--------------|------------|-------------------|-------------|
-| **About Me / Portfolio** | Level 1 | HTML5 + CSS3 + Vanilla JS | 1-2 days |
-| **Landing Page** | Level 1 | Next.js + Tailwind | 2-3 days |
-| **Blog / Documentation** | Level 2 | Next.js + MDX or Astro | 1 week |
-| **SaaS MVP** | Level 3 | Next.js + Supabase + Stripe | 2-4 weeks |
-| **E-commerce** | Level 3 | Next.js + Shopify/Stripe + DB | 3-6 weeks |
-| **Enterprise SaaS** | Level 4 | Microservices + K8s + Multiple DBs | 3-6 months |
+| Project Type             | Complexity | Recommended Stack                  | Time to MVP |
+| ------------------------ | ---------- | ---------------------------------- | ----------- |
+| **About Me / Portfolio** | Level 1    | HTML5 + CSS3 + Vanilla JS          | 1-2 days    |
+| **Landing Page**         | Level 1    | Next.js + Tailwind                 | 2-3 days    |
+| **Blog / Documentation** | Level 2    | Next.js + MDX or Astro             | 1 week      |
+| **SaaS MVP**             | Level 3    | Next.js + Supabase + Stripe        | 2-4 weeks   |
+| **E-commerce**           | Level 3    | Next.js + Shopify/Stripe + DB      | 3-6 weeks   |
+| **Enterprise SaaS**      | Level 4    | Microservices + K8s + Multiple DBs | 3-6 months  |
 
 ## 🏗️ Complexity Levels
 
 ### Level 1: Static & Simple
+
 - **Use Case:** Landing pages, portfolios, documentation
 - **Architecture:** Static files, minimal JavaScript
 - **Hosting:** Vercel, Netlify, GitHub Pages
 - **Example:** Your about-me page
 
 ### Level 2: Dynamic Frontend
+
 - **Use Case:** Interactive websites, simple web apps
 - **Architecture:** Frontend framework + API calls
 - **Hosting:** Vercel, Netlify + serverless functions
 - **Example:** Weather app, calculator, simple tools
 
 ### Level 3: Full-Stack Applications
+
 - **Use Case:** SaaS products, e-commerce, dashboards
 - **Architecture:** Frontend + Backend + Database + Auth
 - **Hosting:** Vercel/Railway + managed database
 - **Example:** Task manager, CRM, booking system
 
 ### Level 4: Scalable Systems
+
 - **Use Case:** High-traffic applications, complex business logic
 - **Architecture:** Microservices, load balancers, caching
 - **Hosting:** Cloud platforms (AWS, GCP, Azure)
 - **Example:** Social media platform, large e-commerce
 
 ### Level 5: Enterprise Grade
+
 - **Use Case:** Mission-critical systems, complex integrations
 - **Architecture:** Distributed systems, service mesh, monitoring
 - **Hosting:** Multi-cloud, Kubernetes clusters
@@ -67,6 +72,7 @@ New to the guide? Follow this path:
 ## 🛠️ Technology Matrix
 
 ### Frontend Frameworks
+
 - **React/Next.js** → Most versatile, great ecosystem
 - **Vue/Nuxt.js** → Gentle learning curve, great DX
 - **Svelte/SvelteKit** → Smallest bundle size, fast performance
@@ -74,6 +80,7 @@ New to the guide? Follow this path:
 - **Astro** → Content-focused sites, multi-framework support
 
 ### Backend Solutions
+
 - **Serverless Functions** → Vercel, Netlify (Levels 1-2)
 - **Node.js** → Express, Fastify, Nest.js (Levels 2-3)
 - **Python** → FastAPI, Django (Levels 3-4)
@@ -81,6 +88,7 @@ New to the guide? Follow this path:
 - **Java/C#** → Spring Boot, .NET (Levels 4-5)
 
 ### Databases
+
 - **Level 1-2:** Flat files, LocalStorage, Supabase
 - **Level 3:** PostgreSQL (Neon, Supabase), MongoDB, MySQL
 - **Level 4:** Multiple databases, Redis cache, search engines
@@ -89,6 +97,7 @@ New to the guide? Follow this path:
 ## 📚 Detailed Guides
 
 ### Project Types
+
 - [📄 Static Sites & Portfolios](docs/project-types/static-sites.md)
 - [💼 SaaS Applications](docs/project-types/saas-applications.md)
 - [🔌 APIs & Microservices](docs/project-types/apis.md)
@@ -97,6 +106,7 @@ New to the guide? Follow this path:
 - [📊 Data & Analytics](docs/project-types/data-analytics.md)
 
 ### Architecture Guides
+
 - [💡 Using This Guide Effectively](docs/using-this-guide.md)
 - [🎯 Complexity Levels Explained](docs/complexity-levels.md)
 - [⚡ Technology Decision Matrix](docs/technology-matrix.md)
@@ -105,6 +115,7 @@ New to the guide? Follow this path:
 - [🔧 Maintenance Guide](docs/MAINTENANCE.md)
 
 ### Templates & Examples
+
 - [🌐 About Me Page Template](templates/about-me-page/)
 - [🚀 SaaS Level 1 Starter](templates/saas-level-1/)
 - [🔌 API Service Template](templates/api-service/)
@@ -123,6 +134,7 @@ New to the guide? Follow this path:
 Before pushing changes, you can run the same validation that CI does:
 
 ### Documentation Validation
+
 ```bash
 npm install  # Install dependencies
 npm run validate  # Run all validation checks
@@ -134,6 +146,7 @@ npm run format:check      # Check code formatting
 ```
 
 ### Template Validation
+
 Each template has its own validation:
 
 ```bash

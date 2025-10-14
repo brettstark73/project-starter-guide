@@ -26,9 +26,11 @@ E-commerce platforms enable online buying and selling of products or services. T
 ## E-commerce Approaches
 
 ### Hosted Solutions (Level 1-2)
+
 **No-code/low-code platforms**
 
 #### Shopify
+
 - All-in-one hosted platform
 - No technical knowledge required
 - Apps for extended functionality
@@ -36,6 +38,7 @@ E-commerce platforms enable online buying and selling of products or services. T
 - **Best for:** Small to medium businesses
 
 #### WooCommerce (WordPress)
+
 - Self-hosted, open-source
 - Huge plugin ecosystem
 - Requires hosting and maintenance
@@ -43,6 +46,7 @@ E-commerce platforms enable online buying and selling of products or services. T
 - **Best for:** Content + commerce sites
 
 #### BigCommerce
+
 - Enterprise-grade hosted platform
 - No transaction fees
 - Built-in features
@@ -50,9 +54,11 @@ E-commerce platforms enable online buying and selling of products or services. T
 - **Best for:** Growing businesses
 
 ### Headless E-commerce (Level 3-4)
+
 **API-first, custom frontend**
 
 #### Shopify Plus + Custom Frontend
+
 ```
 Backend: Shopify Plus (Storefront API)
 Frontend: Next.js, Remix, or Astro
@@ -61,6 +67,7 @@ Hosting: Vercel, Netlify
 ```
 
 #### Medusa.js (Open Source)
+
 ```
 Backend: Medusa.js (Node.js)
 Frontend: Next.js Starter
@@ -70,6 +77,7 @@ Hosting: Railway, Render, Vercel
 ```
 
 #### Commerce.js / Snipcart
+
 ```
 Backend: Headless CMS + Commerce API
 Frontend: Any framework
@@ -78,6 +86,7 @@ Hosting: Static hosting
 ```
 
 ### Custom E-commerce (Level 4-5)
+
 **Full control, built from scratch**
 
 ```
@@ -97,6 +106,7 @@ Infrastructure: Kubernetes, AWS
 ### Level 2: Simple Store (1-2 weeks)
 
 #### Option A: Shopify
+
 ```
 Platform: Shopify
 Theme: Dawn (free) or premium theme
@@ -110,6 +120,7 @@ Shipping: Shopify Shipping
 **Technical skill:** None required
 
 #### Option B: Snipcart + Static Site
+
 ```
 Frontend: Astro, Hugo, or Next.js
 E-commerce: Snipcart
@@ -124,6 +135,7 @@ Hosting: Vercel, Netlify
 ### Level 3: Custom Store (1-3 months)
 
 #### Next.js + Stripe + Supabase
+
 ```
 Frontend: Next.js 15 + Tailwind CSS
 Backend: Next.js API Routes
@@ -137,6 +149,7 @@ Hosting: Vercel
 ```
 
 #### Medusa.js Stack
+
 ```
 Backend: Medusa.js
 Admin: Medusa Admin
@@ -191,6 +204,7 @@ Inventory management across warehouses
 ### 1. Product Catalog
 
 #### Schema Design (PostgreSQL)
+
 ```sql
 -- Products table
 CREATE TABLE products (
@@ -236,6 +250,7 @@ CREATE INDEX idx_products_slug ON products(slug);
 ```
 
 #### Next.js Product Listing
+
 ```typescript
 // app/products/page.tsx
 import { Suspense } from 'react';
@@ -278,25 +293,26 @@ function ProductCard({ product }) {
 ### 2. Shopping Cart
 
 #### Client-Side Cart (Zustand)
+
 ```typescript
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
+  id: string
+  name: string
+  price: number
+  quantity: number
+  image: string
 }
 
 interface CartState {
-  items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  clearCart: () => void;
-  total: () => number;
+  items: CartItem[]
+  addItem: (item: CartItem) => void
+  removeItem: (id: string) => void
+  updateQuantity: (id: string, quantity: number) => void
+  clearCart: () => void
+  total: () => number
 }
 
 export const useCart = create<CartState>()(
@@ -304,31 +320,30 @@ export const useCart = create<CartState>()(
     (set, get) => ({
       items: [],
 
-      addItem: (item) => set((state) => {
-        const existing = state.items.find((i) => i.id === item.id);
+      addItem: item =>
+        set(state => {
+          const existing = state.items.find(i => i.id === item.id)
 
-        if (existing) {
-          return {
-            items: state.items.map((i) =>
-              i.id === item.id
-                ? { ...i, quantity: i.quantity + 1 }
-                : i
-            ),
-          };
-        }
+          if (existing) {
+            return {
+              items: state.items.map(i =>
+                i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+              ),
+            }
+          }
 
-        return { items: [...state.items, { ...item, quantity: 1 }] };
-      }),
+          return { items: [...state.items, { ...item, quantity: 1 }] }
+        }),
 
-      removeItem: (id) => set((state) => ({
-        items: state.items.filter((i) => i.id !== id),
-      })),
+      removeItem: id =>
+        set(state => ({
+          items: state.items.filter(i => i.id !== id),
+        })),
 
-      updateQuantity: (id, quantity) => set((state) => ({
-        items: state.items.map((i) =>
-          i.id === id ? { ...i, quantity } : i
-        ),
-      })),
+      updateQuantity: (id, quantity) =>
+        set(state => ({
+          items: state.items.map(i => (i.id === id ? { ...i, quantity } : i)),
+        })),
 
       clearCart: () => set({ items: [] }),
 
@@ -336,15 +351,16 @@ export const useCart = create<CartState>()(
         return get().items.reduce(
           (sum, item) => sum + item.price * item.quantity,
           0
-        );
+        )
       },
     }),
     { name: 'cart-storage' }
   )
-);
+)
 ```
 
 #### Cart Component
+
 ```typescript
 export function Cart() {
   const { items, removeItem, updateQuantity, total } = useCart();
@@ -391,19 +407,20 @@ export function Cart() {
 ### 3. Checkout & Payments
 
 #### Stripe Checkout Integration
+
 ```typescript
 // app/api/checkout/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { NextRequest, NextResponse } from 'next/server'
+import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(req: NextRequest) {
-  const { items } = await req.json();
+  const { items } = await req.json()
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    line_items: items.map((item) => ({
+    line_items: items.map(item => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -420,13 +437,14 @@ export async function POST(req: NextRequest) {
     metadata: {
       orderId: 'order_' + Date.now(),
     },
-  });
+  })
 
-  return NextResponse.json({ sessionId: session.id });
+  return NextResponse.json({ sessionId: session.id })
 }
 ```
 
 #### Checkout Component
+
 ```typescript
 'use client';
 
@@ -461,29 +479,30 @@ export function CheckoutButton() {
 ```
 
 #### Webhook Handler (Order Fulfillment)
+
 ```typescript
 // app/api/webhooks/stripe/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { NextRequest, NextResponse } from 'next/server'
+import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
 export async function POST(req: NextRequest) {
-  const body = await req.text();
-  const signature = req.headers.get('stripe-signature')!;
+  const body = await req.text()
+  const signature = req.headers.get('stripe-signature')!
 
-  let event: Stripe.Event;
+  let event: Stripe.Event
 
   try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
   } catch (err) {
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
   switch (event.type) {
     case 'checkout.session.completed':
-      const session = event.data.object as Stripe.Checkout.Session;
+      const session = event.data.object as Stripe.Checkout.Session
 
       // Create order in database
       await createOrder({
@@ -491,29 +510,30 @@ export async function POST(req: NextRequest) {
         customerId: session.customer,
         amount: session.amount_total! / 100,
         metadata: session.metadata,
-      });
+      })
 
       // Send confirmation email
-      await sendOrderConfirmation(session.customer_email!);
+      await sendOrderConfirmation(session.customer_email!)
 
-      break;
+      break
 
     case 'payment_intent.succeeded':
       // Update order status
-      break;
+      break
 
     case 'charge.refunded':
       // Handle refund
-      break;
+      break
   }
 
-  return NextResponse.json({ received: true });
+  return NextResponse.json({ received: true })
 }
 ```
 
 ### 4. Order Management
 
 #### Order Schema
+
 ```sql
 CREATE TABLE orders (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -546,6 +566,7 @@ CREATE INDEX idx_orders_status ON orders(status);
 ```
 
 #### Order Status Workflow
+
 ```typescript
 enum OrderStatus {
   PENDING = 'pending',
@@ -563,30 +584,31 @@ async function updateOrderStatus(orderId: string, status: OrderStatus) {
       status,
       updated_at: new Date(),
     },
-  });
+  })
 
   // Send notification
-  await sendStatusEmail(order.user_id, status);
+  await sendStatusEmail(order.user_id, status)
 
   // Trigger webhook for integrations
-  await triggerOrderWebhook(order);
+  await triggerOrderWebhook(order)
 
-  return order;
+  return order
 }
 ```
 
 ### 5. Product Search
 
 #### Algolia Integration
+
 ```typescript
-import algoliasearch from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch/lite'
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
   process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY!
-);
+)
 
-const searchIndex = searchClient.initIndex('products');
+const searchIndex = searchClient.initIndex('products')
 
 // Search products
 export async function searchProducts(query: string) {
@@ -594,9 +616,9 @@ export async function searchProducts(query: string) {
     hitsPerPage: 20,
     attributesToRetrieve: ['name', 'price', 'images', 'slug'],
     facets: ['category', 'price_range'],
-  });
+  })
 
-  return hits;
+  return hits
 }
 
 // Index product (on create/update)
@@ -608,11 +630,12 @@ export async function indexProduct(product: Product) {
     category: product.category,
     images: product.images,
     slug: product.slug,
-  });
+  })
 }
 ```
 
 #### Search Component (InstantSearch)
+
 ```typescript
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch';
 
@@ -640,18 +663,19 @@ export function ProductSearch() {
 ## Advanced Features
 
 ### 1. Inventory Management
+
 ```typescript
 // Prevent overselling with row-level locking
 async function reserveInventory(productId: string, quantity: number) {
-  return await db.$transaction(async (tx) => {
+  return await db.$transaction(async tx => {
     const product = await tx.products.findUnique({
       where: { id: productId },
       // Lock row for update
       lock: 'update',
-    });
+    })
 
     if (product.inventory_count < quantity) {
-      throw new Error('Insufficient inventory');
+      throw new Error('Insufficient inventory')
     }
 
     await tx.products.update({
@@ -661,38 +685,40 @@ async function reserveInventory(productId: string, quantity: number) {
           decrement: quantity,
         },
       },
-    });
+    })
 
-    return true;
-  });
+    return true
+  })
 }
 ```
 
 ### 2. Discount Codes
+
 ```typescript
 interface Discount {
-  code: string;
-  type: 'percentage' | 'fixed';
-  value: number;
-  min_purchase?: number;
-  max_uses?: number;
-  expires_at?: Date;
+  code: string
+  type: 'percentage' | 'fixed'
+  value: number
+  min_purchase?: number
+  max_uses?: number
+  expires_at?: Date
 }
 
 function applyDiscount(subtotal: number, discount: Discount): number {
   if (discount.min_purchase && subtotal < discount.min_purchase) {
-    throw new Error('Minimum purchase not met');
+    throw new Error('Minimum purchase not met')
   }
 
   if (discount.type === 'percentage') {
-    return subtotal * (discount.value / 100);
+    return subtotal * (discount.value / 100)
   }
 
-  return Math.min(discount.value, subtotal);
+  return Math.min(discount.value, subtotal)
 }
 ```
 
 ### 3. Multi-Vendor (Marketplace)
+
 ```typescript
 // Stripe Connect for payouts
 async function createConnectedAccount(vendorId: string) {
@@ -704,19 +730,19 @@ async function createConnectedAccount(vendorId: string) {
       card_payments: { requested: true },
       transfers: { requested: true },
     },
-  });
+  })
 
   await db.vendors.update({
     where: { id: vendorId },
     data: { stripe_account_id: account.id },
-  });
+  })
 
-  return account;
+  return account
 }
 
 // Split payment
 async function createPaymentIntent(order: Order) {
-  const platformFee = order.total * 0.1; // 10% platform fee
+  const platformFee = order.total * 0.1 // 10% platform fee
 
   return await stripe.paymentIntents.create({
     amount: Math.round(order.total * 100),
@@ -725,7 +751,7 @@ async function createPaymentIntent(order: Order) {
     transfer_data: {
       destination: vendor.stripe_account_id,
     },
-  });
+  })
 }
 ```
 
@@ -734,12 +760,13 @@ async function createPaymentIntent(order: Order) {
 ## SEO & Performance
 
 ### Product Page Optimization
+
 ```typescript
 // app/products/[slug]/page.tsx
-import { Metadata } from 'next';
+import { Metadata } from 'next'
 
 export async function generateMetadata({ params }): Promise<Metadata> {
-  const product = await getProduct(params.slug);
+  const product = await getProduct(params.slug)
 
   return {
     title: `${product.name} | Your Store`,
@@ -752,18 +779,19 @@ export async function generateMetadata({ params }): Promise<Metadata> {
         currency: 'USD',
       },
     },
-  };
+  }
 }
 
 export async function generateStaticParams() {
-  const products = await getAllProducts();
-  return products.map((product) => ({
+  const products = await getAllProducts()
+  return products.map(product => ({
     slug: product.slug,
-  }));
+  }))
 }
 ```
 
 ### Image Optimization
+
 ```typescript
 import Image from 'next/image';
 
@@ -809,6 +837,7 @@ import Image from 'next/image';
 ## ✅ Pre-Launch Verification Checklist
 
 ### Payments & Security
+
 - [ ] Payment processor configured and tested (test mode first)
 - [ ] SSL certificate installed and HTTPS enforced
 - [ ] PCI compliance verified (using Stripe/PayPal, not storing cards)
@@ -817,6 +846,7 @@ import Image from 'next/image';
 - [ ] Refund process tested
 
 ### Product & Inventory
+
 - [ ] Product catalog fully loaded with images
 - [ ] Inventory tracking enabled and accurate
 - [ ] Stock alerts configured for low inventory
@@ -825,6 +855,7 @@ import Image from 'next/image';
 - [ ] Out-of-stock handling tested
 
 ### Checkout Flow
+
 - [ ] Checkout flow tested end-to-end (multiple browsers)
 - [ ] Guest checkout available
 - [ ] Multiple payment methods tested
@@ -834,6 +865,7 @@ import Image from 'next/image';
 - [ ] Cart abandonment tracking enabled
 
 ### Customer Experience
+
 - [ ] Mobile responsive design tested on real devices
 - [ ] Page load time < 2 seconds (test with Lighthouse)
 - [ ] Email templates working (order confirmation, shipping, etc.)
@@ -842,6 +874,7 @@ import Image from 'next/image';
 - [ ] Account creation and login working
 
 ### Legal & Compliance
+
 - [ ] Privacy policy published and linked
 - [ ] Terms of service published
 - [ ] Return/refund policy clearly stated
@@ -850,6 +883,7 @@ import Image from 'next/image';
 - [ ] Accessibility standards met (WCAG AA)
 
 ### Marketing & Analytics
+
 - [ ] SEO optimization (meta tags, structured data, sitemap)
 - [ ] Analytics and conversion tracking configured
 - [ ] Facebook/Google pixels installed (if using ads)
@@ -858,6 +892,7 @@ import Image from 'next/image';
 - [ ] Newsletter signup working
 
 ### Testing Commands
+
 ```bash
 # Run tests
 npm test
@@ -877,6 +912,7 @@ npx observatory-cli https://your-store.com
 ```
 
 ### Performance Benchmarks
+
 - [ ] Lighthouse score > 90
 - [ ] Core Web Vitals passing (LCP < 2.5s, FID < 100ms, CLS < 0.1)
 - [ ] Time to Interactive < 3.5s
@@ -915,6 +951,7 @@ npx unlighthouse --site https://localhost:3000
 ```
 
 **Critical Manual Tests:**
+
 - Complete checkout flow with test cards
 - Test cart persistence across sessions
 - Verify inventory updates after purchase
@@ -924,4 +961,4 @@ npx unlighthouse --site https://localhost:3000
 
 ---
 
-*Next: Check out [SaaS Applications](saas-applications.md) or [APIs & Microservices](apis.md)*
+_Next: Check out [SaaS Applications](saas-applications.md) or [APIs & Microservices](apis.md)_

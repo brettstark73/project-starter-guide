@@ -11,6 +11,7 @@ This guide breaks down project complexity into 5 distinct levels, each with spec
 ## Level 1: Static & Simple 📄
 
 ### Characteristics
+
 - **Static content** with minimal interactivity
 - **No backend** required (or minimal serverless functions)
 - **Fast loading** and SEO-friendly
@@ -18,6 +19,7 @@ This guide breaks down project complexity into 5 distinct levels, each with spec
 - **Low maintenance** requirements
 
 ### Technology Stack
+
 ```
 Frontend: HTML5, CSS3, Vanilla JS (or minimal framework)
 Build Tools: Vite, Parcel, or simple bundler
@@ -26,6 +28,7 @@ Analytics: Plausible, Simple Analytics, Google Analytics
 ```
 
 ### Examples
+
 - ✅ Portfolio/About-me pages
 - ✅ Landing pages
 - ✅ Documentation sites
@@ -35,6 +38,7 @@ Analytics: Plausible, Simple Analytics, Google Analytics
 ### Timeline: 1-7 days
 
 ### Sample Architecture
+
 ```
 Browser → CDN → Static Files
 ```
@@ -44,6 +48,7 @@ Browser → CDN → Static Files
 ## Level 2: Dynamic Frontend 🎮
 
 ### Characteristics
+
 - **Interactive user interfaces** with client-side logic
 - **External APIs** for data (no custom backend)
 - **Real-time updates** via WebSockets or polling
@@ -51,6 +56,7 @@ Browser → CDN → Static Files
 - **Progressive Web App** capabilities
 
 ### Technology Stack
+
 ```
 Frontend: React/Next.js, Vue/Nuxt.js, Svelte/SvelteKit
 State: Redux, Zustand, Pinia, or built-in state
@@ -60,6 +66,7 @@ External Services: Stripe, Auth0, Firebase, Supabase
 ```
 
 ### Examples
+
 - ✅ Weather applications
 - ✅ Calculator tools
 - ✅ API dashboards
@@ -69,6 +76,7 @@ External Services: Stripe, Auth0, Firebase, Supabase
 ### Timeline: 1-4 weeks
 
 ### Sample Architecture
+
 ```
 Browser → CDN → Serverless Functions → External APIs
 ```
@@ -78,6 +86,7 @@ Browser → CDN → Serverless Functions → External APIs
 ## Level 3: Full-Stack Applications 🏗️
 
 ### Characteristics
+
 - **Custom backend** with business logic
 - **Database** with complex relationships
 - **User authentication** and authorization
@@ -86,6 +95,7 @@ Browser → CDN → Serverless Functions → External APIs
 - **Email/notification** systems
 
 ### Technology Stack
+
 ```
 Frontend: Next.js, React, Vue, Angular
 Backend: Node.js (Express/Fastify), Python (FastAPI), Go
@@ -96,6 +106,7 @@ Hosting: Vercel + Neon/Supabase, Railway, Render
 ```
 
 ### Examples
+
 - ✅ SaaS applications (MVPs)
 - ✅ E-commerce platforms
 - ✅ Content management systems
@@ -106,6 +117,7 @@ Hosting: Vercel + Neon/Supabase, Railway, Render
 ### Timeline: 1-3 months
 
 ### Sample Architecture
+
 ```
 Browser → Load Balancer → App Server → Database
                       ↓
@@ -117,6 +129,7 @@ Browser → Load Balancer → App Server → Database
 ## Level 4: Scalable Systems ⚡
 
 ### Characteristics
+
 - **Microservices architecture** with multiple services
 - **High traffic** handling (10K+ concurrent users)
 - **Caching layers** for performance
@@ -126,6 +139,7 @@ Browser → Load Balancer → App Server → Database
 - **CI/CD pipelines** with testing
 
 ### Technology Stack
+
 ```
 Frontend: React/Next.js with CDN
 Backend: Microservices (Node.js, Python, Go, Java)
@@ -137,6 +151,7 @@ Monitoring: DataDog, New Relic, Prometheus
 ```
 
 ### Examples
+
 - ✅ Large SaaS platforms
 - ✅ E-commerce with high traffic
 - ✅ Social media platforms
@@ -147,6 +162,7 @@ Monitoring: DataDog, New Relic, Prometheus
 ### Timeline: 3-8 months
 
 ### Sample Architecture
+
 ```
 CDN → Load Balancer → API Gateway
                    ↓
@@ -160,6 +176,7 @@ CDN → Load Balancer → API Gateway
 ## Level 5: Enterprise Grade 🏢
 
 ### Characteristics
+
 - **Distributed systems** across multiple regions
 - **High availability** (99.99% uptime)
 - **Multi-cloud** deployments
@@ -169,6 +186,7 @@ CDN → Load Balancer → API Gateway
 - **DevOps team** required for maintenance
 
 ### Technology Stack
+
 ```
 Frontend: Micro-frontends with multiple teams
 Backend: Service mesh (Istio), event-driven architecture
@@ -180,6 +198,7 @@ Monitoring: Full observability stack
 ```
 
 ### Examples
+
 - ✅ Banking systems
 - ✅ Healthcare platforms
 - ✅ Large-scale marketplaces
@@ -190,6 +209,7 @@ Monitoring: Full observability stack
 ### Timeline: 6 months - 2+ years
 
 ### Sample Architecture
+
 ```
 Global Load Balancer
         ↓
@@ -204,6 +224,7 @@ Distributed Databases + Analytics Pipeline + ML Services
 ## 🤔 How to Choose Your Level
 
 ### Ask Yourself:
+
 1. **How many users** will use this initially? In 2 years?
 2. **What's your budget** for hosting and development?
 3. **How complex** is your business logic?
@@ -212,14 +233,16 @@ Distributed Databases + Analytics Pipeline + ML Services
 6. **How large** is your team?
 
 ### Common Mistakes:
+
 - ❌ **Over-engineering** Level 1 projects with Level 3 complexity
 - ❌ **Under-estimating** scalability needs early on
 - ❌ **Choosing unfamiliar** technologies for tight timelines
 - ❌ **Ignoring hosting costs** at higher levels
 
 ### Migration Path:
+
 Most successful projects start at Level 1-2 and gradually increase complexity based on real user needs and growth patterns.
 
 ---
 
-*Next: Check out the [Technology Decision Matrix](technology-matrix.md) to choose your specific tools.*
+_Next: Check out the [Technology Decision Matrix](technology-matrix.md) to choose your specific tools._

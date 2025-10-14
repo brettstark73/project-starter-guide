@@ -26,9 +26,11 @@ Mobile applications are software designed for smartphones and tablets. This guid
 ## Mobile Development Approaches
 
 ### Native Development (Level 3-5)
+
 **Platform-specific languages and tools**
 
 #### iOS (Swift/SwiftUI)
+
 ```
 Language: Swift
 UI Framework: SwiftUI, UIKit
@@ -37,18 +39,21 @@ Distribution: App Store
 ```
 
 **Pros:**
+
 - Best performance and user experience
 - Full access to platform APIs
 - Latest features immediately available
 - Optimal integration with device
 
 **Cons:**
+
 - Separate codebase for each platform
 - Requires platform-specific knowledge
 - Higher development cost
 - Longer time to market
 
 #### Android (Kotlin/Jetpack Compose)
+
 ```
 Language: Kotlin (or Java)
 UI Framework: Jetpack Compose, XML
@@ -57,20 +62,24 @@ Distribution: Google Play Store
 ```
 
 **Pros:**
+
 - Native performance
 - Material Design integration
 - Full Android ecosystem access
 - Google services integration
 
 **Cons:**
+
 - Platform fragmentation
 - Separate iOS codebase needed
 - Testing across devices complex
 
 ### Cross-Platform Development (Level 2-4)
+
 **Write once, deploy to both platforms**
 
 #### React Native (Recommended)
+
 ```
 Language: JavaScript/TypeScript
 Framework: React Native
@@ -80,6 +89,7 @@ State: Redux, Zustand, Jotai
 ```
 
 **Pros:**
+
 - Large community and ecosystem
 - Hot reload for faster development
 - Code sharing with web apps
@@ -87,12 +97,14 @@ State: Redux, Zustand, Jotai
 - Expo for easier setup
 
 **Cons:**
+
 - Performance overhead vs native
 - Platform-specific code sometimes needed
 - Large app bundle size
 - Third-party library dependency
 
 #### Flutter
+
 ```
 Language: Dart
 Framework: Flutter
@@ -102,6 +114,7 @@ Backend: Any API + Firebase
 ```
 
 **Pros:**
+
 - Excellent performance
 - Beautiful UI out of the box
 - Single codebase for iOS, Android, Web
@@ -109,6 +122,7 @@ Backend: Any API + Firebase
 - Google backing
 
 **Cons:**
+
 - Dart learning curve
 - Smaller community than React Native
 - Larger app size
@@ -117,12 +131,14 @@ Backend: Any API + Firebase
 #### Other Cross-Platform Options
 
 **Ionic/Capacitor**
+
 - Web technologies (HTML/CSS/JS)
 - Any web framework (React, Vue, Angular)
 - Good for simple apps
 - Web-first approach
 
 **.NET MAUI**
+
 - C# and .NET
 - Microsoft ecosystem
 - Windows, iOS, Android support
@@ -135,6 +151,7 @@ Backend: Any API + Firebase
 ### Level 2: Simple Mobile App (2-4 weeks)
 
 #### Expo (React Native)
+
 ```
 Framework: Expo (React Native)
 Backend: Supabase, Firebase
@@ -145,6 +162,7 @@ Deployment: EAS (Expo Application Services)
 ```
 
 **Perfect for:**
+
 - MVPs and prototypes
 - Content-driven apps
 - Simple CRUD applications
@@ -153,6 +171,7 @@ Deployment: EAS (Expo Application Services)
 ### Level 3: Production App (1-3 months)
 
 #### React Native
+
 ```
 Framework: React Native CLI
 Language: TypeScript
@@ -169,6 +188,7 @@ CI/CD: GitHub Actions, Bitrise
 ```
 
 #### Flutter
+
 ```
 Language: Dart
 Backend: Custom API + Firebase
@@ -233,6 +253,7 @@ npx expo start --android  # Run on Android emulator
 Run on physical device by scanning the QR code with Expo Go app.
 
 **Expo SDK 52 Notes (Current as of 2025):**
+
 - **New Architecture**: Enabled by default for new projects (React Native 0.77)
 - **Platform Requirements**: Minimum iOS 15.1, Android SDK 24 (compileSdkVersion 35)
 - **Expo Go**: Only supports New Architecture in SDK 52+
@@ -279,43 +300,45 @@ flutter build ios  # Build for production - iOS
 ### 1. Authentication
 
 #### React Native + Supabase
+
 ```typescript
-import { supabase } from './lib/supabase';
+import { supabase } from './lib/supabase'
 
 // Sign up
 const signUp = async (email: string, password: string) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-  });
+  })
 
-  if (error) throw error;
-  return data;
-};
+  if (error) throw error
+  return data
+}
 
 // Sign in
 const signIn = async (email: string, password: string) => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
-  });
+  })
 
-  if (error) throw error;
-  return data;
-};
+  if (error) throw error
+  return data
+}
 
 // OAuth (Google, Apple)
 const signInWithGoogle = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
-  });
+  })
 
-  if (error) throw error;
-  return data;
-};
+  if (error) throw error
+  return data
+}
 ```
 
 #### Flutter + Firebase
+
 ```dart
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -367,6 +390,7 @@ Future<User?> signInWithGoogle() async {
 ### 2. Data Fetching & State Management
 
 #### React Native (Zustand + React Query)
+
 ```typescript
 import { create } from 'zustand';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -423,6 +447,7 @@ function TodoList() {
 ```
 
 #### Flutter (Riverpod)
+
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -454,6 +479,7 @@ class TodoList extends ConsumerWidget {
 ### 3. Navigation
 
 #### React Navigation
+
 ```typescript
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -490,6 +516,7 @@ function App() {
 ```
 
 #### Flutter Navigation
+
 ```dart
 import 'package:go_router/go_router.dart';
 
@@ -525,24 +552,26 @@ context.go('/profile/123');
 ### 4. Local Storage
 
 #### React Native (AsyncStorage)
+
 ```typescript
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Save data
-await AsyncStorage.setItem('user_token', token);
+await AsyncStorage.setItem('user_token', token)
 
 // Get data
-const token = await AsyncStorage.getItem('user_token');
+const token = await AsyncStorage.getItem('user_token')
 
 // Remove data
-await AsyncStorage.removeItem('user_token');
+await AsyncStorage.removeItem('user_token')
 
 // Complex objects
-await AsyncStorage.setItem('user', JSON.stringify(userObject));
-const user = JSON.parse(await AsyncStorage.getItem('user') || '{}');
+await AsyncStorage.setItem('user', JSON.stringify(userObject))
+const user = JSON.parse((await AsyncStorage.getItem('user')) || '{}')
 ```
 
 #### Flutter (SharedPreferences)
+
 ```dart
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -560,36 +589,38 @@ await prefs.remove('user_token');
 ### 5. Push Notifications
 
 #### React Native (Firebase)
+
 ```typescript
-import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging'
 
 // Request permission
 async function requestUserPermission() {
-  const authStatus = await messaging().requestPermission();
+  const authStatus = await messaging().requestPermission()
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    authStatus === messaging.AuthorizationStatus.PROVISIONAL
 
   if (enabled) {
-    console.log('Permission granted');
+    console.log('Permission granted')
   }
 }
 
 // Get FCM token
-const fcmToken = await messaging().getToken();
+const fcmToken = await messaging().getToken()
 
 // Handle foreground messages
 messaging().onMessage(async remoteMessage => {
-  console.log('Notification:', remoteMessage);
-});
+  console.log('Notification:', remoteMessage)
+})
 
 // Handle background messages
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Background message:', remoteMessage);
-});
+  console.log('Background message:', remoteMessage)
+})
 ```
 
 #### Flutter (Firebase)
+
 ```dart
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -619,11 +650,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 ### iOS App Store
 
 **Requirements:**
+
 - Apple Developer Account ($99/year)
 - macOS with Xcode
 - Provisioning profiles and certificates
 
 **Steps:**
+
 1. Update version in Info.plist or package.json
 2. Build release version:
    ```bash
@@ -635,6 +668,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 4. Submit for review
 
 **Review Guidelines:**
+
 - App must be functional and bug-free
 - Clear privacy policy
 - Appropriate content
@@ -644,10 +678,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 ### Google Play Store
 
 **Requirements:**
+
 - Google Play Console account ($25 one-time)
 - Android Studio or CLI tools
 
 **Steps:**
+
 1. Generate signed APK/AAB:
    ```bash
    npx expo build:android  # Expo
@@ -659,6 +695,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 4. Submit for review
 
 **Review Guidelines:**
+
 - App must be stable
 - Clear description and screenshots
 - Appropriate content rating
@@ -672,6 +709,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 ### Unit Testing
 
 **React Native (Jest)**
+
 ```typescript
 import { render, screen } from '@testing-library/react-native';
 import LoginScreen from './LoginScreen';
@@ -693,6 +731,7 @@ test('validates email', () => {
 ```
 
 **Flutter (Widget Tests)**
+
 ```dart
 import 'package:flutter_test/flutter_test.dart';
 
@@ -712,23 +751,25 @@ void main() {
 ### E2E Testing
 
 **Detox (React Native)**
+
 ```typescript
 describe('Login Flow', () => {
   beforeAll(async () => {
-    await device.launchApp();
-  });
+    await device.launchApp()
+  })
 
   it('should login successfully', async () => {
-    await element(by.id('email-input')).typeText('user@example.com');
-    await element(by.id('password-input')).typeText('password123');
-    await element(by.id('login-button')).tap();
+    await element(by.id('email-input')).typeText('user@example.com')
+    await element(by.id('password-input')).typeText('password123')
+    await element(by.id('login-button')).tap()
 
-    await expect(element(by.id('home-screen'))).toBeVisible();
-  });
-});
+    await expect(element(by.id('home-screen'))).toBeVisible()
+  })
+})
 ```
 
 **Flutter Integration Tests**
+
 ```dart
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -754,6 +795,7 @@ void main() {
 ## Performance Optimization
 
 ### React Native
+
 ```typescript
 // 1. Use React.memo for expensive components
 const ExpensiveComponent = React.memo(({ data }) => {
@@ -782,6 +824,7 @@ const ExpensiveComponent = React.memo(({ data }) => {
 ```
 
 ### Flutter
+
 ```dart
 // 1. Const constructors
 const Text('Hello');
@@ -824,6 +867,7 @@ class MyWidget extends StatelessWidget {
 ## ✅ Pre-Launch Verification Checklist
 
 ### Core Functionality
+
 - [ ] App launches without crashes on iOS and Android
 - [ ] All main features work as expected
 - [ ] Navigation flows correctly between screens
@@ -832,6 +876,7 @@ class MyWidget extends StatelessWidget {
 - [ ] Offline functionality works (if applicable)
 
 ### Platform-Specific
+
 - [ ] iOS: Tested on latest iOS version and one version back
 - [ ] Android: Tested on multiple screen sizes and API levels
 - [ ] Permissions requested correctly (camera, location, etc.)
@@ -840,6 +885,7 @@ class MyWidget extends StatelessWidget {
 - [ ] App works on both phones and tablets
 
 ### Performance
+
 - [ ] App launches in < 3 seconds
 - [ ] No memory leaks (check with profiler)
 - [ ] Images optimized and load quickly
@@ -848,6 +894,7 @@ class MyWidget extends StatelessWidget {
 - [ ] Battery usage is acceptable
 
 ### Security & Privacy
+
 - [ ] Sensitive data stored securely (SecureStore/Keychain)
 - [ ] API keys not hardcoded in app
 - [ ] HTTPS only for network requests
@@ -856,6 +903,7 @@ class MyWidget extends StatelessWidget {
 - [ ] Privacy policy and terms accessible in-app
 
 ### Testing Commands
+
 ```bash
 # Run tests
 npm test
@@ -878,6 +926,7 @@ eas build --platform android --profile preview
 ```
 
 ### Store Requirements
+
 - [ ] App icons in all required sizes
 - [ ] Screenshots prepared (multiple devices)
 - [ ] App description written
@@ -887,6 +936,7 @@ eas build --platform android --profile preview
 - [ ] Compliance with store guidelines reviewed
 
 ### User Experience
+
 - [ ] Onboarding flow is clear
 - [ ] Loading states shown appropriately
 - [ ] Error messages are helpful
@@ -927,6 +977,7 @@ npx depcheck
 ```
 
 **Manual Testing:**
+
 - Test on multiple device sizes and OS versions
 - Test with slow network (throttle in dev tools)
 - Test offline functionality (airplane mode)
@@ -946,4 +997,4 @@ npx depcheck
 
 ---
 
-*Next: Check out [E-commerce Guide](ecommerce.md) or [SaaS Applications](saas-applications.md)*
+_Next: Check out [E-commerce Guide](ecommerce.md) or [SaaS Applications](saas-applications.md)_

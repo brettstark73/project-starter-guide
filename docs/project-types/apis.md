@@ -25,59 +25,71 @@ APIs (Application Programming Interfaces) and microservices are the backbone of 
 ## API Types & Use Cases
 
 ### REST APIs (Level 2-4)
+
 **Best for:** Standard CRUD operations, mobile apps, web services
 
 **Characteristics:**
+
 - HTTP-based, stateless communication
 - Resource-oriented URLs
 - JSON/XML data format
 - Wide browser and client support
 
 **When to use:**
+
 - Public APIs for third-party integration
 - Mobile app backends
 - Simple microservices communication
 - Standard web applications
 
 ### GraphQL APIs (Level 3-4)
+
 **Best for:** Complex data requirements, mobile apps, frontend flexibility
 
 **Characteristics:**
+
 - Single endpoint with flexible queries
 - Strongly typed schema
 - Fetch exactly what you need
 - Real-time subscriptions
 
 **When to use:**
+
 - Multiple clients with different data needs
 - Complex, nested data relationships
 - Reducing over-fetching/under-fetching
 - Real-time features
 
 ### gRPC (Level 4-5)
+
 **Best for:** High-performance microservices, internal APIs
 
 **Characteristics:**
+
 - Protocol Buffers (binary format)
 - HTTP/2 based, bidirectional streaming
 - Strong typing, code generation
 - Extremely fast performance
 
 **When to use:**
+
 - Internal microservices communication
 - High-performance requirements
 - Streaming data (real-time logs, metrics)
 - Polyglot (multi-language) services
 
 ### WebSockets (Level 2-4)
+
 **Best for:** Real-time bidirectional communication
 
 **Characteristics:**
+
 - Persistent connection
 - Low latency, real-time updates
 - Server push capabilities
 
 **When to use:**
+
 - Chat applications
 - Live notifications
 - Real-time dashboards
@@ -90,6 +102,7 @@ APIs (Application Programming Interfaces) and microservices are the backbone of 
 ### Level 2: Simple API (1-2 weeks)
 
 #### Node.js Stack
+
 ```
 Runtime: Node.js or Bun
 Framework: Express.js, Fastify, or Hono
@@ -100,6 +113,7 @@ Hosting: Vercel, Railway, Render
 ```
 
 #### Python Stack
+
 ```
 Framework: FastAPI, Flask
 Database: PostgreSQL, SQLite
@@ -151,6 +165,7 @@ Full observability stack
 ### Step 1: Design Your API
 
 **API Design Best Practices:**
+
 ```
 GET    /api/v1/users          # List users
 GET    /api/v1/users/:id      # Get single user
@@ -168,50 +183,50 @@ GET    /api/v1/posts?limit=10&offset=20&status=published  # Filtering & paginati
 ### Step 2: Implementation Example (Express.js)
 
 ```typescript
-import express from 'express';
-import { z } from 'zod';
+import express from 'express'
+import { z } from 'zod'
 
-const app = express();
-app.use(express.json());
+const app = express()
+app.use(express.json())
 
 // Validation schema
 const userSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  age: z.number().min(18).optional()
-});
+  age: z.number().min(18).optional(),
+})
 
 // Middleware: Error handling
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: 'Internal server error' });
-});
+  console.error(err)
+  res.status(500).json({ error: 'Internal server error' })
+})
 
 // Routes
 app.get('/api/v1/users', async (req, res) => {
-  const { limit = 10, offset = 0 } = req.query;
+  const { limit = 10, offset = 0 } = req.query
   const users = await db.users.findMany({
     take: Number(limit),
-    skip: Number(offset)
-  });
+    skip: Number(offset),
+  })
 
   res.json({
     data: users,
-    meta: { limit, offset, total: await db.users.count() }
-  });
-});
+    meta: { limit, offset, total: await db.users.count() },
+  })
+})
 
 app.post('/api/v1/users', async (req, res) => {
   try {
-    const validated = userSchema.parse(req.body);
-    const user = await db.users.create({ data: validated });
-    res.status(201).json({ data: user });
+    const validated = userSchema.parse(req.body)
+    const user = await db.users.create({ data: validated })
+    res.status(201).json({ data: user })
   } catch (error) {
-    res.status(400).json({ error: error.errors });
+    res.status(400).json({ error: error.errors })
   }
-});
+})
 
-app.listen(3000);
+app.listen(3000)
 ```
 
 ### Step 3: FastAPI Example (Python)
@@ -249,59 +264,67 @@ async def create_user(user: User):
 ## Authentication & Security
 
 ### API Key Authentication (Simple)
+
 ```typescript
-const API_KEYS = new Set(process.env.API_KEYS.split(','));
+const API_KEYS = new Set(process.env.API_KEYS.split(','))
 
 app.use('/api', (req, res, next) => {
-  const apiKey = req.headers['x-api-key'];
+  const apiKey = req.headers['x-api-key']
 
   if (!apiKey || !API_KEYS.has(apiKey)) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  next();
-});
+  next()
+})
 ```
 
 ### JWT Authentication (Recommended)
+
 ```typescript
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'
 
 // Generate token
 const token = jwt.sign(
   { userId: user.id, role: user.role },
   process.env.JWT_SECRET,
   { expiresIn: '7d' }
-);
+)
 
 // Verify middleware
 const authMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization?.split(' ')[1]
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = decoded
+    next()
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+    res.status(401).json({ error: 'Invalid token' })
   }
-};
+}
 ```
 
 ### OAuth2 (Advanced)
+
 ```typescript
 // Use libraries like passport.js
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import passport from 'passport'
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/auth/google/callback'
-}, (accessToken, refreshToken, profile, done) => {
-  // Find or create user
-  return done(null, profile);
-}));
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: '/auth/google/callback',
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // Find or create user
+      return done(null, profile)
+    }
+  )
+)
 ```
 
 ---
@@ -309,39 +332,41 @@ passport.use(new GoogleStrategy({
 ## Rate Limiting & Throttling
 
 ### Simple In-Memory Rate Limiting
+
 ```typescript
-import rateLimit from 'express-rate-limit';
+import rateLimit from 'express-rate-limit'
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests, please try again later.'
-});
+  message: 'Too many requests, please try again later.',
+})
 
-app.use('/api', limiter);
+app.use('/api', limiter)
 ```
 
 ### Redis-Based Rate Limiting
-```typescript
-import { RateLimiterRedis } from 'rate-limiter-flexible';
-import Redis from 'ioredis';
 
-const redis = new Redis(process.env.REDIS_URL);
+```typescript
+import { RateLimiterRedis } from 'rate-limiter-flexible'
+import Redis from 'ioredis'
+
+const redis = new Redis(process.env.REDIS_URL)
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redis,
   points: 100, // Number of points
   duration: 60, // Per 60 seconds
-});
+})
 
 app.use(async (req, res, next) => {
   try {
-    await rateLimiter.consume(req.ip);
-    next();
+    await rateLimiter.consume(req.ip)
+    next()
   } catch {
-    res.status(429).json({ error: 'Too Many Requests' });
+    res.status(429).json({ error: 'Too Many Requests' })
   }
-});
+})
 ```
 
 ---
@@ -349,9 +374,10 @@ app.use(async (req, res, next) => {
 ## API Documentation
 
 ### OpenAPI/Swagger Setup
+
 ```typescript
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 
 const swaggerOptions = {
   definition: {
@@ -359,17 +385,15 @@ const swaggerOptions = {
     info: {
       title: 'My API',
       version: '1.0.0',
-      description: 'API documentation'
+      description: 'API documentation',
     },
-    servers: [
-      { url: 'http://localhost:3000' }
-    ]
+    servers: [{ url: 'http://localhost:3000' }],
   },
-  apis: ['./routes/*.ts']
-};
+  apis: ['./routes/*.ts'],
+}
 
-const specs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+const specs = swaggerJsdoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 /**
  * @swagger
@@ -394,50 +418,54 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 ### Service Communication Patterns
 
 **1. Synchronous (HTTP/gRPC)**
+
 ```typescript
 // User Service calling Order Service
 const orderResponse = await fetch('http://order-service/api/orders', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ userId, items })
-});
+  body: JSON.stringify({ userId, items }),
+})
 ```
 
 **2. Asynchronous (Message Queue)**
+
 ```typescript
 // Publisher (User Service)
 await messageQueue.publish('user.created', {
   userId: user.id,
-  email: user.email
-});
+  email: user.email,
+})
 
 // Subscriber (Email Service)
-messageQueue.subscribe('user.created', async (event) => {
-  await sendWelcomeEmail(event.email);
-});
+messageQueue.subscribe('user.created', async event => {
+  await sendWelcomeEmail(event.email)
+})
 ```
 
 **3. Event Sourcing**
+
 ```typescript
 // Store events instead of current state
 const events = [
   { type: 'OrderCreated', data: { orderId, items } },
   { type: 'OrderPaid', data: { orderId, amount } },
-  { type: 'OrderShipped', data: { orderId, trackingNumber } }
-];
+  { type: 'OrderShipped', data: { orderId, trackingNumber } },
+]
 
 // Rebuild state from events
 const currentState = events.reduce((state, event) => {
-  return applyEvent(state, event);
-}, initialState);
+  return applyEvent(state, event)
+}, initialState)
 ```
 
 ### Service Discovery
+
 ```typescript
 // Using Consul
-import Consul from 'consul';
+import Consul from 'consul'
 
-const consul = new Consul();
+const consul = new Consul()
 
 // Register service
 await consul.agent.service.register({
@@ -445,13 +473,13 @@ await consul.agent.service.register({
   port: 3000,
   check: {
     http: 'http://localhost:3000/health',
-    interval: '10s'
-  }
-});
+    interval: '10s',
+  },
+})
 
 // Discover service
-const services = await consul.catalog.service.nodes('order-service');
-const serviceUrl = `http://${services[0].ServiceAddress}:${services[0].ServicePort}`;
+const services = await consul.catalog.service.nodes('order-service')
+const serviceUrl = `http://${services[0].ServiceAddress}:${services[0].ServicePort}`
 ```
 
 ---
@@ -459,41 +487,43 @@ const serviceUrl = `http://${services[0].ServiceAddress}:${services[0].ServicePo
 ## Monitoring & Observability
 
 ### Health Checks
+
 ```typescript
 app.get('/health', async (req, res) => {
-  const dbHealthy = await db.ping();
-  const redisHealthy = await redis.ping();
+  const dbHealthy = await db.ping()
+  const redisHealthy = await redis.ping()
 
   if (dbHealthy && redisHealthy) {
-    res.status(200).json({ status: 'healthy' });
+    res.status(200).json({ status: 'healthy' })
   } else {
     res.status(503).json({
       status: 'unhealthy',
-      checks: { db: dbHealthy, redis: redisHealthy }
-    });
+      checks: { db: dbHealthy, redis: redisHealthy },
+    })
   }
-});
+})
 ```
 
 ### Logging & Tracing
-```typescript
-import pino from 'pino';
-import { trace } from '@opentelemetry/api';
 
-const logger = pino();
+```typescript
+import pino from 'pino'
+import { trace } from '@opentelemetry/api'
+
+const logger = pino()
 
 app.use((req, res, next) => {
-  const span = trace.getActiveSpan();
+  const span = trace.getActiveSpan()
 
   logger.info({
     traceId: span?.spanContext().traceId,
     method: req.method,
     path: req.path,
-    ip: req.ip
-  });
+    ip: req.ip,
+  })
 
-  next();
-});
+  next()
+})
 ```
 
 ---
@@ -501,6 +531,7 @@ app.use((req, res, next) => {
 ## Deployment Strategies
 
 ### Containerization (Docker)
+
 ```dockerfile
 FROM node:20-alpine
 
@@ -515,6 +546,7 @@ CMD ["node", "dist/server.js"]
 ```
 
 ### Kubernetes Deployment
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -531,22 +563,22 @@ spec:
         app: api
     spec:
       containers:
-      - name: api
-        image: myregistry/api:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: url
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        - name: api
+          image: myregistry/api:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: url
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
 ```
 
 ---
@@ -554,21 +586,24 @@ spec:
 ## API Versioning Strategies
 
 ### URL Versioning (Recommended)
+
 ```
 /api/v1/users
 /api/v2/users
 ```
 
 ### Header Versioning
+
 ```typescript
 app.use((req, res, next) => {
-  const version = req.headers['api-version'] || '1';
-  req.apiVersion = version;
-  next();
-});
+  const version = req.headers['api-version'] || '1'
+  req.apiVersion = version
+  next()
+})
 ```
 
 ### Content Negotiation
+
 ```
 Accept: application/vnd.myapi.v2+json
 ```
@@ -578,49 +613,47 @@ Accept: application/vnd.myapi.v2+json
 ## Testing APIs
 
 ### Unit Tests
+
 ```typescript
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest'
 
 describe('User API', () => {
   it('should create a user', async () => {
     const response = await request(app)
       .post('/api/v1/users')
       .send({ name: 'John', email: 'john@example.com' })
-      .expect(201);
+      .expect(201)
 
-    expect(response.body.data).toHaveProperty('id');
-  });
-});
+    expect(response.body.data).toHaveProperty('id')
+  })
+})
 ```
 
 ### Integration Tests
+
 ```typescript
 describe('User Flow', () => {
   it('should create, read, update, delete user', async () => {
     // Create
     const createRes = await request(app)
       .post('/api/v1/users')
-      .send({ name: 'Jane', email: 'jane@example.com' });
+      .send({ name: 'Jane', email: 'jane@example.com' })
 
-    const userId = createRes.body.data.id;
+    const userId = createRes.body.data.id
 
     // Read
-    await request(app)
-      .get(`/api/v1/users/${userId}`)
-      .expect(200);
+    await request(app).get(`/api/v1/users/${userId}`).expect(200)
 
     // Update
     await request(app)
       .put(`/api/v1/users/${userId}`)
       .send({ name: 'Jane Doe' })
-      .expect(200);
+      .expect(200)
 
     // Delete
-    await request(app)
-      .delete(`/api/v1/users/${userId}`)
-      .expect(204);
-  });
-});
+    await request(app).delete(`/api/v1/users/${userId}`).expect(204)
+  })
+})
 ```
 
 ---
@@ -641,6 +674,7 @@ describe('User Flow', () => {
 ## ✅ Pre-Deployment Verification Checklist
 
 ### API Functionality
+
 - [ ] All endpoints return correct status codes (200, 201, 400, 401, 404, 500)
 - [ ] Request validation working (reject invalid data)
 - [ ] Response format consistent across all endpoints
@@ -649,6 +683,7 @@ describe('User Flow', () => {
 - [ ] Filtering and sorting working as expected
 
 ### Security
+
 - [ ] Authentication required on protected endpoints
 - [ ] Authorization checks prevent unauthorized access
 - [ ] Rate limiting configured and tested (429 response)
@@ -658,6 +693,7 @@ describe('User Flow', () => {
 - [ ] API keys/secrets in environment variables only
 
 ### Documentation
+
 - [ ] OpenAPI/Swagger spec up to date
 - [ ] All endpoints documented with examples
 - [ ] Authentication flow documented
@@ -665,6 +701,7 @@ describe('User Flow', () => {
 - [ ] Rate limits documented
 
 ### Performance & Reliability
+
 - [ ] Database connection pooling configured
 - [ ] Query performance optimized (use indexes)
 - [ ] Caching implemented where appropriate
@@ -672,6 +709,7 @@ describe('User Flow', () => {
 - [ ] Load testing performed for expected traffic
 
 ### Testing Commands
+
 ```bash
 # Run tests
 npm test
@@ -690,6 +728,7 @@ npx autocannon -c 100 -d 30 http://localhost:3000/api/health
 ```
 
 ### Monitoring
+
 - [ ] Error tracking configured (Sentry, etc.)
 - [ ] Performance monitoring enabled
 - [ ] Request logging configured
@@ -740,4 +779,4 @@ npx depcheck
 
 ---
 
-*Next: Explore [E-commerce Platform Guide](ecommerce.md) or [Architecture Patterns](../architecture-patterns.md)*
+_Next: Explore [E-commerce Platform Guide](ecommerce.md) or [Architecture Patterns](../architecture-patterns.md)_

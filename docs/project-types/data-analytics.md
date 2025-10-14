@@ -26,6 +26,7 @@ Data and analytics applications process, analyze, and visualize data to provide 
 ## Data Application Types
 
 ### Analytics Dashboards (Level 2-3)
+
 **Visualize and explore data**
 
 - Business intelligence dashboards
@@ -35,6 +36,7 @@ Data and analytics applications process, analyze, and visualize data to provide 
 - Sales/marketing reports
 
 ### Data Pipelines (Level 3-4)
+
 **ETL/ELT data processing**
 
 - Data ingestion and transformation
@@ -44,6 +46,7 @@ Data and analytics applications process, analyze, and visualize data to provide 
 - Event processing
 
 ### Data Science Platforms (Level 4-5)
+
 **ML/AI and advanced analytics**
 
 - Machine learning pipelines
@@ -59,6 +62,7 @@ Data and analytics applications process, analyze, and visualize data to provide 
 ### Level 2: Simple Dashboard (1-2 weeks)
 
 #### Spreadsheets + Visualization
+
 ```
 Data Source: Google Sheets, Airtable
 Visualization: Looker Studio (free), Tableau Public
@@ -69,6 +73,7 @@ Hosting: Cloud-based (no hosting needed)
 **Use case:** Small teams, simple metrics
 
 #### Low-Code Platforms
+
 ```
 Tools: Retool, Bubble, AppSmith
 Database: PostgreSQL, Airtable, Google Sheets
@@ -81,6 +86,7 @@ Hosting: Platform-provided
 ### Level 3: Custom Dashboard (1-2 months)
 
 #### Modern Stack
+
 ```
 Frontend: Next.js + Recharts/Tremor
 Backend: Next.js API Routes or tRPC
@@ -92,6 +98,7 @@ Hosting: Vercel, Railway
 ```
 
 #### Alternative: Metabase/Superset
+
 ```
 Platform: Metabase (open-source BI)
 Database: PostgreSQL, MySQL, MongoDB
@@ -102,6 +109,7 @@ Auth: Built-in or SSO
 ### Level 4: Data Pipeline (3-6 months)
 
 #### Streaming Pipeline
+
 ```
 Ingestion: Apache Kafka, AWS Kinesis, Redpanda
 Processing: Apache Flink, Spark Streaming
@@ -113,6 +121,7 @@ Hosting: Kubernetes, AWS, GCP
 ```
 
 #### Batch Pipeline
+
 ```
 Ingestion: Fivetran, Airbyte, custom scripts
 Transformation: dbt (data build tool)
@@ -141,13 +150,14 @@ Infrastructure: Kubernetes, GPU clusters
 ### Step 1: Data Modeling
 
 #### Define Metrics
+
 ```typescript
 interface Metric {
-  id: string;
-  name: string;
-  query: string;
-  unit: string;
-  format: 'number' | 'currency' | 'percentage';
+  id: string
+  name: string
+  query: string
+  unit: string
+  format: 'number' | 'currency' | 'percentage'
 }
 
 const metrics: Metric[] = [
@@ -161,14 +171,16 @@ const metrics: Metric[] = [
   {
     id: 'active_users',
     name: 'Active Users',
-    query: 'SELECT COUNT(DISTINCT user_id) FROM events WHERE created_at >= NOW() - INTERVAL 30 DAY',
+    query:
+      'SELECT COUNT(DISTINCT user_id) FROM events WHERE created_at >= NOW() - INTERVAL 30 DAY',
     unit: 'users',
     format: 'number',
   },
-];
+]
 ```
 
 #### Database Schema for Analytics
+
 ```sql
 -- Events table (for tracking)
 CREATE TABLE events (
@@ -202,6 +214,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY daily_metrics;
 ### Step 2: Data Fetching
 
 #### Server-Side Data Fetching (Next.js)
+
 ```typescript
 // app/dashboard/page.tsx
 import { sql } from '@vercel/postgres';
@@ -243,42 +256,44 @@ export default async function DashboardPage() {
 ```
 
 #### Real-Time Data (WebSockets)
+
 ```typescript
 // Server
-import { WebSocketServer } from 'ws';
+import { WebSocketServer } from 'ws'
 
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 8080 })
 
-wss.on('connection', (ws) => {
+wss.on('connection', ws => {
   const interval = setInterval(async () => {
-    const metrics = await getLiveMetrics();
-    ws.send(JSON.stringify(metrics));
-  }, 5000); // Update every 5 seconds
+    const metrics = await getLiveMetrics()
+    ws.send(JSON.stringify(metrics))
+  }, 5000) // Update every 5 seconds
 
-  ws.on('close', () => clearInterval(interval));
-});
+  ws.on('close', () => clearInterval(interval))
+})
 
 // Client
 const useRealtimeMetrics = () => {
-  const [metrics, setMetrics] = useState(null);
+  const [metrics, setMetrics] = useState(null)
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080');
+    const ws = new WebSocket('ws://localhost:8080')
 
-    ws.onmessage = (event) => {
-      setMetrics(JSON.parse(event.data));
-    };
+    ws.onmessage = event => {
+      setMetrics(JSON.parse(event.data))
+    }
 
-    return () => ws.close();
-  }, []);
+    return () => ws.close()
+  }, [])
 
-  return metrics;
-};
+  return metrics
+}
 ```
 
 ### Step 3: Visualization
 
 #### Charts with Recharts
+
 ```typescript
 import {
   LineChart,
@@ -311,6 +326,7 @@ function RevenueChart({ data }) {
 ```
 
 #### Modern Dashboard UI (Tremor)
+
 ```typescript
 import { Card, Title, Text, Metric, AreaChart } from '@tremor/react';
 
@@ -346,40 +362,42 @@ export function Dashboard() {
 ### ETL Process
 
 #### Extract (Data Sources)
+
 ```typescript
 // Extract from API
 async function extractFromAPI() {
-  const response = await fetch('https://api.example.com/data');
-  return response.json();
+  const response = await fetch('https://api.example.com/data')
+  return response.json()
 }
 
 // Extract from database
 async function extractFromDB() {
   return await db.query('SELECT * FROM source_table WHERE updated_at > $1', [
     lastSync,
-  ]);
+  ])
 }
 
 // Extract from files (S3)
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
 
 async function extractFromS3(bucket: string, key: string) {
-  const s3 = new S3Client({ region: 'us-east-1' });
-  const command = new GetObjectCommand({ Bucket: bucket, Key: key });
-  const response = await s3.send(command);
+  const s3 = new S3Client({ region: 'us-east-1' })
+  const command = new GetObjectCommand({ Bucket: bucket, Key: key })
+  const response = await s3.send(command)
 
-  const data = await response.Body.transformToString();
-  return JSON.parse(data);
+  const data = await response.Body.transformToString()
+  return JSON.parse(data)
 }
 ```
 
 #### Transform (Data Processing)
+
 ```typescript
 // Clean and transform data
 function transformData(rawData: any[]) {
   return rawData
-    .filter((row) => row.status === 'active')
-    .map((row) => ({
+    .filter(row => row.status === 'active')
+    .map(row => ({
       id: row.id,
       name: row.name.trim().toLowerCase(),
       email: row.email.toLowerCase(),
@@ -389,11 +407,11 @@ function transformData(rawData: any[]) {
       lifetime_value: calculateLTV(row),
       cohort: getCohort(row.created_at),
     }))
-    .filter((row) => row.revenue > 0);
+    .filter(row => row.revenue > 0)
 }
 
 // Data validation
-import { z } from 'zod';
+import { z } from 'zod'
 
 const recordSchema = z.object({
   id: z.string().uuid(),
@@ -401,33 +419,34 @@ const recordSchema = z.object({
   email: z.string().email(),
   revenue: z.number().positive(),
   created_at: z.date(),
-});
+})
 
 function validateAndTransform(data: unknown[]) {
   return data
-    .map((row) => {
+    .map(row => {
       try {
-        return recordSchema.parse(row);
+        return recordSchema.parse(row)
       } catch (error) {
-        console.error('Validation failed:', error);
-        return null;
+        console.error('Validation failed:', error)
+        return null
       }
     })
-    .filter(Boolean);
+    .filter(Boolean)
 }
 ```
 
 #### Load (Data Warehouse)
+
 ```typescript
 // Bulk insert to PostgreSQL
 async function loadToDB(data: any[]) {
-  const values = data.map((row) => [
+  const values = data.map(row => [
     row.id,
     row.name,
     row.email,
     row.revenue,
     row.created_at,
-  ]);
+  ])
 
   await db.query(
     `INSERT INTO analytics.users (id, name, email, revenue, created_at)
@@ -438,18 +457,18 @@ async function loadToDB(data: any[]) {
        revenue = EXCLUDED.revenue,
        updated_at = NOW()`,
     values.flat()
-  );
+  )
 }
 
 // Load to BigQuery
-import { BigQuery } from '@google-cloud/bigquery';
+import { BigQuery } from '@google-cloud/bigquery'
 
 async function loadToBigQuery(data: any[]) {
-  const bigquery = new BigQuery();
-  const dataset = bigquery.dataset('analytics');
-  const table = dataset.table('users');
+  const bigquery = new BigQuery()
+  const dataset = bigquery.dataset('analytics')
+  const table = dataset.table('users')
 
-  await table.insert(data);
+  await table.insert(data)
 }
 ```
 
@@ -515,15 +534,15 @@ extract_task >> transform_task >> load_task
 ### Streaming with Apache Kafka
 
 ```typescript
-import { Kafka } from 'kafkajs';
+import { Kafka } from 'kafkajs'
 
 const kafka = new Kafka({
   clientId: 'analytics-app',
   brokers: ['localhost:9092'],
-});
+})
 
 // Producer (send events)
-const producer = kafka.producer();
+const producer = kafka.producer()
 
 async function trackEvent(event: AnalyticsEvent) {
   await producer.send({
@@ -534,25 +553,25 @@ async function trackEvent(event: AnalyticsEvent) {
         value: JSON.stringify(event),
       },
     ],
-  });
+  })
 }
 
 // Consumer (process events)
-const consumer = kafka.consumer({ groupId: 'analytics-processor' });
+const consumer = kafka.consumer({ groupId: 'analytics-processor' })
 
-await consumer.subscribe({ topic: 'user-events' });
+await consumer.subscribe({ topic: 'user-events' })
 
 await consumer.run({
   eachMessage: async ({ topic, partition, message }) => {
-    const event = JSON.parse(message.value.toString());
+    const event = JSON.parse(message.value.toString())
 
     // Process event (store, aggregate, etc.)
-    await processEvent(event);
+    await processEvent(event)
 
     // Update real-time metrics
-    await updateMetrics(event);
+    await updateMetrics(event)
   },
-});
+})
 ```
 
 ### Stream Processing (Apache Flink/Spark)
@@ -672,6 +691,7 @@ Sources → Fivetran/Airbyte → Snowflake/BigQuery → dbt → BI Tools
 ```
 
 #### dbt Transformation
+
 ```sql
 -- models/marts/customer_metrics.sql
 {{
@@ -725,20 +745,20 @@ LEFT JOIN customer_events e ON u.id = e.user_id
 ### Metrics Collection (Prometheus)
 
 ```typescript
-import { register, Counter, Histogram } from 'prom-client';
+import { register, Counter, Histogram } from 'prom-client'
 
 // Custom metrics
 const requestCounter = new Counter({
   name: 'http_requests_total',
   help: 'Total number of HTTP requests',
   labelNames: ['method', 'route', 'status'],
-});
+})
 
 const queryDuration = new Histogram({
   name: 'db_query_duration_seconds',
   help: 'Database query duration',
   labelNames: ['query_type'],
-});
+})
 
 // Middleware to track requests
 app.use((req, res, next) => {
@@ -747,24 +767,24 @@ app.use((req, res, next) => {
       method: req.method,
       route: req.route?.path || 'unknown',
       status: res.statusCode,
-    });
-  });
-  next();
-});
+    })
+  })
+  next()
+})
 
 // Track query performance
 async function executeQuery(query: string) {
-  const end = queryDuration.startTimer();
-  const result = await db.query(query);
-  end({ query_type: 'select' });
-  return result;
+  const end = queryDuration.startTimer()
+  const result = await db.query(query)
+  end({ query_type: 'select' })
+  return result
 }
 
 // Expose metrics
 app.get('/metrics', async (req, res) => {
-  res.set('Content-Type', register.contentType);
-  res.end(await register.metrics());
-});
+  res.set('Content-Type', register.contentType)
+  res.end(await register.metrics())
+})
 ```
 
 ### Visualization (Grafana)
@@ -800,36 +820,38 @@ app.get('/metrics', async (req, res) => {
 ## Best Practices
 
 ### Data Quality
+
 ```typescript
 // Data validation
 function validateData(record: any) {
-  const issues = [];
+  const issues = []
 
-  if (!record.id) issues.push('Missing ID');
-  if (!record.timestamp) issues.push('Missing timestamp');
-  if (record.value < 0) issues.push('Invalid value');
+  if (!record.id) issues.push('Missing ID')
+  if (!record.timestamp) issues.push('Missing timestamp')
+  if (record.value < 0) issues.push('Invalid value')
 
   return {
     valid: issues.length === 0,
     issues,
-  };
+  }
 }
 
 // Data freshness check
 async function checkDataFreshness() {
   const latestRecord = await db.query(
     'SELECT MAX(created_at) as latest FROM events'
-  );
+  )
 
-  const ageMinutes = (Date.now() - latestRecord.latest) / 1000 / 60;
+  const ageMinutes = (Date.now() - latestRecord.latest) / 1000 / 60
 
   if (ageMinutes > 30) {
-    await alertDataTeam('Data pipeline may be stalled');
+    await alertDataTeam('Data pipeline may be stalled')
   }
 }
 ```
 
 ### Performance Optimization
+
 ```sql
 -- Partitioning for large tables
 CREATE TABLE events (
@@ -865,6 +887,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 ## ✅ Pre-Deployment Verification Checklist
 
 ### Data Pipeline
+
 - [ ] All data sources connected and accessible
 - [ ] Data ingestion working correctly
 - [ ] Data validation rules in place
@@ -873,6 +896,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 - [ ] Pipeline orchestration configured (Airflow, etc.)
 
 ### Data Quality
+
 - [ ] Schema validation implemented
 - [ ] Data type consistency checked
 - [ ] Null value handling defined
@@ -881,6 +905,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 - [ ] Anomaly detection configured
 
 ### Analytics & Reporting
+
 - [ ] All reports/dashboards load correctly
 - [ ] Metrics calculations verified against source
 - [ ] Filters and drill-downs working
@@ -889,6 +914,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 - [ ] Real-time vs batch updates clearly indicated
 
 ### Performance
+
 - [ ] Query performance optimized (< 5 seconds for dashboards)
 - [ ] Database indexes created on frequently queried columns
 - [ ] Materialized views/aggregations used where appropriate
@@ -897,6 +923,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 - [ ] ETL jobs complete within acceptable time windows
 
 ### Security & Compliance
+
 - [ ] Row-level security implemented (if multi-tenant)
 - [ ] PII data encrypted or masked
 - [ ] Access controls tested (role-based permissions)
@@ -905,6 +932,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 - [ ] Compliance requirements met (GDPR, HIPAA, etc.)
 
 ### Machine Learning (if applicable)
+
 - [ ] Model training pipeline automated
 - [ ] Model versioning implemented
 - [ ] Predictions tested on validation set
@@ -913,6 +941,7 @@ CREATE INDEX idx_events_type_time ON events(event_type, created_at DESC);
 - [ ] A/B testing framework ready (if applicable)
 
 ### Testing Commands
+
 ```bash
 # Run data validation tests
 python -m pytest tests/
@@ -935,6 +964,7 @@ mypy src/
 ```
 
 ### Monitoring & Alerts
+
 - [ ] Pipeline failure alerts configured
 - [ ] Data quality alerts set up
 - [ ] Performance degradation monitoring
@@ -943,6 +973,7 @@ mypy src/
 - [ ] SLA monitoring (data freshness, availability)
 
 ### Documentation
+
 - [ ] Data dictionary published
 - [ ] ETL pipeline diagram created
 - [ ] Metric definitions documented
@@ -984,6 +1015,7 @@ pip list --outdated
 ```
 
 **Data Quality Checks:**
+
 - Verify schema consistency
 - Check for data completeness (no unexpected nulls)
 - Validate data freshness timestamps
@@ -1003,4 +1035,4 @@ pip list --outdated
 
 ---
 
-*Next: Explore [Architecture Patterns](../architecture-patterns.md) or [Security Guide](../security-guide.md)*
+_Next: Explore [Architecture Patterns](../architecture-patterns.md) or [Security Guide](../security-guide.md)_

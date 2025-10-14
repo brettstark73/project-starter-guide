@@ -21,6 +21,7 @@ Security is critical at every level of application development. This guide cover
 ### Level 1-2: Basic Security (Simple Apps)
 
 **Essential checklist:**
+
 - ✅ HTTPS everywhere (SSL/TLS)
 - ✅ Input validation and sanitization
 - ✅ Environment variables for secrets
@@ -32,6 +33,7 @@ Security is critical at every level of application development. This guide cover
 ### Level 3-4: Production Security
 
 **Additional requirements:**
+
 - ✅ Authentication & authorization
 - ✅ CSRF protection
 - ✅ SQL injection prevention
@@ -44,6 +46,7 @@ Security is critical at every level of application development. This guide cover
 ### Level 5: Enterprise Security
 
 **Advanced requirements:**
+
 - ✅ Zero-trust architecture
 - ✅ Encryption at rest and in transit
 - ✅ SOC 2 / ISO 27001 compliance
@@ -60,71 +63,73 @@ Security is critical at every level of application development. This guide cover
 ### Password Storage
 
 ❌ **Never do this:**
+
 ```typescript
 // WRONG: Plain text
 const user = {
-  password: 'password123'  // NEVER!
-};
+  password: 'password123', // NEVER!
+}
 
 // WRONG: Simple hashing
 const user = {
-  password: crypto.createHash('md5').update(password).digest('hex')  // Weak!
-};
+  password: crypto.createHash('md5').update(password).digest('hex'), // Weak!
+}
 ```
 
 ✅ **Do this:**
+
 ```typescript
-import bcrypt from 'bcryptjs';
-import { Argon2id } from 'oslo/password';
+import bcrypt from 'bcryptjs'
+import { Argon2id } from 'oslo/password'
 
 // bcrypt (good)
-const hashedPassword = await bcrypt.hash(password, 12);
-const isValid = await bcrypt.compare(password, hashedPassword);
+const hashedPassword = await bcrypt.hash(password, 12)
+const isValid = await bcrypt.compare(password, hashedPassword)
 
 // Argon2id (better - recommended)
-const argon2 = new Argon2id();
-const hash = await argon2.hash(password);
-const isValid = await argon2.verify(hash, password);
+const argon2 = new Argon2id()
+const hash = await argon2.hash(password)
+const isValid = await argon2.verify(hash, password)
 ```
 
 ### JWT Best Practices
 
 ```typescript
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'
 
 // Secure JWT configuration
 const accessToken = jwt.sign(
   { userId: user.id, role: user.role },
   process.env.JWT_SECRET!,
   {
-    expiresIn: '15m',  // Short-lived access tokens
+    expiresIn: '15m', // Short-lived access tokens
     issuer: 'your-app',
-    audience: 'your-api'
+    audience: 'your-api',
   }
-);
+)
 
 const refreshToken = jwt.sign(
   { userId: user.id },
   process.env.REFRESH_SECRET!,
   {
-    expiresIn: '7d',  // Longer-lived refresh tokens
+    expiresIn: '7d', // Longer-lived refresh tokens
   }
-);
+)
 
 // Store refresh token securely (database)
 await db.refreshTokens.create({
   userId: user.id,
   token: refreshToken,
-  expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-});
+  expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+})
 
 // Set cookies with security flags
 res.cookie('refreshToken', refreshToken, {
-  httpOnly: true,    // Not accessible via JavaScript
-  secure: true,      // HTTPS only
+  httpOnly: true, // Not accessible via JavaScript
+  secure: true, // HTTPS only
   sameSite: 'strict', // CSRF protection
-  maxAge: 7 * 24 * 60 * 60 * 1000
-});
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+})
 ```
 
 ### Token Refresh Pattern
@@ -133,36 +138,36 @@ res.cookie('refreshToken', refreshToken, {
 // Verify and refresh tokens
 async function refreshTokens(refreshToken: string) {
   // Verify refresh token
-  const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET!);
+  const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET!)
 
   // Check if token is in database (not revoked)
   const storedToken = await db.refreshTokens.findFirst({
     where: {
       userId: payload.userId,
       token: refreshToken,
-      expiresAt: { gt: new Date() }
-    }
-  });
+      expiresAt: { gt: new Date() },
+    },
+  })
 
   if (!storedToken) {
-    throw new Error('Invalid refresh token');
+    throw new Error('Invalid refresh token')
   }
 
   // Generate new tokens
-  const newAccessToken = generateAccessToken(payload.userId);
-  const newRefreshToken = generateRefreshToken(payload.userId);
+  const newAccessToken = generateAccessToken(payload.userId)
+  const newRefreshToken = generateRefreshToken(payload.userId)
 
   // Revoke old refresh token
-  await db.refreshTokens.delete({ where: { id: storedToken.id } });
+  await db.refreshTokens.delete({ where: { id: storedToken.id } })
 
   // Store new refresh token
   await db.refreshTokens.create({
     userId: payload.userId,
     token: newRefreshToken,
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  });
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  })
 
-  return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  return { accessToken: newAccessToken, refreshToken: newRefreshToken }
 }
 ```
 
@@ -206,12 +211,12 @@ export default NextAuth({
 
 **Where to store tokens:**
 
-| Storage Method | Security | Persistence | Use Case |
-|----------------|----------|-------------|----------|
-| **Memory (React state)** | ✅ High | ❌ Lost on refresh | Short sessions, high security |
-| **HttpOnly Cookies** | ✅ High | ✅ Persists | Recommended for web apps |
-| **LocalStorage** | ⚠️ Low (XSS risk) | ✅ Persists | Avoid for sensitive tokens |
-| **SessionStorage** | ⚠️ Medium | ❌ Lost on tab close | Acceptable for temporary data |
+| Storage Method           | Security          | Persistence          | Use Case                      |
+| ------------------------ | ----------------- | -------------------- | ----------------------------- |
+| **Memory (React state)** | ✅ High           | ❌ Lost on refresh   | Short sessions, high security |
+| **HttpOnly Cookies**     | ✅ High           | ✅ Persists          | Recommended for web apps      |
+| **LocalStorage**         | ⚠️ Low (XSS risk) | ✅ Persists          | Avoid for sensitive tokens    |
+| **SessionStorage**       | ⚠️ Medium         | ❌ Lost on tab close | Acceptable for temporary data |
 
 **Recommended approach for web applications:**
 
@@ -219,16 +224,16 @@ export default NextAuth({
 // ✅ RECOMMENDED: HttpOnly cookies for refresh tokens
 // Set on server
 res.cookie('refreshToken', refreshToken, {
-  httpOnly: true,        // Cannot be accessed by JavaScript (prevents XSS)
-  secure: true,          // HTTPS only in production
-  sameSite: 'strict',    // CSRF protection
-  maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
-  path: '/api/auth',     // Limit cookie scope
-});
+  httpOnly: true, // Cannot be accessed by JavaScript (prevents XSS)
+  secure: true, // HTTPS only in production
+  sameSite: 'strict', // CSRF protection
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  path: '/api/auth', // Limit cookie scope
+})
 
 // ✅ Access tokens in memory (React state/context)
 // Short-lived, automatically cleared on page refresh
-const [accessToken, setAccessToken] = useState<string | null>(null);
+const [accessToken, setAccessToken] = useState<string | null>(null)
 
 // ❌ AVOID: Storing sensitive tokens in LocalStorage
 // localStorage.setItem('token', token);  // Vulnerable to XSS attacks!
@@ -238,19 +243,20 @@ const [accessToken, setAccessToken] = useState<string | null>(null);
 
 ```typescript
 // React Native: Use secure storage
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store'
 
 // Store token securely (encrypted)
-await SecureStore.setItemAsync('refreshToken', token);
+await SecureStore.setItemAsync('refreshToken', token)
 
 // Retrieve token
-const token = await SecureStore.getItemAsync('refreshToken');
+const token = await SecureStore.getItemAsync('refreshToken')
 
 // Delete token on logout
-await SecureStore.deleteItemAsync('refreshToken');
+await SecureStore.deleteItemAsync('refreshToken')
 ```
 
 **Token security checklist:**
+
 - ✅ Use short expiration for access tokens (5-15 minutes)
 - ✅ Use longer expiration for refresh tokens (7-30 days)
 - ✅ Implement token rotation (issue new refresh token on each use)
@@ -275,28 +281,34 @@ enum Permission {
 const ROLES = {
   user: [Permission.READ_USERS],
   moderator: [Permission.READ_USERS, Permission.WRITE_USERS],
-  admin: [Permission.READ_USERS, Permission.WRITE_USERS, Permission.DELETE_USERS, Permission.ADMIN],
-};
+  admin: [
+    Permission.READ_USERS,
+    Permission.WRITE_USERS,
+    Permission.DELETE_USERS,
+    Permission.ADMIN,
+  ],
+}
 
 // Authorization middleware
 function requirePermission(permission: Permission) {
   return (req, res, next) => {
-    const userPermissions = ROLES[req.user.role] || [];
+    const userPermissions = ROLES[req.user.role] || []
 
     if (!userPermissions.includes(permission)) {
-      return res.status(403).json({ error: 'Forbidden' });
+      return res.status(403).json({ error: 'Forbidden' })
     }
 
-    next();
-  };
+    next()
+  }
 }
 
 // Usage
-app.delete('/users/:id',
+app.delete(
+  '/users/:id',
   authenticate,
   requirePermission(Permission.DELETE_USERS),
   deleteUser
-);
+)
 ```
 
 ---
@@ -306,52 +318,57 @@ app.delete('/users/:id',
 ### Server-Side Validation
 
 ```typescript
-import { z } from 'zod';
+import { z } from 'zod'
 
 // Define schema
 const userSchema = z.object({
   email: z.string().email().max(255),
-  password: z.string().min(8).max(128)
+  password: z
+    .string()
+    .min(8)
+    .max(128)
     .regex(/[A-Z]/, 'Must contain uppercase')
     .regex(/[a-z]/, 'Must contain lowercase')
     .regex(/[0-9]/, 'Must contain number')
     .regex(/[^A-Za-z0-9]/, 'Must contain special char'),
   age: z.number().int().min(18).max(120),
-});
+})
 
 // Validate input
 app.post('/users', async (req, res) => {
   try {
-    const validated = userSchema.parse(req.body);
-    const user = await createUser(validated);
-    res.json(user);
+    const validated = userSchema.parse(req.body)
+    const user = await createUser(validated)
+    res.json(user)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ errors: error.errors });
+      return res.status(400).json({ errors: error.errors })
     }
-    throw error;
+    throw error
   }
-});
+})
 ```
 
 ### SQL Injection Prevention
 
 ❌ **Never do this:**
+
 ```typescript
 // VULNERABLE to SQL injection
-const userId = req.params.id;
-const user = await db.query(`SELECT * FROM users WHERE id = ${userId}`);
+const userId = req.params.id
+const user = await db.query(`SELECT * FROM users WHERE id = ${userId}`)
 ```
 
 ✅ **Do this:**
+
 ```typescript
 // Parameterized queries (safe)
-const user = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
+const user = await db.query('SELECT * FROM users WHERE id = $1', [userId])
 
 // Or use an ORM
 const user = await prisma.users.findUnique({
-  where: { id: userId }
-});
+  where: { id: userId },
+})
 ```
 
 ### XSS Prevention
@@ -384,28 +401,32 @@ function UserComment({ comment }) {
 ### Essential Headers
 
 ```typescript
-import helmet from 'helmet';
+import helmet from 'helmet'
 
-app.use(helmet()); // Sets multiple security headers
+app.use(helmet()) // Sets multiple security headers
 
 // Or manually:
 app.use((req, res, next) => {
   // Prevent clickjacking
-  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Frame-Options', 'DENY')
 
   // XSS protection
-  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Content-Type-Options', 'nosniff')
 
   // HTTPS enforcement
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader(
+    'Strict-Transport-Security',
+    'max-age=31536000; includeSubDomains'
+  )
 
   // CSP
-  res.setHeader('Content-Security-Policy',
+  res.setHeader(
+    'Content-Security-Policy',
     "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com; style-src 'self' 'unsafe-inline';"
-  );
+  )
 
-  next();
-});
+  next()
+})
 ```
 
 ### Next.js Security Headers
@@ -420,33 +441,33 @@ module.exports = {
         headers: [
           {
             key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            value: 'on',
           },
           {
             key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
           {
             key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-Content-Type-Options',
-            value: 'nosniff'
+            value: 'nosniff',
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
+            value: 'origin-when-cross-origin',
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()'
-          }
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
         ],
       },
-    ];
+    ]
   },
-};
+}
 ```
 
 ---
@@ -454,28 +475,28 @@ module.exports = {
 ## CSRF Protection
 
 ```typescript
-import csrf from 'csurf';
+import csrf from 'csurf'
 
 // CSRF middleware
-const csrfProtection = csrf({ cookie: true });
+const csrfProtection = csrf({ cookie: true })
 
 app.get('/form', csrfProtection, (req, res) => {
-  res.render('form', { csrfToken: req.csrfToken() });
-});
+  res.render('form', { csrfToken: req.csrfToken() })
+})
 
 app.post('/process', csrfProtection, (req, res) => {
   // Token validated automatically
-  res.send('Data processed');
-});
+  res.send('Data processed')
+})
 
 // Next.js API route
-import { getCsrfToken } from 'next-auth/react';
+import { getCsrfToken } from 'next-auth/react'
 
 export default async function handler(req, res) {
-  const csrfToken = await getCsrfToken({ req });
+  const csrfToken = await getCsrfToken({ req })
 
   if (req.headers['x-csrf-token'] !== csrfToken) {
-    return res.status(403).json({ error: 'Invalid CSRF token' });
+    return res.status(403).json({ error: 'Invalid CSRF token' })
   }
 
   // Process request
@@ -489,7 +510,7 @@ export default async function handler(req, res) {
 ### Application-Level Rate Limiting
 
 ```typescript
-import rateLimit from 'express-rate-limit';
+import rateLimit from 'express-rate-limit'
 
 // Global rate limiter
 const limiter = rateLimit({
@@ -498,74 +519,75 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP',
   standardHeaders: true,
   legacyHeaders: false,
-});
+})
 
-app.use('/api', limiter);
+app.use('/api', limiter)
 
 // Strict rate limit for auth endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5, // 5 attempts per 15 minutes
   skipSuccessfulRequests: true,
-});
+})
 
-app.post('/api/login', authLimiter, loginHandler);
+app.post('/api/login', authLimiter, loginHandler)
 ```
 
 ### Redis-Based Rate Limiting
 
 ```typescript
-import { RateLimiterRedis } from 'rate-limiter-flexible';
-import Redis from 'ioredis';
+import { RateLimiterRedis } from 'rate-limiter-flexible'
+import Redis from 'ioredis'
 
-const redis = new Redis(process.env.REDIS_URL);
+const redis = new Redis(process.env.REDIS_URL)
 
 const rateLimiter = new RateLimiterRedis({
   storeClient: redis,
   keyPrefix: 'ratelimit',
   points: 10, // Number of points
   duration: 1, // Per second
-});
+})
 
 app.use(async (req, res, next) => {
   try {
-    await rateLimiter.consume(req.ip);
-    next();
+    await rateLimiter.consume(req.ip)
+    next()
   } catch (rejRes) {
     res.status(429).json({
       error: 'Too Many Requests',
-      retryAfter: Math.round(rejRes.msBeforeNext / 1000)
-    });
+      retryAfter: Math.round(rejRes.msBeforeNext / 1000),
+    })
   }
-});
+})
 ```
 
 ### Rate Limiting Best Practices
 
 **Recommended rate limits by endpoint type:**
 
-| Endpoint Type | Rate Limit | Window | Notes |
-|---------------|------------|--------|-------|
-| **Login/Auth** | 5 attempts | 15 min | Prevent brute force |
-| **Password Reset** | 3 attempts | 1 hour | High security |
-| **API (Authenticated)** | 1000 requests | 1 hour | Per user |
-| **API (Public)** | 100 requests | 15 min | Per IP |
-| **File Upload** | 10 uploads | 1 hour | Resource-intensive |
-| **Search/Query** | 30 requests | 1 min | Expensive operations |
+| Endpoint Type           | Rate Limit    | Window | Notes                |
+| ----------------------- | ------------- | ------ | -------------------- |
+| **Login/Auth**          | 5 attempts    | 15 min | Prevent brute force  |
+| **Password Reset**      | 3 attempts    | 1 hour | High security        |
+| **API (Authenticated)** | 1000 requests | 1 hour | Per user             |
+| **API (Public)**        | 100 requests  | 15 min | Per IP               |
+| **File Upload**         | 10 uploads    | 1 hour | Resource-intensive   |
+| **Search/Query**        | 30 requests   | 1 min  | Expensive operations |
 
 **Implementation tips:**
+
 ```typescript
 // Different limits for different endpoints
-import rateLimit from 'express-rate-limit';
+import rateLimit from 'express-rate-limit'
 
 // Strict auth rate limit
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
-  skipSuccessfulRequests: true,  // Only count failed attempts
+  skipSuccessfulRequests: true, // Only count failed attempts
   standardHeaders: true,
-  message: { error: 'Too many login attempts, please try again later' }
-});
+  message: { error: 'Too many login attempts, please try again later' },
+})
 
 // Standard API rate limit
 const apiLimiter = rateLimit({
@@ -573,22 +595,23 @@ const apiLimiter = rateLimit({
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-});
+})
 
 // Apply to specific routes
-app.post('/api/login', authLimiter, loginHandler);
-app.post('/api/register', authLimiter, registerHandler);
-app.use('/api', apiLimiter);
+app.post('/api/login', authLimiter, loginHandler)
+app.post('/api/register', authLimiter, registerHandler)
+app.use('/api', apiLimiter)
 
 // Rate limit by user ID (after authentication)
 const createAccountLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  keyGenerator: (req) => req.user?.id || req.ip,  // Use user ID if authenticated
-});
+  keyGenerator: req => req.user?.id || req.ip, // Use user ID if authenticated
+})
 ```
 
 **For the API template**, install and configure:
+
 ```bash
 npm install express-rate-limit
 ```
@@ -601,25 +624,25 @@ See [API template README](../../templates/api-service/README.md) for integration
 // Cloudflare Workers (at the edge)
 export default {
   async fetch(request) {
-    const ip = request.headers.get('CF-Connecting-IP');
+    const ip = request.headers.get('CF-Connecting-IP')
 
     // Check if IP is in rate limit
-    const rateLimit = await checkRateLimit(ip);
+    const rateLimit = await checkRateLimit(ip)
 
     if (rateLimit.exceeded) {
-      return new Response('Rate limit exceeded', { status: 429 });
+      return new Response('Rate limit exceeded', { status: 429 })
     }
 
     // Verify bot traffic
-    const isBot = request.headers.get('User-Agent').includes('bot');
+    const isBot = request.headers.get('User-Agent').includes('bot')
     if (isBot) {
       // Challenge with CAPTCHA
-      return challengeResponse();
+      return challengeResponse()
     }
 
-    return fetch(request);
-  }
-};
+    return fetch(request)
+  },
+}
 ```
 
 ---
@@ -630,37 +653,40 @@ export default {
 
 ```typescript
 // Secure API key storage
-import crypto from 'crypto';
+import crypto from 'crypto'
 
 function generateApiKey() {
-  return crypto.randomBytes(32).toString('hex');
+  return crypto.randomBytes(32).toString('hex')
 }
 
 // Hash API keys before storing
 async function storeApiKey(userId: string) {
-  const apiKey = generateApiKey();
-  const hashedKey = crypto.createHash('sha256').update(apiKey).digest('hex');
+  const apiKey = generateApiKey()
+  const hashedKey = crypto.createHash('sha256').update(apiKey).digest('hex')
 
   await db.apiKeys.create({
     userId,
     keyHash: hashedKey,
     keyPrefix: apiKey.slice(0, 8), // Store prefix for identification
     createdAt: new Date(),
-  });
+  })
 
   // Return key only once (never shown again)
-  return apiKey;
+  return apiKey
 }
 
 // Validate API key
 async function validateApiKey(providedKey: string) {
-  const hashedKey = crypto.createHash('sha256').update(providedKey).digest('hex');
+  const hashedKey = crypto
+    .createHash('sha256')
+    .update(providedKey)
+    .digest('hex')
 
   const apiKey = await db.apiKeys.findFirst({
-    where: { keyHash: hashedKey }
-  });
+    where: { keyHash: hashedKey },
+  })
 
-  return apiKey;
+  return apiKey
 }
 ```
 
@@ -668,36 +694,33 @@ async function validateApiKey(providedKey: string) {
 
 ```typescript
 // HMAC signature verification
-import crypto from 'crypto';
+import crypto from 'crypto'
 
 function generateSignature(payload: string, secret: string) {
-  return crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
+  return crypto.createHmac('sha256', secret).update(payload).digest('hex')
 }
 
 // Middleware to verify signature
 function verifySignature(req, res, next) {
-  const signature = req.headers['x-signature'];
-  const timestamp = req.headers['x-timestamp'];
-  const body = JSON.stringify(req.body);
+  const signature = req.headers['x-signature']
+  const timestamp = req.headers['x-timestamp']
+  const body = JSON.stringify(req.body)
 
   // Prevent replay attacks (5 min window)
   if (Date.now() - parseInt(timestamp) > 300000) {
-    return res.status(401).json({ error: 'Request expired' });
+    return res.status(401).json({ error: 'Request expired' })
   }
 
   const expectedSignature = generateSignature(
     `${timestamp}.${body}`,
     process.env.API_SECRET
-  );
+  )
 
   if (signature !== expectedSignature) {
-    return res.status(401).json({ error: 'Invalid signature' });
+    return res.status(401).json({ error: 'Invalid signature' })
   }
 
-  next();
+  next()
 }
 ```
 
@@ -710,6 +733,7 @@ function verifySignature(req, res, next) {
 The [12-Factor App](https://12factor.net/) methodology provides clear guidance for secret management:
 
 **Key principles:**
+
 - ✅ Store config in environment variables (never in code)
 - ✅ Never commit secrets to version control
 - ✅ Use different secrets for each environment (dev, staging, prod)
@@ -720,13 +744,15 @@ The [12-Factor App](https://12factor.net/) methodology provides clear guidance f
 ### Environment Variables (Basic)
 
 **❌ Never do this:**
+
 ```typescript
 // WRONG: Hardcoded secrets in code
-const API_KEY = 'sk_live_abc123';  // NEVER!
-const dbPassword = 'password123';  // NEVER!
+const API_KEY = 'sk_live_abc123' // NEVER!
+const dbPassword = 'password123' // NEVER!
 ```
 
 **✅ Do this:**
+
 ```bash
 DATABASE_URL="postgresql://user:pass@localhost:5432/db"  # .env (never commit! add to .gitignore)
 JWT_SECRET="random-secret-key-change-in-production"
@@ -740,21 +766,22 @@ STRIPE_SECRET_KEY="sk_test_xxx"
 
 ```typescript
 // Load with dotenv
-import 'dotenv/config';
+import 'dotenv/config'
 
 // Validate required secrets at startup
-const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET', 'STRIPE_SECRET_KEY'];
+const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET', 'STRIPE_SECRET_KEY']
 
 for (const envVar of requiredEnvVars) {
   if (!process.env[envVar]) {
-    throw new Error(`Missing required environment variable: ${envVar}`);
+    throw new Error(`Missing required environment variable: ${envVar}`)
   }
 }
 
-const dbUrl = process.env.DATABASE_URL;
+const dbUrl = process.env.DATABASE_URL
 ```
 
 **Best practices:**
+
 - Add `.env` to `.gitignore` immediately
 - Commit `.env.example` with placeholder values
 - Use different `.env.development`, `.env.staging`, `.env.production` files
@@ -764,40 +791,43 @@ const dbUrl = process.env.DATABASE_URL;
 ### HashiCorp Vault (Production)
 
 ```typescript
-import vault from 'node-vault';
+import vault from 'node-vault'
 
 const vaultClient = vault({
   endpoint: process.env.VAULT_ADDR,
   token: process.env.VAULT_TOKEN,
-});
+})
 
 // Read secret
 async function getSecret(path: string) {
-  const result = await vaultClient.read(path);
-  return result.data;
+  const result = await vaultClient.read(path)
+  return result.data
 }
 
 // Usage
-const dbCreds = await getSecret('secret/database');
-const dbUrl = `postgresql://${dbCreds.username}:${dbCreds.password}@${dbCreds.host}`;
+const dbCreds = await getSecret('secret/database')
+const dbUrl = `postgresql://${dbCreds.username}:${dbCreds.password}@${dbCreds.host}`
 ```
 
 ### AWS Secrets Manager
 
 ```typescript
-import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from '@aws-sdk/client-secrets-manager'
 
-const client = new SecretsManagerClient({ region: 'us-east-1' });
+const client = new SecretsManagerClient({ region: 'us-east-1' })
 
 async function getSecret(secretName: string) {
-  const command = new GetSecretValueCommand({ SecretId: secretName });
-  const response = await client.send(command);
+  const command = new GetSecretValueCommand({ SecretId: secretName })
+  const response = await client.send(command)
 
-  return JSON.parse(response.SecretString);
+  return JSON.parse(response.SecretString)
 }
 
 // Usage
-const dbCreds = await getSecret('prod/database');
+const dbCreds = await getSecret('prod/database')
 ```
 
 ---
@@ -807,23 +837,27 @@ const dbCreds = await getSecret('prod/database');
 ### Encryption at Rest
 
 ```typescript
-import crypto from 'crypto';
+import crypto from 'crypto'
 
 // Encrypt sensitive data before storing
 function encrypt(text: string, key: string) {
-  const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv('aes-256-gcm', Buffer.from(key, 'hex'), iv);
+  const iv = crypto.randomBytes(16)
+  const cipher = crypto.createCipheriv(
+    'aes-256-gcm',
+    Buffer.from(key, 'hex'),
+    iv
+  )
 
-  let encrypted = cipher.update(text, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
+  let encrypted = cipher.update(text, 'utf8', 'hex')
+  encrypted += cipher.final('hex')
 
-  const authTag = cipher.getAuthTag();
+  const authTag = cipher.getAuthTag()
 
   return {
     iv: iv.toString('hex'),
     encryptedData: encrypted,
     authTag: authTag.toString('hex'),
-  };
+  }
 }
 
 function decrypt(encrypted: any, key: string) {
@@ -831,45 +865,48 @@ function decrypt(encrypted: any, key: string) {
     'aes-256-gcm',
     Buffer.from(key, 'hex'),
     Buffer.from(encrypted.iv, 'hex')
-  );
+  )
 
-  decipher.setAuthTag(Buffer.from(encrypted.authTag, 'hex'));
+  decipher.setAuthTag(Buffer.from(encrypted.authTag, 'hex'))
 
-  let decrypted = decipher.update(encrypted.encryptedData, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
+  let decrypted = decipher.update(encrypted.encryptedData, 'hex', 'utf8')
+  decrypted += decipher.final('utf8')
 
-  return decrypted;
+  return decrypted
 }
 
 // Store encrypted field
-const encryptedSSN = encrypt(user.ssn, process.env.ENCRYPTION_KEY);
+const encryptedSSN = encrypt(user.ssn, process.env.ENCRYPTION_KEY)
 await db.users.create({
   ...user,
   ssn: JSON.stringify(encryptedSSN),
-});
+})
 ```
 
 ### Encryption in Transit (TLS)
 
 ```typescript
 // Enforce HTTPS
-if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
-  return res.redirect(301, `https://${req.headers.host}${req.url}`);
+if (
+  req.headers['x-forwarded-proto'] !== 'https' &&
+  process.env.NODE_ENV === 'production'
+) {
+  return res.redirect(301, `https://${req.headers.host}${req.url}`)
 }
 
 // mTLS for service-to-service communication
-import https from 'https';
-import fs from 'fs';
+import https from 'https'
+import fs from 'fs'
 
 const options = {
   cert: fs.readFileSync('client-cert.pem'),
   key: fs.readFileSync('client-key.pem'),
   ca: fs.readFileSync('ca-cert.pem'),
-};
+}
 
-https.get('https://api.internal.com', options, (res) => {
+https.get('https://api.internal.com', options, res => {
   // Secure communication
-});
+})
 ```
 
 ---
@@ -879,15 +916,13 @@ https.get('https://api.internal.com', options, (res) => {
 ### Security Event Logging
 
 ```typescript
-import winston from 'winston';
+import winston from 'winston'
 
 const securityLogger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: 'security.log' }),
-  ],
-});
+  transports: [new winston.transports.File({ filename: 'security.log' })],
+})
 
 // Log security events
 function logSecurityEvent(event: string, details: any) {
@@ -895,86 +930,93 @@ function logSecurityEvent(event: string, details: any) {
     event,
     timestamp: new Date().toISOString(),
     ...details,
-  });
+  })
 }
 
 // Usage
 app.post('/login', async (req, res) => {
   try {
-    const user = await authenticate(req.body);
+    const user = await authenticate(req.body)
 
     logSecurityEvent('login_success', {
       userId: user.id,
       ip: req.ip,
       userAgent: req.headers['user-agent'],
-    });
+    })
 
-    res.json({ token });
+    res.json({ token })
   } catch (error) {
     logSecurityEvent('login_failed', {
       email: req.body.email,
       ip: req.ip,
       reason: error.message,
-    });
+    })
 
-    res.status(401).json({ error: 'Invalid credentials' });
+    res.status(401).json({ error: 'Invalid credentials' })
   }
-});
+})
 ```
 
 ### Secure Logging Practices
 
 **❌ Never log sensitive data:**
+
 ```typescript
 // WRONG: Logging sensitive information
 console.log('User login:', {
   email: user.email,
-  password: req.body.password,  // NEVER log passwords!
-  ssn: user.ssn,                // NEVER log PII!
-  creditCard: user.card,        // NEVER log payment info!
-  token: req.headers.authorization  // NEVER log tokens!
-});
+  password: req.body.password, // NEVER log passwords!
+  ssn: user.ssn, // NEVER log PII!
+  creditCard: user.card, // NEVER log payment info!
+  token: req.headers.authorization, // NEVER log tokens!
+})
 
 // WRONG: Logging full environment variables
-console.log('Environment:', process.env);  // Contains secrets!
+console.log('Environment:', process.env) // Contains secrets!
 ```
 
 **✅ Do this - Redact sensitive data:**
+
 ```typescript
 // Safe logging with redaction
 function redactSensitive(data: any): any {
-  const redacted = { ...data };
+  const redacted = { ...data }
 
   // Redact password fields
-  if (redacted.password) redacted.password = '[REDACTED]';
-  if (redacted.passwordConfirm) redacted.passwordConfirm = '[REDACTED]';
+  if (redacted.password) redacted.password = '[REDACTED]'
+  if (redacted.passwordConfirm) redacted.passwordConfirm = '[REDACTED]'
 
   // Redact tokens
-  if (redacted.token) redacted.token = redacted.token.slice(0, 10) + '...';
-  if (redacted.authorization) redacted.authorization = '[REDACTED]';
+  if (redacted.token) redacted.token = redacted.token.slice(0, 10) + '...'
+  if (redacted.authorization) redacted.authorization = '[REDACTED]'
 
   // Redact PII
-  if (redacted.ssn) redacted.ssn = '***-**-' + redacted.ssn.slice(-4);
-  if (redacted.creditCard) redacted.creditCard = '****-****-****-' + redacted.creditCard.slice(-4);
+  if (redacted.ssn) redacted.ssn = '***-**-' + redacted.ssn.slice(-4)
+  if (redacted.creditCard)
+    redacted.creditCard = '****-****-****-' + redacted.creditCard.slice(-4)
 
   // Mask email
   if (redacted.email) {
-    const [user, domain] = redacted.email.split('@');
-    redacted.email = user.slice(0, 2) + '***@' + domain;
+    const [user, domain] = redacted.email.split('@')
+    redacted.email = user.slice(0, 2) + '***@' + domain
   }
 
-  return redacted;
+  return redacted
 }
 
 // Usage
-logger.info('User login attempt', redactSensitive({
-  email: req.body.email,
-  ip: req.ip,
-  userAgent: req.headers['user-agent'],
-}));
+logger.info(
+  'User login attempt',
+  redactSensitive({
+    email: req.body.email,
+    ip: req.ip,
+    userAgent: req.headers['user-agent'],
+  })
+)
 ```
 
 **What to log safely:**
+
 - ✅ User IDs (not emails or usernames in plaintext)
 - ✅ IP addresses (for security monitoring)
 - ✅ Timestamps
@@ -985,6 +1027,7 @@ logger.info('User login attempt', redactSensitive({
 - ✅ Authentication successes/failures (not credentials)
 
 **What NEVER to log:**
+
 - ❌ Passwords (plain text or hashed)
 - ❌ API keys, tokens, secrets
 - ❌ Credit card numbers
@@ -995,6 +1038,7 @@ logger.info('User login attempt', redactSensitive({
 - ❌ Private encryption keys
 
 **Compliance considerations:**
+
 - **GDPR**: PII must be protected in logs; consider log retention policies
 - **PCI DSS**: Never log full credit card numbers or CVV
 - **HIPAA**: Health information must not appear in logs
@@ -1008,9 +1052,9 @@ async function detectSuspiciousActivity(userId: string, ip: string) {
   const recentAttempts = await db.loginAttempts.count({
     where: {
       userId,
-      createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) }
-    }
-  });
+      createdAt: { gte: new Date(Date.now() - 5 * 60 * 1000) },
+    },
+  })
 
   if (recentAttempts > 5) {
     // Alert security team
@@ -1019,13 +1063,16 @@ async function detectSuspiciousActivity(userId: string, ip: string) {
       userId,
       ip,
       attempts: recentAttempts,
-    });
+    })
 
     // Lock account
     await db.users.update({
       where: { id: userId },
-      data: { locked: true, lockedUntil: new Date(Date.now() + 30 * 60 * 1000) }
-    });
+      data: {
+        locked: true,
+        lockedUntil: new Date(Date.now() + 30 * 60 * 1000),
+      },
+    })
   }
 }
 ```
@@ -1048,12 +1095,12 @@ snyk monitor
 **Dependabot (GitHub)** - Automatically creates PRs for vulnerable dependencies:
 
 ```yaml
-version: 2  # .github/dependabot.yml
+version: 2 # .github/dependabot.yml
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     open-pull-requests-limit: 10
 ```
 
@@ -1078,6 +1125,7 @@ app.use(hpp()); // HTTP Parameter Pollution protection
 ## Security Checklist by Level
 
 ### Level 1-2 Checklist
+
 - [ ] HTTPS enabled (SSL certificate)
 - [ ] Environment variables for secrets
 - [ ] Input validation (all user inputs)
@@ -1088,6 +1136,7 @@ app.use(hpp()); // HTTP Parameter Pollution protection
 - [ ] Dependencies up to date
 
 ### Level 3-4 Checklist
+
 - [ ] Authentication implemented (JWT/OAuth)
 - [ ] Authorization (RBAC/permissions)
 - [ ] CSRF protection
@@ -1100,6 +1149,7 @@ app.use(hpp()); // HTTP Parameter Pollution protection
 - [ ] Data encryption (sensitive fields)
 
 ### Level 5 Checklist
+
 - [ ] Zero-trust architecture
 - [ ] Encryption at rest and in transit
 - [ ] Penetration testing (annual)
@@ -1139,4 +1189,4 @@ app.use(hpp()); // HTTP Parameter Pollution protection
 
 ---
 
-*Remember: Security is not a one-time task, it's an ongoing process. Stay updated with the latest vulnerabilities and best practices.*
+_Remember: Security is not a one-time task, it's an ongoing process. Stay updated with the latest vulnerabilities and best practices._

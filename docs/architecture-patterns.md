@@ -34,16 +34,20 @@ Architecture patterns are proven solutions to common design problems in software
 ## Monolithic Architecture
 
 ### Overview
+
 Single, unified application where all components are interconnected and deployed together.
 
 ### Characteristics
+
 - Single codebase
 - Shared database
 - Single deployment unit
 - Tight coupling between components
 
 ### When to Use
+
 ✅ **Good for:**
+
 - MVPs and prototypes
 - Small teams (1-5 developers)
 - Simple applications
@@ -51,12 +55,14 @@ Single, unified application where all components are interconnected and deployed
 - Limited scale requirements
 
 ❌ **Avoid when:**
+
 - Team size > 10 developers
 - Need independent scaling
 - Multiple release cycles
 - Different technology needs per module
 
 ### Example Structure
+
 ```
 monolith/
 ├── src/
@@ -71,29 +77,31 @@ monolith/
 ```
 
 ### Implementation (Express.js)
+
 ```typescript
 // app.ts - Single application
-import express from 'express';
-import { userRouter } from './controllers/users';
-import { orderRouter } from './controllers/orders';
-import { productRouter } from './controllers/products';
+import express from 'express'
+import { userRouter } from './controllers/users'
+import { orderRouter } from './controllers/orders'
+import { productRouter } from './controllers/products'
 
-const app = express();
+const app = express()
 
 // All routes in one app
-app.use('/api/users', userRouter);
-app.use('/api/orders', orderRouter);
-app.use('/api/products', productRouter);
+app.use('/api/users', userRouter)
+app.use('/api/orders', orderRouter)
+app.use('/api/products', productRouter)
 
 // Shared database connection
-import { db } from './database';
+import { db } from './database'
 
-app.listen(3000);
+app.listen(3000)
 ```
 
 ### Pros & Cons
 
 **Pros:**
+
 - Simple to develop and test
 - Easy to deploy
 - No network latency between components
@@ -101,6 +109,7 @@ app.listen(3000);
 - Lower operational complexity
 
 **Cons:**
+
 - Hard to scale parts independently
 - Entire app must be deployed for any change
 - Technology stack locked
@@ -112,16 +121,20 @@ app.listen(3000);
 ## Microservices Architecture
 
 ### Overview
+
 Application composed of small, independent services that communicate via APIs.
 
 ### Characteristics
+
 - Multiple services (10-100+)
 - Independent deployment
 - Service-specific databases
 - Polyglot programming (different languages)
 
 ### When to Use
+
 ✅ **Good for:**
+
 - Large teams (10+ developers)
 - Different scaling requirements per service
 - Need for technology diversity
@@ -129,12 +142,14 @@ Application composed of small, independent services that communicate via APIs.
 - Complex business domains
 
 ❌ **Avoid when:**
+
 - Small team or simple app
 - Limited operational expertise
 - Network latency is critical
 - Tight budget (higher ops cost)
 
 ### Example Structure
+
 ```
 microservices/
 ├── user-service/
@@ -155,64 +170,69 @@ microservices/
 ```
 
 ### Implementation
+
 ```typescript
 // user-service/src/server.ts
-import express from 'express';
+import express from 'express'
 
-const app = express();
+const app = express()
 
 app.get('/users/:id', async (req, res) => {
-  const user = await getUserFromDB(req.params.id);
-  res.json(user);
-});
+  const user = await getUserFromDB(req.params.id)
+  res.json(user)
+})
 
-app.listen(3001);
+app.listen(3001)
 
 // order-service/src/server.ts
-import express from 'express';
-import fetch from 'node-fetch';
+import express from 'express'
+import fetch from 'node-fetch'
 
-const app = express();
+const app = express()
 
 app.post('/orders', async (req, res) => {
   // Call user service
-  const user = await fetch(`http://user-service:3001/users/${req.body.userId}`)
-    .then(r => r.json());
+  const user = await fetch(
+    `http://user-service:3001/users/${req.body.userId}`
+  ).then(r => r.json())
 
   // Create order
-  const order = await createOrder(req.body, user);
-  res.json(order);
-});
+  const order = await createOrder(req.body, user)
+  res.json(order)
+})
 
-app.listen(3002);
+app.listen(3002)
 ```
 
 ### Communication Patterns
 
 **Synchronous (REST/gRPC):**
+
 ```typescript
 // Service-to-service HTTP call
-const response = await fetch('http://user-service/users/123');
-const user = await response.json();
+const response = await fetch('http://user-service/users/123')
+const user = await response.json()
 ```
 
 **Asynchronous (Message Queue):**
+
 ```typescript
 // Publish event
 await messageQueue.publish('order.created', {
   orderId: order.id,
-  userId: order.userId
-});
+  userId: order.userId,
+})
 
 // Subscribe to event
-messageQueue.subscribe('order.created', async (event) => {
-  await sendOrderConfirmation(event.userId);
-});
+messageQueue.subscribe('order.created', async event => {
+  await sendOrderConfirmation(event.userId)
+})
 ```
 
 ### Pros & Cons
 
 **Pros:**
+
 - Independent scaling
 - Technology freedom
 - Fault isolation
@@ -220,6 +240,7 @@ messageQueue.subscribe('order.created', async (event) => {
 - Parallel development
 
 **Cons:**
+
 - Complex deployment
 - Network latency
 - Data consistency challenges
@@ -231,9 +252,11 @@ messageQueue.subscribe('order.created', async (event) => {
 ## Serverless Architecture
 
 ### Overview
+
 Run code without managing servers, paying only for execution time.
 
 ### Characteristics
+
 - No server management
 - Auto-scaling
 - Pay-per-execution
@@ -241,7 +264,9 @@ Run code without managing servers, paying only for execution time.
 - Stateless functions
 
 ### When to Use
+
 ✅ **Good for:**
+
 - Variable/unpredictable traffic
 - Event-driven workloads
 - Rapid prototyping
@@ -249,12 +274,14 @@ Run code without managing servers, paying only for execution time.
 - Background job processing
 
 ❌ **Avoid when:**
+
 - Long-running processes (>15 min)
 - Consistent high traffic (cheaper to use servers)
 - Low latency requirements
 - Vendor lock-in concerns
 
 ### Example Structure
+
 ```
 serverless/
 ├── functions/
@@ -266,47 +293,52 @@ serverless/
 ```
 
 ### Implementation (Vercel Functions)
+
 ```typescript
 // api/users/[id].ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const user = await db.users.findUnique({
-    where: { id: params.id }
-  });
+    where: { id: params.id },
+  })
 
-  return NextResponse.json(user);
+  return NextResponse.json(user)
 }
 
 export const config = {
   runtime: 'edge', // Run on edge network
-};
+}
 ```
 
 ### AWS Lambda Example
+
 ```typescript
 // handler.ts
-export const handler = async (event) => {
-  const userId = event.pathParameters.id;
+export const handler = async event => {
+  const userId = event.pathParameters.id
 
-  const user = await dynamodb.get({
-    TableName: 'users',
-    Key: { id: userId }
-  }).promise();
+  const user = await dynamodb
+    .get({
+      TableName: 'users',
+      Key: { id: userId },
+    })
+    .promise()
 
   return {
     statusCode: 200,
-    body: JSON.stringify(user.Item)
-  };
-};
+    body: JSON.stringify(user.Item),
+  }
+}
 ```
 
 ### Pros & Cons
 
 **Pros:**
+
 - Zero server management
 - Auto-scaling
 - Cost-efficient (low traffic)
@@ -314,6 +346,7 @@ export const handler = async (event) => {
 - Built-in redundancy
 
 **Cons:**
+
 - Cold start latency
 - Vendor lock-in
 - Limited execution time
@@ -325,16 +358,20 @@ export const handler = async (event) => {
 ## Event-Driven Architecture
 
 ### Overview
+
 Components communicate through events (changes in state) rather than direct calls.
 
 ### Characteristics
+
 - Asynchronous communication
 - Loose coupling
 - Event producers and consumers
 - Event store/bus
 
 ### When to Use
+
 ✅ **Good for:**
+
 - Real-time applications
 - Complex workflows
 - Integration between systems
@@ -342,38 +379,40 @@ Components communicate through events (changes in state) rather than direct call
 - Scalable systems
 
 ### Implementation
+
 ```typescript
 // Event emitter (Publisher)
 class OrderService {
   async createOrder(orderData: OrderData) {
-    const order = await db.orders.create(orderData);
+    const order = await db.orders.create(orderData)
 
     // Emit event
     await eventBus.publish('order.created', {
       orderId: order.id,
       userId: order.userId,
       total: order.total,
-      timestamp: new Date()
-    });
+      timestamp: new Date(),
+    })
 
-    return order;
+    return order
   }
 }
 
 // Event handler (Subscriber)
-eventBus.subscribe('order.created', async (event) => {
+eventBus.subscribe('order.created', async event => {
   // Send confirmation email
-  await emailService.sendOrderConfirmation(event);
+  await emailService.sendOrderConfirmation(event)
 
   // Update inventory
-  await inventoryService.reduceStock(event.orderId);
+  await inventoryService.reduceStock(event.orderId)
 
   // Trigger analytics
-  await analyticsService.trackOrderCreated(event);
-});
+  await analyticsService.trackOrderCreated(event)
+})
 ```
 
 ### Event Store (EventStoreDB)
+
 ```typescript
 import { EventStoreDBClient } from '@eventstore/db-client';
 
@@ -398,6 +437,7 @@ for await (const event of events) {
 ### Pros & Cons
 
 **Pros:**
+
 - Loose coupling
 - Easy to add new features
 - Scalable
@@ -405,6 +445,7 @@ for await (const event of events) {
 - Async processing
 
 **Cons:**
+
 - Eventual consistency
 - Complex debugging
 - Event versioning challenges
@@ -424,19 +465,19 @@ for await (const event of events) {
 class OrderCommandHandler {
   async createOrder(command: CreateOrderCommand) {
     // Validate
-    if (!command.userId) throw new Error('User required');
+    if (!command.userId) throw new Error('User required')
 
     // Create
     const order = await db.orders.create({
       userId: command.userId,
       items: command.items,
-      total: calculateTotal(command.items)
-    });
+      total: calculateTotal(command.items),
+    })
 
     // Publish event
-    await eventBus.publish('order.created', order);
+    await eventBus.publish('order.created', order)
 
-    return order.id;
+    return order.id
   }
 }
 
@@ -444,12 +485,12 @@ class OrderCommandHandler {
 class OrderQueryHandler {
   async getOrderById(orderId: string) {
     // Read from optimized read store (could be different DB)
-    return await readDB.orders.findOne({ id: orderId });
+    return await readDB.orders.findOne({ id: orderId })
   }
 
   async getOrdersByUser(userId: string) {
     // Denormalized for fast reads
-    return await readDB.orderViews.find({ userId });
+    return await readDB.orderViews.find({ userId })
   }
 }
 ```
@@ -461,8 +502,8 @@ class OrderQueryHandler {
 ```typescript
 // Event-sourced aggregate
 class OrderAggregate {
-  private events: OrderEvent[] = [];
-  private state: OrderState = { status: 'draft' };
+  private events: OrderEvent[] = []
+  private state: OrderState = { status: 'draft' }
 
   // Apply event to state
   private apply(event: OrderEvent) {
@@ -471,40 +512,40 @@ class OrderAggregate {
         this.state = {
           ...this.state,
           id: event.data.orderId,
-          status: 'pending'
-        };
-        break;
+          status: 'pending',
+        }
+        break
 
       case 'OrderPaid':
-        this.state.status = 'paid';
-        break;
+        this.state.status = 'paid'
+        break
 
       case 'OrderShipped':
-        this.state.status = 'shipped';
-        this.state.trackingNumber = event.data.trackingNumber;
-        break;
+        this.state.status = 'shipped'
+        this.state.trackingNumber = event.data.trackingNumber
+        break
     }
   }
 
   // Rebuild state from events
   loadFromHistory(events: OrderEvent[]) {
-    events.forEach(event => this.apply(event));
+    events.forEach(event => this.apply(event))
   }
 
   // Execute command
   createOrder(userId: string, items: Item[]) {
     const event = {
       type: 'OrderCreated',
-      data: { orderId: generateId(), userId, items }
-    };
+      data: { orderId: generateId(), userId, items },
+    }
 
-    this.apply(event);
-    this.events.push(event);
+    this.apply(event)
+    this.events.push(event)
   }
 
   // Get uncommitted events
   getUncommittedEvents() {
-    return this.events;
+    return this.events
   }
 }
 ```
@@ -514,9 +555,11 @@ class OrderAggregate {
 ## Hexagonal Architecture
 
 ### Overview
+
 (Also called Ports & Adapters) Isolate business logic from external concerns.
 
 ### Structure
+
 ```
 hexagonal/
 ├── domain/           # Core business logic
@@ -532,29 +575,30 @@ hexagonal/
 ```
 
 ### Implementation
+
 ```typescript
 // Domain (Core)
 interface UserRepository {
-  findById(id: string): Promise<User>;
-  save(user: User): Promise<void>;
+  findById(id: string): Promise<User>
+  save(user: User): Promise<void>
 }
 
 class UserService {
   constructor(private userRepo: UserRepository) {}
 
   async getUser(id: string) {
-    return await this.userRepo.findById(id);
+    return await this.userRepo.findById(id)
   }
 }
 
 // Adapter (Infrastructure)
 class PostgresUserRepository implements UserRepository {
   async findById(id: string) {
-    return await db.users.findUnique({ where: { id } });
+    return await db.users.findUnique({ where: { id } })
   }
 
   async save(user: User) {
-    await db.users.create({ data: user });
+    await db.users.create({ data: user })
   }
 }
 
@@ -563,15 +607,15 @@ class UserController {
   constructor(private userService: UserService) {}
 
   async getUser(req, res) {
-    const user = await this.userService.getUser(req.params.id);
-    res.json(user);
+    const user = await this.userService.getUser(req.params.id)
+    res.json(user)
   }
 }
 
 // Wire up
-const userRepo = new PostgresUserRepository();
-const userService = new UserService(userRepo);
-const userController = new UserController(userService);
+const userRepo = new PostgresUserRepository()
+const userService = new UserService(userRepo)
+const userController = new UserController(userService)
 ```
 
 ---
@@ -579,9 +623,11 @@ const userController = new UserController(userService);
 ## API Gateway Pattern
 
 ### Overview
+
 Single entry point for all client requests, routes to appropriate services.
 
 ### Responsibilities
+
 - Request routing
 - Authentication/Authorization
 - Rate limiting
@@ -590,42 +636,52 @@ Single entry point for all client requests, routes to appropriate services.
 - Monitoring
 
 ### Implementation (Kong, AWS API Gateway, Custom)
+
 ```typescript
 // Custom API Gateway (Express)
-import express from 'express';
-import httpProxy from 'http-proxy-middleware';
+import express from 'express'
+import httpProxy from 'http-proxy-middleware'
 
-const app = express();
+const app = express()
 
 // Authentication middleware
 app.use(async (req, res, next) => {
-  const token = req.headers.authorization;
-  const user = await validateToken(token);
-  req.user = user;
-  next();
-});
+  const token = req.headers.authorization
+  const user = await validateToken(token)
+  req.user = user
+  next()
+})
 
 // Rate limiting
-import rateLimit from 'express-rate-limit';
-app.use(rateLimit({ windowMs: 60000, max: 100 }));
+import rateLimit from 'express-rate-limit'
+app.use(rateLimit({ windowMs: 60000, max: 100 }))
 
 // Route to services
-app.use('/api/users', httpProxy({
-  target: 'http://user-service:3001',
-  changeOrigin: true
-}));
+app.use(
+  '/api/users',
+  httpProxy({
+    target: 'http://user-service:3001',
+    changeOrigin: true,
+  })
+)
 
-app.use('/api/orders', httpProxy({
-  target: 'http://order-service:3002',
-  changeOrigin: true
-}));
+app.use(
+  '/api/orders',
+  httpProxy({
+    target: 'http://order-service:3002',
+    changeOrigin: true,
+  })
+)
 
-app.use('/api/products', httpProxy({
-  target: 'http://product-service:3003',
-  changeOrigin: true
-}));
+app.use(
+  '/api/products',
+  httpProxy({
+    target: 'http://product-service:3003',
+    changeOrigin: true,
+  })
+)
 
-app.listen(8080);
+app.listen(8080)
 ```
 
 ---
@@ -633,9 +689,11 @@ app.listen(8080);
 ## Backend-for-Frontend (BFF)
 
 ### Overview
+
 Separate backend for each frontend (web, mobile, etc.) to optimize for specific client needs.
 
 ### Structure
+
 ```
 bff/
 ├── web-bff/          # For web app
@@ -647,40 +705,41 @@ bff/
 ```
 
 ### Implementation
+
 ```typescript
 // web-bff/server.ts (Returns detailed data)
 app.get('/dashboard', async (req, res) => {
   const [user, orders, analytics] = await Promise.all([
     userService.getUser(req.user.id),
     orderService.getOrders(req.user.id),
-    analyticsService.getStats(req.user.id)
-  ]);
+    analyticsService.getStats(req.user.id),
+  ])
 
   res.json({
     user: {
       ...user,
       fullProfile: true,
-      preferences: user.preferences
+      preferences: user.preferences,
     },
     orders,
-    analytics
-  });
-});
+    analytics,
+  })
+})
 
 // mobile-bff/server.ts (Returns minimal data)
 app.get('/dashboard', async (req, res) => {
-  const user = await userService.getUser(req.user.id);
-  const recentOrders = await orderService.getRecentOrders(req.user.id, 5);
+  const user = await userService.getUser(req.user.id)
+  const recentOrders = await orderService.getRecentOrders(req.user.id, 5)
 
   res.json({
     user: {
       id: user.id,
       name: user.name,
-      avatar: user.avatar
+      avatar: user.avatar,
     },
-    recentOrders
-  });
-});
+    recentOrders,
+  })
+})
 ```
 
 ---
@@ -688,9 +747,11 @@ app.get('/dashboard', async (req, res) => {
 ## Service Mesh
 
 ### Overview
+
 Infrastructure layer for service-to-service communication with built-in features.
 
 ### Features
+
 - Service discovery
 - Load balancing
 - Encryption (mTLS)
@@ -699,38 +760,39 @@ Infrastructure layer for service-to-service communication with built-in features
 - Retry logic
 
 ### Implementation (Istio)
+
 ```yaml
-apiVersion: v1  # Service definition
+apiVersion: v1 # Service definition
 kind: Service
 metadata:
   name: user-service
 spec:
   ports:
-  - port: 3001
+    - port: 3001
   selector:
     app: user-service
 
 ---
-apiVersion: networking.istio.io/v1beta1  # Virtual Service (routing rules)
+apiVersion: networking.istio.io/v1beta1 # Virtual Service (routing rules)
 kind: VirtualService
 metadata:
   name: user-service
 spec:
   hosts:
-  - user-service
+    - user-service
   http:
-  - match:
-    - headers:
-        version:
-          exact: v2
-    route:
-    - destination:
-        host: user-service
-        subset: v2
-  - route:
-    - destination:
-        host: user-service
-        subset: v1
+    - match:
+        - headers:
+            version:
+              exact: v2
+      route:
+        - destination:
+            host: user-service
+            subset: v2
+    - route:
+        - destination:
+            host: user-service
+            subset: v1
 ```
 
 ---
@@ -738,94 +800,99 @@ spec:
 ## Saga Pattern
 
 ### Overview
+
 Manage distributed transactions across microservices without 2-phase commit.
 
 ### Types
 
 **Orchestration (Central Coordinator):**
+
 ```typescript
 class OrderSaga {
   async execute(orderData: OrderData) {
     try {
       // Step 1: Create order
-      const order = await orderService.create(orderData);
+      const order = await orderService.create(orderData)
 
       // Step 2: Process payment
-      const payment = await paymentService.charge(order);
+      const payment = await paymentService.charge(order)
 
       // Step 3: Update inventory
-      await inventoryService.reserve(order.items);
+      await inventoryService.reserve(order.items)
 
       // Step 4: Send confirmation
-      await emailService.sendConfirmation(order);
+      await emailService.sendConfirmation(order)
 
-      return order;
+      return order
     } catch (error) {
       // Compensating transactions (rollback)
-      await this.compensate(order, error);
-      throw error;
+      await this.compensate(order, error)
+      throw error
     }
   }
 
   async compensate(order: Order, error: Error) {
     // Reverse operations
-    await paymentService.refund(order.paymentId);
-    await inventoryService.release(order.items);
-    await orderService.cancel(order.id);
+    await paymentService.refund(order.paymentId)
+    await inventoryService.release(order.items)
+    await orderService.cancel(order.id)
   }
 }
 ```
 
 **Choreography (Event-based):**
+
 ```typescript
 // Each service listens and reacts to events
 
 // Order Service
-eventBus.subscribe('payment.completed', async (event) => {
-  await orderService.markAsPaid(event.orderId);
-  await eventBus.publish('order.paid', { orderId: event.orderId });
-});
+eventBus.subscribe('payment.completed', async event => {
+  await orderService.markAsPaid(event.orderId)
+  await eventBus.publish('order.paid', { orderId: event.orderId })
+})
 
 // Inventory Service
-eventBus.subscribe('order.paid', async (event) => {
-  await inventoryService.reserveItems(event.orderId);
-  await eventBus.publish('inventory.reserved', { orderId: event.orderId });
-});
+eventBus.subscribe('order.paid', async event => {
+  await inventoryService.reserveItems(event.orderId)
+  await eventBus.publish('inventory.reserved', { orderId: event.orderId })
+})
 
 // Compensation
-eventBus.subscribe('payment.failed', async (event) => {
-  await orderService.cancel(event.orderId);
-});
+eventBus.subscribe('payment.failed', async event => {
+  await orderService.cancel(event.orderId)
+})
 ```
 
 ---
 
 ## Pattern Selection Guide
 
-| Pattern | Complexity | Team Size | Scale | Best For |
-|---------|------------|-----------|-------|----------|
-| **Monolithic** | Low | 1-5 | Small | MVPs, simple apps |
-| **Microservices** | High | 10+ | Large | Complex domains, large teams |
-| **Serverless** | Medium | Any | Variable | Event-driven, cost-sensitive |
-| **Event-Driven** | Medium | 5+ | Large | Real-time, integrations |
-| **CQRS** | High | 10+ | Large | Complex reads/writes |
-| **Hexagonal** | Medium | 3+ | Any | Clean architecture |
-| **API Gateway** | Low | Any | Any | Microservices entry point |
-| **BFF** | Medium | 5+ | Medium | Multi-platform apps |
-| **Service Mesh** | High | 15+ | Large | Many microservices |
-| **Saga** | High | 10+ | Large | Distributed transactions |
+| Pattern           | Complexity | Team Size | Scale    | Best For                     |
+| ----------------- | ---------- | --------- | -------- | ---------------------------- |
+| **Monolithic**    | Low        | 1-5       | Small    | MVPs, simple apps            |
+| **Microservices** | High       | 10+       | Large    | Complex domains, large teams |
+| **Serverless**    | Medium     | Any       | Variable | Event-driven, cost-sensitive |
+| **Event-Driven**  | Medium     | 5+        | Large    | Real-time, integrations      |
+| **CQRS**          | High       | 10+       | Large    | Complex reads/writes         |
+| **Hexagonal**     | Medium     | 3+        | Any      | Clean architecture           |
+| **API Gateway**   | Low        | Any       | Any      | Microservices entry point    |
+| **BFF**           | Medium     | 5+        | Medium   | Multi-platform apps          |
+| **Service Mesh**  | High       | 15+       | Large    | Many microservices           |
+| **Saga**          | High       | 10+       | Large    | Distributed transactions     |
 
 ---
 
 ## Migration Strategies
 
 ### Monolith → Microservices (Strangler Fig)
+
 1. Identify bounded contexts
 2. Extract one service at a time
 3. Route traffic through API gateway
 4. Gradually deprecate monolith
 
 ### Adding Event-Driven to Existing System
+
 1. Add event bus (Kafka, RabbitMQ)
 2. Publish events for key actions
 3. Add event consumers gradually
@@ -833,4 +900,4 @@ eventBus.subscribe('payment.failed', async (event) => {
 
 ---
 
-*Next: Review [Security Guide](security-guide.md) for securing your architecture*
+_Next: Review [Security Guide](security-guide.md) for securing your architecture_

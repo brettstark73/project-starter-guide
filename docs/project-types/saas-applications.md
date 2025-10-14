@@ -17,7 +17,9 @@ Software as a Service (SaaS) applications are subscription-based software soluti
 ## SaaS Complexity Breakdown
 
 ### Level 3: SaaS MVP (2-8 weeks)
+
 **Target:** Validate product-market fit
+
 - Simple user authentication
 - Core feature set (1-3 features)
 - Basic subscription billing
@@ -25,7 +27,9 @@ Software as a Service (SaaS) applications are subscription-based software soluti
 - Simple admin panel
 
 ### Level 4: Growth-Stage SaaS (2-6 months)
+
 **Target:** Scale to 1K-10K users
+
 - Advanced user management
 - Multi-tier pricing plans
 - Team/organization features
@@ -34,7 +38,9 @@ Software as a Service (SaaS) applications are subscription-based software soluti
 - Customer support tools
 
 ### Level 5: Enterprise SaaS (6+ months)
+
 **Target:** Enterprise customers, high compliance
+
 - Multi-tenant architecture with isolation
 - Advanced security (SOC2, HIPAA, etc.)
 - Enterprise SSO integration
@@ -49,6 +55,7 @@ Software as a Service (SaaS) applications are subscription-based software soluti
 ### Level 3: MVP Stack
 
 #### Option A: Next.js Full-Stack
+
 ```
 Frontend: Next.js + Tailwind CSS
 Backend: Next.js API routes
@@ -63,6 +70,7 @@ Hosting: Vercel
 **Cons:** Scaling limitations, vendor lock-in
 
 #### Option B: Separated Frontend/Backend
+
 ```
 Frontend: React/Next.js + Tailwind
 Backend: Node.js (Express/Fastify) or Python (FastAPI)
@@ -76,6 +84,7 @@ Hosting: Frontend (Vercel) + Backend (Railway/Render)
 **Cons:** More complex deployment, higher costs
 
 ### Level 4: Growth Stack
+
 ```
 Frontend: Next.js/React + Component Library
 Backend: Node.js/Python microservices
@@ -89,6 +98,7 @@ Hosting: AWS/GCP with managed services
 ```
 
 ### Level 5: Enterprise Stack
+
 ```
 Frontend: React + Micro-frontends
 Backend: Microservices (Go/Java/C#)
@@ -108,6 +118,7 @@ Infrastructure: Kubernetes + service mesh
 ### 1. Authentication & User Management
 
 #### Basic Auth (Level 3)
+
 ```typescript
 // Using NextAuth.js
 import NextAuth from 'next-auth'
@@ -118,18 +129,19 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   ],
   callbacks: {
     session: async ({ session, token }) => {
       session.userId = token.sub
       return session
-    }
-  }
+    },
+  },
 })
 ```
 
 #### Advanced Auth (Level 4-5)
+
 - Multi-factor authentication (MFA)
 - Single Sign-On (SSO) with SAML/OIDC
 - Role-based access control (RBAC)
@@ -139,15 +151,18 @@ export default NextAuth({
 ### 2. Subscription Billing
 
 #### Basic Stripe Integration (Level 3)
+
 ```typescript
 // Create subscription
 const session = await stripe.checkout.sessions.create({
   customer: customerId,
   payment_method_types: ['card'],
-  line_items: [{
-    price: 'price_starter_plan',
-    quantity: 1,
-  }],
+  line_items: [
+    {
+      price: 'price_starter_plan',
+      quantity: 1,
+    },
+  ],
   mode: 'subscription',
   success_url: `${process.env.NEXTAUTH_URL}/dashboard?success=true`,
   cancel_url: `${process.env.NEXTAUTH_URL}/pricing?canceled=true`,
@@ -155,6 +170,7 @@ const session = await stripe.checkout.sessions.create({
 ```
 
 #### Advanced Billing (Level 4-5)
+
 - Usage-based billing and metering
 - Proration and plan changes
 - Failed payment handling
@@ -165,6 +181,7 @@ const session = await stripe.checkout.sessions.create({
 ### 3. Multi-tenancy Architecture
 
 #### Single-Tenant (Level 3)
+
 ```sql
 -- Simple approach: tenant_id in each table
 CREATE TABLE users (
@@ -183,6 +200,7 @@ CREATE TABLE projects (
 ```
 
 #### Multi-Tenant with Isolation (Level 4-5)
+
 ```typescript
 // Row Level Security (RLS) in PostgreSQL
 CREATE POLICY tenant_isolation ON users
@@ -201,6 +219,7 @@ const tenantMiddleware = (req, res, next) => {
 ## Essential SaaS Architecture Patterns
 
 ### 1. API Design
+
 ```typescript
 // RESTful API structure
 /api/v1/
@@ -214,6 +233,7 @@ const tenantMiddleware = (req, res, next) => {
 ```
 
 ### 2. Database Design
+
 ```sql
 -- Core SaaS tables structure
 CREATE TABLE tenants (
@@ -243,11 +263,12 @@ CREATE TABLE subscriptions (
 ```
 
 ### 3. Background Jobs
+
 ```typescript
 // Using Bull for job queues
 const emailQueue = new Bull('email processing')
 
-emailQueue.process('welcome-email', async (job) => {
+emailQueue.process('welcome-email', async job => {
   const { userId, tenantId } = job.data
   await sendWelcomeEmail(userId, tenantId)
 })
@@ -265,23 +286,24 @@ cron.schedule('0 0 * * *', () => {
 ## Pricing Strategy Implementation
 
 ### Freemium Model
+
 ```typescript
 const PLAN_LIMITS = {
   free: {
     projects: 3,
     storage_gb: 1,
-    api_calls_per_month: 1000
+    api_calls_per_month: 1000,
   },
   starter: {
     projects: 10,
     storage_gb: 10,
-    api_calls_per_month: 10000
+    api_calls_per_month: 10000,
   },
   professional: {
     projects: 100,
     storage_gb: 100,
-    api_calls_per_month: 100000
-  }
+    api_calls_per_month: 100000,
+  },
 }
 
 // Usage checking middleware
@@ -289,34 +311,35 @@ const checkUsageLimits = async (req, res, next) => {
   const tenant = await getTenant(req.tenantId)
   const usage = await getCurrentUsage(req.tenantId)
   const limits = PLAN_LIMITS[tenant.plan]
-  
+
   if (usage.projects >= limits.projects) {
-    return res.status(403).json({ 
-      error: 'Project limit reached. Please upgrade your plan.' 
+    return res.status(403).json({
+      error: 'Project limit reached. Please upgrade your plan.',
     })
   }
-  
+
   next()
 }
 ```
 
 ### Seat-Based Pricing
+
 ```typescript
 // Dynamic pricing calculation
 const calculatePrice = (plan: string, seats: number) => {
   const basePrices = {
     starter: 29,
     professional: 99,
-    enterprise: 299
+    enterprise: 299,
   }
-  
+
   const seatPrices = {
     starter: 5,
     professional: 15,
-    enterprise: 25
+    enterprise: 25,
   }
-  
-  return basePrices[plan] + (Math.max(0, seats - 1) * seatPrices[plan])
+
+  return basePrices[plan] + Math.max(0, seats - 1) * seatPrices[plan]
 }
 ```
 
@@ -325,27 +348,29 @@ const calculatePrice = (plan: string, seats: number) => {
 ## SaaS Metrics & Analytics
 
 ### Key Metrics to Track
+
 ```typescript
 // Core SaaS metrics
 interface SaaSMetrics {
   // Revenue metrics
-  mrr: number                    // Monthly Recurring Revenue
-  arr: number                    // Annual Recurring Revenue
-  ltv: number                    // Customer Lifetime Value
-  
+  mrr: number // Monthly Recurring Revenue
+  arr: number // Annual Recurring Revenue
+  ltv: number // Customer Lifetime Value
+
   // Customer metrics
-  churn_rate: number             // Monthly churn rate
-  retention_rate: number         // Customer retention
-  nps_score: number             // Net Promoter Score
-  
+  churn_rate: number // Monthly churn rate
+  retention_rate: number // Customer retention
+  nps_score: number // Net Promoter Score
+
   // Growth metrics
-  cac: number                    // Customer Acquisition Cost
-  growth_rate: number           // Month-over-month growth
-  conversion_rate: number       // Trial to paid conversion
+  cac: number // Customer Acquisition Cost
+  growth_rate: number // Month-over-month growth
+  conversion_rate: number // Trial to paid conversion
 }
 ```
 
 ### Analytics Implementation
+
 ```typescript
 // Custom analytics events
 const trackEvent = (userId: string, event: string, properties: any) => {
@@ -355,14 +380,17 @@ const trackEvent = (userId: string, event: string, properties: any) => {
     properties: {
       ...properties,
       timestamp: new Date().toISOString(),
-      tenant_id: properties.tenant_id
-    }
+      tenant_id: properties.tenant_id,
+    },
   })
 }
 
 // Usage examples
 trackEvent(userId, 'Feature Used', { feature: 'export-data' })
-trackEvent(userId, 'Subscription Upgraded', { from_plan: 'starter', to_plan: 'pro' })
+trackEvent(userId, 'Subscription Upgraded', {
+  from_plan: 'starter',
+  to_plan: 'pro',
+})
 trackEvent(userId, 'User Invited', { role: 'editor' })
 ```
 
@@ -371,6 +399,7 @@ trackEvent(userId, 'User Invited', { role: 'editor' })
 ## Scaling Considerations
 
 ### Database Scaling (Level 4)
+
 ```typescript
 // Read replicas for analytics queries
 const writeDB = new Pool({ host: 'primary-db' })
@@ -378,7 +407,9 @@ const readDB = new Pool({ host: 'read-replica' })
 
 const getUserStats = async (userId: string) => {
   // Use read replica for analytics
-  return readDB.query('SELECT * FROM user_analytics WHERE user_id = $1', [userId])
+  return readDB.query('SELECT * FROM user_analytics WHERE user_id = $1', [
+    userId,
+  ])
 }
 
 const createUser = async (userData: any) => {
@@ -388,6 +419,7 @@ const createUser = async (userData: any) => {
 ```
 
 ### Caching Strategy (Level 4-5)
+
 ```typescript
 // Redis caching
 const redis = new Redis(process.env.REDIS_URL)
@@ -395,8 +427,10 @@ const redis = new Redis(process.env.REDIS_URL)
 const getCachedUserPlan = async (tenantId: string) => {
   const cached = await redis.get(`tenant:${tenantId}:plan`)
   if (cached) return JSON.parse(cached)
-  
-  const plan = await db.query('SELECT plan FROM tenants WHERE id = $1', [tenantId])
+
+  const plan = await db.query('SELECT plan FROM tenants WHERE id = $1', [
+    tenantId,
+  ])
   await redis.setex(`tenant:${tenantId}:plan`, 3600, JSON.stringify(plan))
   return plan
 }
@@ -407,23 +441,20 @@ const getCachedUserPlan = async (tenantId: string) => {
 ## Deployment Strategies
 
 ### MVP Deployment (Level 3)
+
 ```yaml
-{  # Vercel deployment - vercel.json
-  "functions": {
-    "app/api/**/*.js": {
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "STRIPE_SECRET_KEY": "@stripe_secret"
-  }
+{
+  # Vercel deployment - vercel.json
+  'functions': { 'app/api/**/*.js': { 'maxDuration': 30 } },
+  'env':
+    { 'DATABASE_URL': '@database_url', 'STRIPE_SECRET_KEY': '@stripe_secret' },
 }
 ```
 
 ### Production Deployment (Level 4-5)
+
 ```yaml
-apiVersion: apps/v1  # Docker + Kubernetes
+apiVersion: apps/v1 # Docker + Kubernetes
 kind: Deployment
 metadata:
   name: saas-app
@@ -438,16 +469,16 @@ spec:
         app: saas-app
     spec:
       containers:
-      - name: app
-        image: your-registry/saas-app:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: database-url
+        - name: app
+          image: your-registry/saas-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: database-url
 ```
 
 ---
@@ -455,6 +486,7 @@ spec:
 ## Security Best Practices
 
 ### Level 3: Basic Security
+
 - HTTPS everywhere
 - Input validation and sanitization
 - SQL injection protection (use parameterized queries)
@@ -462,6 +494,7 @@ spec:
 - Rate limiting
 
 ### Level 4-5: Advanced Security
+
 - OAuth2 + OIDC implementation
 - API key management
 - Audit logging
@@ -474,6 +507,7 @@ spec:
 ## Example: Task Management SaaS
 
 ### Core Features
+
 1. **User Management:** Registration, login, profile
 2. **Team Management:** Create teams, invite members, roles
 3. **Project Management:** Create projects, assign tasks
@@ -481,6 +515,7 @@ spec:
 5. **Billing:** Stripe integration with usage limits
 
 ### Database Schema
+
 ```sql
 -- Simplified schema
 CREATE TABLE tenants (id, name, plan, status);
@@ -491,6 +526,7 @@ CREATE TABLE subscriptions (id, tenant_id, stripe_id, plan);
 ```
 
 ### API Endpoints
+
 ```
 POST /api/auth/register
 POST /api/auth/login
@@ -508,6 +544,7 @@ POST /api/billing/upgrade
 ## Launch Checklist
 
 ### Pre-Launch
+
 - [ ] Core features working and tested
 - [ ] Payment processing implemented
 - [ ] Terms of Service and Privacy Policy
@@ -516,6 +553,7 @@ POST /api/billing/upgrade
 - [ ] Staging environment testing
 
 ### Post-Launch
+
 - [ ] Customer feedback collection
 - [ ] Usage metrics monitoring
 - [ ] Performance optimization
@@ -528,9 +566,11 @@ POST /api/billing/upgrade
 ## ⚠️ Known Pitfalls & Gotchas
 
 ### 1. Over-engineering Early
+
 **Problem:** Building for scale before achieving product-market fit
 
 **Solution:** Start simple, add complexity as needed
+
 ```javascript
 // ❌ Don't start with microservices for MVP
 services/
@@ -550,15 +590,17 @@ app/
 ### 2. Authentication & Session Management
 
 **Common Issues:**
+
 - Storing passwords in plain text (NEVER do this)
 - Not handling email verification
 - Missing password reset flow
 - Session tokens not expiring
 
 **Solution:**
+
 ```typescript
 // ✅ Use battle-tested auth libraries
-import { auth } from '@/lib/auth'  // NextAuth.js, Supabase Auth, etc.
+import { auth } from '@/lib/auth' // NextAuth.js, Supabase Auth, etc.
 
 // ✅ Always hash passwords
 import bcrypt from 'bcrypt'
@@ -566,13 +608,14 @@ const hashedPassword = await bcrypt.hash(password, 10)
 
 // ✅ Set session expiration
 const session = await auth.createSession(user.id, {
-  expiresIn: '7d'
+  expiresIn: '7d',
 })
 ```
 
 ### 3. Payment Integration Gotchas
 
 **Failed Payments:**
+
 ```typescript
 // ❌ Don't just fail silently
 stripe.subscriptions.create(...)
@@ -593,6 +636,7 @@ app.post('/api/webhooks/stripe', async (req, res) => {
 ```
 
 **Subscription State Management:**
+
 - Handle trial expirations
 - Manage plan upgrades/downgrades (proration)
 - Process refunds correctly
@@ -603,6 +647,7 @@ app.post('/api/webhooks/stripe', async (req, res) => {
 **Problem:** Connection exhaustion in serverless environments
 
 **Solution:**
+
 ```typescript
 // ❌ Creating new connection per request
 export default async function handler(req, res) {
@@ -611,7 +656,7 @@ export default async function handler(req, res) {
 }
 
 // ✅ Use connection pooling
-import { pool } from '@/lib/db'  // Singleton connection pool
+import { pool } from '@/lib/db' // Singleton connection pool
 export default async function handler(req, res) {
   const client = await pool.connect()
   try {
@@ -625,6 +670,7 @@ export default async function handler(req, res) {
 ### 5. Environment Variables & Secrets
 
 **Common Mistakes:**
+
 ```env
 # ❌ Don't commit .env files or expose secrets
 STRIPE_SECRET_KEY=sk_live_...
@@ -635,6 +681,7 @@ DATABASE_URL=postgres://user:password@host/db
 ```
 
 **Validation:**
+
 ```typescript
 // ✅ Validate env vars at startup
 import { z } from 'zod'
@@ -653,14 +700,15 @@ const env = envSchema.parse(process.env)
 **Problem:** Free tier abuse, API overuse
 
 **Solution:**
+
 ```typescript
 // ✅ Implement rate limiting
 import rateLimit from 'express-rate-limit'
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,  // 15 minutes
-  max: 100,  // Limit each IP to 100 requests per window
-  message: 'Too many requests from this IP'
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per window
+  message: 'Too many requests from this IP',
 })
 
 app.use('/api/', limiter)
@@ -679,6 +727,7 @@ async function checkUsageLimit(userId: string, feature: string) {
 ### 7. Inadequate Monitoring
 
 **Don't Wait for Users to Report Bugs:**
+
 ```typescript
 // ✅ Use error tracking (Sentry, LogRocket)
 import * as Sentry from '@sentry/nextjs'
@@ -694,13 +743,14 @@ import { track } from '@/lib/analytics'
 track('subscription_created', {
   plan: 'pro',
   userId: user.id,
-  revenue: 29.99
+  revenue: 29.99,
 })
 ```
 
 ### 8. Poor Onboarding Experience
 
 **First Impression Matters:**
+
 - Reduce friction: minimal required fields
 - Show value quickly: pre-filled examples, demo data
 - Guide users: interactive tutorials, tooltips
@@ -709,6 +759,7 @@ track('subscription_created', {
 ### 9. Security Afterthoughts
 
 **Critical Security Checklist:**
+
 - [ ] SQL injection prevention (use parameterized queries)
 - [ ] XSS protection (sanitize user input)
 - [ ] CSRF tokens for forms
@@ -725,6 +776,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 ## ✅ Pre-Launch Verification Checklist
 
 ### Core Functionality
+
 - [ ] User registration and login work correctly
 - [ ] Email verification and password reset flows tested
 - [ ] Payment integration tested (test mode)
@@ -733,6 +785,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 - [ ] All critical user flows tested end-to-end
 
 ### Security
+
 - [ ] Environment variables not exposed to client
 - [ ] API endpoints have authentication checks
 - [ ] SQL injection prevention (parameterized queries)
@@ -743,6 +796,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 - [ ] Security headers configured (CSP, HSTS)
 
 ### Payments & Billing
+
 - [ ] Stripe webhooks configured and tested
 - [ ] Failed payment handling works
 - [ ] Subscription cancellation flow tested
@@ -752,6 +806,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 - [ ] Pricing displayed accurately
 
 ### Database & Infrastructure
+
 - [ ] Database backups configured
 - [ ] Connection pooling implemented
 - [ ] Indexes on frequently queried columns
@@ -759,6 +814,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 - [ ] Environment-specific configs (dev/staging/prod)
 
 ### Monitoring & Observability
+
 - [ ] Error tracking configured (Sentry, LogRocket)
 - [ ] Application monitoring (Vercel Analytics, etc.)
 - [ ] Key metrics tracked (signups, MRR, churn)
@@ -766,6 +822,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 - [ ] Log aggregation set up
 
 ### Performance
+
 - [ ] Lighthouse score > 80
 - [ ] API response times < 500ms
 - [ ] Database query optimization reviewed
@@ -773,6 +830,7 @@ See [Security Guide](../security-guide.md) for comprehensive best practices.
 - [ ] CDN configured for static assets
 
 ### Testing Commands
+
 ```bash
 # Run tests
 npm test
@@ -792,6 +850,7 @@ npm run start  # or serve production build
 ```
 
 ### Legal & Compliance
+
 - [ ] Privacy policy page
 - [ ] Terms of service page
 - [ ] Cookie consent (if applicable)
@@ -799,6 +858,7 @@ npm run start  # or serve production build
 - [ ] Data deletion process implemented
 
 ### Launch Readiness
+
 - [ ] Production database seeded (if needed)
 - [ ] DNS configured correctly
 - [ ] Email service configured (SendGrid, Resend, etc.)
@@ -837,4 +897,4 @@ npm outdated
 
 ---
 
-*Next: Explore [API development guide](apis.md) for building SaaS backends or check out [SaaS Level 1 Template](../../templates/saas-level-1/)*
+_Next: Explore [API development guide](apis.md) for building SaaS backends or check out [SaaS Level 1 Template](../../templates/saas-level-1/)_

@@ -13,9 +13,14 @@
     "check:links": "markdown-link-check README.md",
     "check:links:all": "find . -name '*.md' -not -path './node_modules/*' -not -path './templates/*' -exec markdown-link-check {} \\;",
     "validate": "npm run lint:md && npm run check:links",
-    "format": "prettier --write '**/*.{js,json,md}' --ignore-path .gitignore",
-    "format:check": "prettier --check '**/*.{js,json,md}' --ignore-path .gitignore",
-    "preview:template": "cd templates/about-me-page && python3 -m http.server 8000"
+    "format": "prettier --write '**/*.{js,json,md}' --ignore-path .prettierignore",
+    "format:check": "prettier --check '**/*.{js,json,md}' --ignore-path .prettierignore",
+    "preview:template": "cd templates/about-me-page && python3 -m http.server 8000",
+    "security:audit": "npm audit --audit-level high",
+    "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'][a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
+    "lint": "eslint . --ext .js,.jsx,.mjs,.cjs",
+    "lint:fix": "eslint . --ext .js,.jsx,.mjs,.cjs --fix",
+    "prepare": "husky"
   },
   "keywords": [
     "web-development",
@@ -34,6 +39,29 @@
   "devDependencies": {
     "markdownlint-cli": "^0.39.0",
     "markdown-link-check": "^3.12.1",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.10",
+    "eslint": "^9.12.0",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.9.0",
+    "stylelint": "^16.8.0",
+    "stylelint-config-standard": "^37.0.0"
+  },
+  "lint-staged": {
+    "package.json": [
+      "prettier --write"
+    ],
+    "!(templates)/**/*.{js,jsx,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "!(templates)/**/*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "volta": {
+    "node": "20.11.1",
+    "npm": "10.2.4"
   }
 }
