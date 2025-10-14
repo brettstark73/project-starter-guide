@@ -33,10 +33,7 @@ jobs:
         run: npm run format:check
 
       - name: ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx,.html --max-warnings=0
-
-      - name: Stylelint
-        run: npx stylelint "**/*.{css,scss,sass,less,pcss}" --allow-empty-input
+        run: npm run lint
 
       - name: Security audit
         run: npm audit --audit-level high
