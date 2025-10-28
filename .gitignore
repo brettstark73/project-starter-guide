@@ -50,3 +50,23 @@ coverage/
 # Temporary folders
 tmp/
 temp/
+
+# Quality Automation Tools
+.eslintcache
+.stylelintcache
+.prettierignore
+.husky/_/
+.lint-staged.json
+
+# Python Quality Tools
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.coverage
+htmlcov/
+.tox/
+.nox/

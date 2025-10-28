@@ -19,8 +19,22 @@ A modern, responsive personal portfolio website template perfect for developers,
 1. **Download the template**
 2. **Add your images** to the `assets/` folder (see assets/README.md)
 3. **Customize the content** in `index.html` - replace all `[Your ...]` placeholders
-4. **Update colors/styling** in `styles.css` if desired
-5. **Deploy** to your hosting platform
+4. **Setup Quality Automation** (Recommended)
+   ```bash
+   # Initialize as npm project for quality tools
+   npm init -y
+
+   # Add comprehensive quality automation
+   npx create-quality-automation@latest
+   npm install && npm run prepare
+
+   # Now you have: ESLint, Prettier, security scanning, pre-commit hooks
+   npm run lint        # Validate HTML/CSS/JS
+   npm run format      # Auto-format code
+   npm run security:audit  # Check for vulnerabilities
+   ```
+5. **Update colors/styling** in `styles.css` if desired
+6. **Deploy** to your hosting platform
 
 ## File Structure
 

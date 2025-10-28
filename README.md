@@ -5,6 +5,9 @@
 [![GitHub stars](https://img.shields.io/github/stars/brettstark73/project-starter-guide?style=flat-square)](https://github.com/brettstark73/project-starter-guide/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Production Ready](https://img.shields.io/badge/Production-Ready-green.svg)](https://github.com/brettstark73/project-starter-guide)
+[![Security First](https://img.shields.io/badge/Security-First-blue.svg)](https://github.com/brettstark73/project-starter-guide/blob/master/docs/security-guide.md)
+[![Quality Automation](https://img.shields.io/badge/Quality-Automation-orange.svg)](https://github.com/brettstark73/project-starter-guide/blob/master/docs/quality-automation.md)
 
 ## 🎯 Quick Start
 
@@ -51,6 +54,31 @@
 - **Hosting:** Multi-cloud, Kubernetes clusters
 - **Example:** Banking systems, large-scale platforms
 
+## 🔧 Quality Automation (New!)
+
+**Every template now includes optional quality automation setup:**
+
+```bash
+# One command adds comprehensive quality tools to any project
+npx create-quality-automation@latest
+npm install && npm run prepare
+```
+
+**What you get:**
+- 🔍 **ESLint + Security Rules** - Catch XSS, injections, hardcoded secrets
+- 🎨 **Prettier Formatting** - Consistent code style
+- 🔒 **Security Scanning** - Detect vulnerabilities automatically
+- 🪝 **Pre-commit Hooks** - Quality checks before every commit
+- 🤖 **GitHub Actions** - Automated CI/CD quality gates
+
+**Perfect for:**
+- TypeScript/JavaScript projects (auto-detected)
+- React, Next.js, Node.js, Express
+- Python projects (Black, Ruff, mypy, bandit)
+- CSS/SCSS with Stylelint
+
+[📖 **Full Quality Automation Guide**](docs/quality-automation.md)
+
 ## 🛠️ Technology Matrix
 
 ### Frontend Frameworks
@@ -88,6 +116,7 @@
 - [⚡ Technology Decision Matrix](docs/technology-matrix.md)
 - [🏗️ Architecture Patterns](docs/architecture-patterns.md)
 - [🔒 Security Considerations](docs/security-guide.md)
+- [🔧 Quality Automation Setup](docs/quality-automation.md)
 
 ### Templates & Examples
 - [🌐 About Me Page Template](templates/about-me-page/)

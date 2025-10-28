@@ -23,7 +23,19 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
    npm install
    ```
 
-2. **Environment Setup**
+2. **Setup Quality Automation** (Recommended)
+   ```bash
+   # Add comprehensive quality automation
+   npx create-quality-automation@latest
+   npm install && npm run prepare
+
+   # Critical for API security: linting, secret detection, input validation scanning
+   npm run lint              # TypeScript + security rules
+   npm run security:secrets  # Scan for hardcoded secrets
+   npm run security:audit    # Dependency vulnerability check
+   ```
+
+3. **Environment Setup**
    Create `.env` file:
    ```env
    NODE_ENV=development

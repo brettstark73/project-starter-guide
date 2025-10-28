@@ -1,0 +1,104 @@
+name: Quality Checks
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "No package-lock.json found; running npm install"
+            npm install
+          fi
+
+      - name: Prettier check
+        run: npm run format:check
+
+      - name: ESLint
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx,.html --max-warnings=0
+
+      - name: Stylelint
+        run: npx stylelint "**/*.{css,scss,sass,less,pcss}" --allow-empty-input
+
+      - name: Security audit
+        run: npm audit --audit-level high
+
+      - name: Check for hardcoded secrets
+        run: |
+          # Check for common secret patterns (excluding workflow files)
+          if grep -r -E "(password|secret|key|token).*[=:].*['\"][^'\"]{8,}" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.github || \
+             grep -r -E "-----BEGIN.*KEY-----" . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.github; then
+            echo "❌ Potential hardcoded secrets found"
+            exit 1
+          else
+            echo "✅ No hardcoded secrets detected"
+          fi
+
+      - name: Security pattern detection
+        run: |
+          # Check for XSS vulnerability patterns from WFHroulette
+          echo "🔍 Scanning for XSS vulnerability patterns..."
+
+          # Check for innerHTML with interpolation (dangerous pattern)
+          if grep -r -E "innerHTML.*\\\$\{" . --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules; then
+            echo "❌ Potential XSS: innerHTML with template literal interpolation found"
+            exit 1
+          fi
+
+          # Check for eval with interpolation
+          if grep -r -E "eval\\\(.*\\\$\{" . --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules; then
+            echo "❌ Potential code injection: eval with interpolation found"
+            exit 1
+          fi
+
+          # Check for document.write with interpolation
+          if grep -r -E "document\\\\.write.*\\\$\{" . --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --exclude-dir=node_modules; then
+            echo "❌ Potential XSS: document.write with interpolation found"
+            exit 1
+          fi
+
+          # Check for onclick handlers with interpolation
+          if grep -r -E "onclick.*=.*['\"].*\\\$\{" . --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --include="*.html" --exclude-dir=node_modules; then
+            echo "❌ Potential XSS: onclick handler with interpolation found"
+            exit 1
+          fi
+
+          echo "✅ No XSS vulnerability patterns detected"
+
+      - name: Input validation check
+        run: |
+          # Check for proper input validation patterns
+          echo "🔍 Checking for input validation patterns..."
+
+          # Set pipefail to catch grep failures properly
+          set -o pipefail
+
+          # Look for unvalidated user inputs in common patterns
+          if grep -r -E "(req\\.query|req\\.params|req\\.body)\\.[a-zA-Z_][a-zA-Z0-9_]*[^\\.]" . --include="*.js" --include="*.ts" --exclude-dir=node_modules | grep -v -E "(trim|toLowerCase|toUpperCase|parseInt|parseFloat|Number\\.isNaN|String|Boolean)" > /tmp/unvalidated_inputs.txt 2>/dev/null && [ -s /tmp/unvalidated_inputs.txt ]; then
+            echo "⚠️ Found potential unvalidated user inputs (review manually):"
+            head -5 /tmp/unvalidated_inputs.txt
+            echo "This is a warning, not a failure. Review these patterns manually."
+          else
+            echo "✅ No unvalidated user inputs detected"
+          fi
+
+          # Clean up temp file
+          rm -f /tmp/unvalidated_inputs.txt

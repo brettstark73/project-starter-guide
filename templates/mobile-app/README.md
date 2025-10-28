@@ -22,7 +22,19 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
    npm install
    ```
 
-2. **Start Development Server**
+2. **Setup Quality Automation** (Recommended)
+   ```bash
+   # Add comprehensive quality automation
+   npx create-quality-automation@latest
+   npm install && npm run prepare
+
+   # React Native + TypeScript quality checks
+   npm run lint        # ESLint for React Native + TypeScript
+   npm run format      # Prettier for JSX/TypeScript
+   npm run security:audit  # Mobile security vulnerability scanning
+   ```
+
+3. **Start Development Server**
    ```bash
    npm start
    ```

@@ -8,7 +8,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "security:audit": "npm audit --audit-level high",
+    "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'][a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
+    "lint:fix": "eslint . --ext .js,.jsx,.mjs,.cjs,.ts,.tsx,.html --fix && stylelint \"src/**/*.{css,scss,sass,less,pcss}\" --fix --allow-empty-input",
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -30,7 +36,16 @@
     "@types/react-dom": "^18.0.0",
     "typescript": "^5.0.0",
     "eslint": "^8.0.0",
-    "eslint-config-next": "^14.0.0"
+    "eslint-config-next": "^14.0.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.9.0",
+    "stylelint": "^16.8.0",
+    "stylelint-config-standard": "^37.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.9.0",
+    "@typescript-eslint/parser": "^8.9.0"
   },
   "keywords": [
     "saas",
@@ -41,5 +56,28 @@
     "starter"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "lint-staged": {
+    "package.json": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx,mjs,cjs,html}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "src/**/*.{css,scss,sass,less,pcss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "volta": {
+    "node": "20.11.1",
+    "npm": "10.2.4"
+  }
 }
