@@ -24,7 +24,19 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    yarn install
    ```
 
-2. **Environment Setup**
+2. **Setup Quality Automation** (Recommended)
+   ```bash
+   # Add comprehensive quality automation
+   npx create-quality-automation@latest
+   npm install && npm run prepare
+
+   # Now you have: TypeScript linting, Prettier, security scanning, pre-commit hooks
+   npm run lint        # ESLint + Stylelint for Next.js/Tailwind
+   npm run format      # Auto-format TypeScript/CSS
+   npm run security:audit  # Security vulnerability scanning
+   ```
+
+3. **Environment Setup**
    Create `.env.local` file:
    ```env
    NEXTAUTH_SECRET=your-secret-key
