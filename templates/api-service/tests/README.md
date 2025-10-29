@@ -12,9 +12,10 @@ This API service includes a complete testing setup with Jest and Supertest for i
 - **No Port Conflicts**: Tests don't start HTTP listener, preventing hanging
 
 ### Database Testing
-- **Mocked by Default**: Prisma client is mocked in `tests/setup.ts`
+- **Intelligent Mocking**: Prisma client is mocked in `tests/setup.ts` with realistic return values
 - **No External Dependencies**: Tests run without requiring PostgreSQL
 - **Fast Execution**: In-memory mocks for quick test runs
+- **Realistic Responses**: Mocks return proper user objects for JWT generation and validation
 
 ## Running Tests
 

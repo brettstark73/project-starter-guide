@@ -50,6 +50,20 @@ describe('Auth Endpoints', () => {
       expect(response.status).toBe(401);
       expect(response.body).toHaveProperty('error', 'Invalid credentials');
     });
+
+    it('should return 400 for invalid email format', async () => {
+      const credentials = {
+        email: 'invalid-email',
+        password: 'somepassword'
+      };
+
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send(credentials);
+
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('error');
+    });
   });
 
   describe('GET /health', () => {
