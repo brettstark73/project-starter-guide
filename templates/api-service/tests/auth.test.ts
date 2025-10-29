@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/index';
+import app from '../src/app';
 
 describe('Auth Endpoints', () => {
   describe('POST /api/auth/register', () => {

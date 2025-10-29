@@ -158,7 +158,7 @@ CORS_ORIGIN=http://localhost:3000
 
 ### Testing
 ```bash
-# Run all tests
+# Run all tests (uses mocked database - no setup required)
 npm test
 
 # Run tests in watch mode
@@ -167,6 +167,12 @@ npm run test:watch
 # Run specific test file
 npm test -- auth.test.ts
 ```
+
+**Test Setup:**
+- Tests use **mocked Prisma client** (no database required)
+- **Server isolation**: Tests import app without starting HTTP listener
+- **Fast execution**: No external dependencies
+- See `tests/README.md` for advanced database testing options
 
 ## Deployment
 
