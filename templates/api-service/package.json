@@ -4,7 +4,7 @@
   "description": "A production-ready REST API starter with Express.js, TypeScript, and PostgreSQL",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "jest",
