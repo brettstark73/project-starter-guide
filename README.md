@@ -79,6 +79,29 @@ npm install && npm run prepare
 
 [📖 **Full Quality Automation Guide**](docs/quality-automation.md)
 
+## 🔍 Automated Dependency Monitoring (New!)
+
+**Stay secure and up-to-date automatically:**
+
+- 🤖 **Dependabot Integration** - Weekly dependency updates with auto-merge for security patches
+- 🔍 **Critical Framework Monitoring** - Weekly checks for Next.js, React, Expo, Express updates
+- ⚡ **Real-time Security Scanning** - Automatic vulnerability detection on every commit
+- 📊 **Detailed Reporting** - GitHub Issues created for critical updates requiring attention
+
+**What gets monitored:**
+- Security vulnerabilities (immediate alerts)
+- Framework updates (Next.js 14→15, React 18→19)
+- Deprecated packages (migration guidance)
+- Breaking changes (review required)
+
+[📖 **Dependency Monitoring Guide**](docs/dependency-monitoring.md)
+
+## 📦 Template Quick-Start
+
+Need the commands for a specific starter? Jump straight to the consolidated checklist in [docs/template-quickstart.md](docs/template-quickstart.md). Each template README links back to that guide and now includes runnable example tests plus sample environment files to help you launch faster.
+
+Baseline lint/build/test smoke tests run automatically via [`.github/workflows/template-smoke-tests.yml`](.github/workflows/template-smoke-tests.yml); use `scripts/template-smoke-test.sh` locally to reproduce the CI run.
+
 ## 🛠️ Technology Matrix
 
 ### Frontend Frameworks
@@ -139,6 +162,10 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - 🐛 [Report bugs](https://github.com/brettstark73/project-starter-guide/issues)
 - 💡 [Suggest features](https://github.com/brettstark73/project-starter-guide/issues)
 - 📖 [Improve documentation](https://github.com/brettstark73/project-starter-guide/pulls)
+
+## 🔒 Open Source & Pro Roadmap
+
+The core guidance and starter templates remain free under MIT. We are actively exploring a pro tier for teams that need turnkey CI/CD, advanced automation, and vertical-specific blueprints—track the discussions in [docs/quality-automation-improvements.md](docs/quality-automation-improvements.md) and reach out if you want early access. Security is still a first-class goal: start with [docs/security-guide.md](docs/security-guide.md) and the new `.env.example` files bundled with every server-side template before you deploy.
 
 ## 📜 License
 

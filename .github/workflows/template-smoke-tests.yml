@@ -1,0 +1,54 @@
+name: Template Smoke Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template: [saas-level-1, api-service, mobile-app]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: templates/${{ matrix.template }}/package-lock.json
+
+      - name: Quick Security Check
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Running quick security audit for ${{ matrix.template }}..."
+          npm audit --audit-level=high --production || echo "⚠️ High/critical vulnerabilities found - check dependency-audit workflow for details"
+
+      - name: Run smoke test
+        env:
+          CI: true
+        run: |
+          bash scripts/template-smoke-test.sh "${{ matrix.template }}"
+
+      - name: Check for Critical Outdated Dependencies
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Quick check for majorly outdated dependencies..."
+
+          # Install npm-check-updates for quick check
+          npm install -g npm-check-updates
+
+          # Check for major version updates only
+          outdated=$(ncu --target major --filter "next,react,typescript,expo,express" --format json || echo '{}')
+
+          if [[ "$outdated" != "{}" ]]; then
+            echo "ℹ️ Major updates available for critical dependencies in ${{ matrix.template }}"
+            echo "Run 'npm run dependency-audit' workflow for detailed analysis"
+          else
+            echo "✅ Critical dependencies are reasonably current"
+          fi

@@ -1,0 +1,190 @@
+name: Critical Dependency Audit
+
+on:
+  # Run weekly on Monday mornings
+  schedule:
+    - cron: '0 9 * * MON'
+  # Allow manual triggering
+  workflow_dispatch:
+  # Run on dependency-related PRs
+  pull_request:
+    paths:
+      - '**/package.json'
+      - '**/package-lock.json'
+      - '.github/dependabot.yml'
+
+jobs:
+  audit-dependencies:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template:
+          - saas-level-1
+          - api-service
+          - mobile-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: templates/${{ matrix.template }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: templates/${{ matrix.template }}
+        run: npm ci --audit=false
+
+      - name: Security Audit
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Running security audit for ${{ matrix.template }}..."
+          # Run audit and capture results
+          if ! npm audit --audit-level=moderate --json > audit-results.json 2>/dev/null; then
+            echo "⚠️ Security vulnerabilities found!"
+            echo "```json" >> $GITHUB_STEP_SUMMARY
+            cat audit-results.json >> $GITHUB_STEP_SUMMARY
+            echo "```" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "✅ No security vulnerabilities found"
+          fi
+
+      - name: Check Critical Framework Updates
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Checking for critical framework updates..."
+
+          # Install npm-check-updates
+          npm install -g npm-check-updates
+
+          # Define critical packages based on template type
+          if [[ "${{ matrix.template }}" == "saas-level-1" ]]; then
+            CRITICAL_PACKAGES="next,react,react-dom,typescript,@types/react,@types/react-dom,next-auth,stripe,@stripe/stripe-js"
+          elif [[ "${{ matrix.template }}" == "api-service" ]]; then
+            CRITICAL_PACKAGES="express,typescript,@types/express,prisma,@prisma/client,jsonwebtoken,bcryptjs"
+          elif [[ "${{ matrix.template }}" == "mobile-app" ]]; then
+            CRITICAL_PACKAGES="expo,react,react-native,typescript,@types/react,@react-navigation/native"
+          fi
+
+          echo "📦 Checking packages: $CRITICAL_PACKAGES"
+
+          # Check for updates
+          ncu_output=$(ncu --filter "$CRITICAL_PACKAGES" --format json || echo '{}')
+          echo "$ncu_output" > updates-available.json
+
+          # Parse and report updates
+          if [[ "$ncu_output" != "{}" ]]; then
+            echo "🔄 Critical updates available for ${{ matrix.template }}:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Package | Current | Latest |" >> $GITHUB_STEP_SUMMARY
+            echo "|---------|---------|--------|" >> $GITHUB_STEP_SUMMARY
+
+            # Parse JSON and create table
+            node -e "
+              const updates = JSON.parse('$ncu_output');
+              Object.entries(updates).forEach(([pkg, version]) => {
+                const current = require('./package.json').dependencies[pkg] || require('./package.json').devDependencies[pkg] || 'unknown';
+                console.log(\`| \${pkg} | \${current} | \${version} |\`);
+              });
+            " >> $GITHUB_STEP_SUMMARY
+
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "💡 Consider updating these critical dependencies." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ All critical dependencies are up to date for ${{ matrix.template }}"
+          fi
+
+      - name: Check for Deprecated Packages
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Checking for deprecated packages..."
+
+          # Get list of deprecated packages
+          npm ls --depth=0 --json > package-list.json
+
+          # Check each package for deprecation
+          deprecated_found=false
+          while IFS= read -r package; do
+            if [[ ! -z "$package" ]]; then
+              dep_info=$(npm view "$package" --json 2>/dev/null || echo '{}')
+              if echo "$dep_info" | jq -e '.deprecated' >/dev/null 2>&1; then
+                if [[ "$deprecated_found" == "false" ]]; then
+                  echo "⚠️ Deprecated packages found in ${{ matrix.template }}:" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  deprecated_found=true
+                fi
+                deprecated_msg=$(echo "$dep_info" | jq -r '.deprecated')
+                echo "- **$package**: $deprecated_msg" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+          done < <(jq -r '.dependencies // {} | keys[]' package-list.json)
+
+          if [[ "$deprecated_found" == "false" ]]; then
+            echo "✅ No deprecated packages found in ${{ matrix.template }}"
+          fi
+
+      - name: Generate Dependency Report
+        working-directory: templates/${{ matrix.template }}
+        if: always()
+        run: |
+          echo "## 📊 Dependency Report for ${{ matrix.template }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total Dependencies:** $(jq '.dependencies // {} | length' package.json)" >> $GITHUB_STEP_SUMMARY
+          echo "**Dev Dependencies:** $(jq '.devDependencies // {} | length' package.json)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Node.js Version Required:** $(jq -r '.engines.node // "Not specified"' package.json)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+  notify-on-critical-updates:
+    needs: audit-dependencies
+    runs-on: ubuntu-latest
+    if: failure() && github.event_name == 'schedule'
+
+    steps:
+      - name: Create Issue for Critical Updates
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🚨 Critical Dependency Updates Required - ${new Date().toISOString().split('T')[0]}`;
+            const body = `
+            ## Critical Dependency Issues Found
+
+            The automated dependency audit has found critical issues that require attention:
+
+            - Security vulnerabilities detected
+            - Critical framework updates available
+            - Deprecated packages in use
+
+            **Please review the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for detailed information.**
+
+            ### Next Steps:
+            1. Review the dependency audit results
+            2. Update critical dependencies
+            3. Test templates after updates
+            4. Update documentation if needed
+
+            This issue was created automatically by the dependency audit workflow.
+            `;
+
+            // Check if issue already exists
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'critical-dependencies',
+              state: 'open'
+            });
+
+            if (existingIssues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['critical-dependencies', 'dependencies', 'urgent']
+              });
+            }
