@@ -64,6 +64,8 @@ npm start          # ❌ Server startup validation missing
 
 ## 🚀 **Enhanced Quality Automation Strategy**
 
+> ✅ Implemented: `scripts/template-smoke-test.sh` and `.github/workflows/template-smoke-tests.yml` now provide a baseline for automated lint/build/test coverage across templates. The sections below outline the remaining stretch goals for a fully automated quality pipeline.
+
 ### **Phase 1: Immediate Smoke Testing**
 
 Add to `create-quality-automation`:

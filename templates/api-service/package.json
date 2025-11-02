@@ -10,7 +10,15 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix"
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "security:audit": "npm audit --audit-level high",
+    "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'][a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
+    "lighthouse:ci": "lhci autorun",
+    "lighthouse:upload": "lhci upload",
+    "validate:all": "npm run security:audit",
+    "prepare": "husky"
   },
   "dependencies": {
     "express": "^4.18.0",
@@ -44,7 +52,15 @@
     "supertest": "^6.3.0",
     "eslint": "^8.52.0",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0"
+    "@typescript-eslint/parser": "^6.9.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.9.0",
+    "stylelint": "^16.8.0",
+    "stylelint-config-standard": "^37.0.0",
+    "@lhci/cli": "^0.14.0"
   },
   "keywords": [
     "api",
@@ -55,5 +71,28 @@
     "starter"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "lint-staged": {
+    "package.json": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx,mjs,cjs,html}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "**/*.{css,scss,sass,less,pcss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "volta": {
+    "node": "20.11.1",
+    "npm": "10.2.4"
+  }
 }

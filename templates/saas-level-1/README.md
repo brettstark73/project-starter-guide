@@ -4,6 +4,8 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
 
 **Complexity Level:** 2 | **Timeline:** 1-2 weeks | **Tech Stack:** Next.js + TypeScript + Tailwind + Stripe
 
+> Need the one-page checklist? See the shared [Template Quick-Start Guide](../../docs/template-quickstart.md#saas-level-1-nextjs).
+
 ## Features
 
 - 🚀 **Next.js 14** with App Router and TypeScript
@@ -37,7 +39,11 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    ```
 
 3. **Environment Setup**
-   Create `.env.local` file:
+   Copy the sample environment file and update values as needed:
+   ```bash
+   cp .env.example .env.local
+   ```
+
    ```env
    NEXTAUTH_SECRET=your-secret-key
    NEXTAUTH_URL=http://localhost:3000
@@ -59,6 +65,11 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    ```
 
 5. **Open** [http://localhost:3000](http://localhost:3000)
+
+6. **Run Component Tests**
+   ```bash
+   npm test
+   ```
 
 ## Project Structure
 

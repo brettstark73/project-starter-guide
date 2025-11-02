@@ -81,18 +81,18 @@ npm install && npm run prepare
 
 ## 🔍 Automated Dependency Monitoring (New!)
 
-**Stay secure and up-to-date automatically:**
+**Basic dependency monitoring built-in:**
 
-- 🤖 **Dependabot Integration** - Weekly dependency updates with auto-merge for security patches
-- 🔍 **Critical Framework Monitoring** - Weekly checks for Next.js, React, Expo, Express updates
-- ⚡ **Real-time Security Scanning** - Automatic vulnerability detection on every commit
-- 📊 **Detailed Reporting** - GitHub Issues created for critical updates requiring attention
+- 🤖 **Dependabot Integration** - Weekly dependency updates with security patch auto-merge
+- 🔍 **Framework-Specific Grouping** - Related packages updated together (React ecosystem, etc.)
+- 📊 **Security Scanning** - Built-in npm audit on template builds
+- ⚡ **GitHub Actions Integration** - Dependency monitoring in CI/CD workflows
 
 **What gets monitored:**
-- Security vulnerabilities (immediate alerts)
-- Framework updates (Next.js 14→15, React 18→19)
-- Deprecated packages (migration guidance)
-- Breaking changes (review required)
+- Security vulnerabilities (weekly scans)
+- Framework updates (Next.js, React, Expo, Express)
+- Package grouping for cleaner PRs
+- Basic dependency health checks
 
 [📖 **Dependency Monitoring Guide**](docs/dependency-monitoring.md)
 

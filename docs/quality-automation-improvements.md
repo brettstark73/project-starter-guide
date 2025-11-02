@@ -2,6 +2,8 @@
 
 > **Analysis and improvements based on security review findings**
 
+> **Status update:** Repository now includes automated smoke testing via `scripts/template-smoke-test.sh` and the `Template Smoke Tests` GitHub workflow. Remaining items below capture the next wave of validation enhancements.
+
 ## 🚨 **Issues That Weren't Caught**
 
 ### **1. Missing Import Files**

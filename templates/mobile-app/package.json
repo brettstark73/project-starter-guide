@@ -13,7 +13,16 @@
     "submit:android": "eas submit --platform android",
     "submit:ios": "eas submit --platform ios",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "security:audit": "npm audit --audit-level high",
+    "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'][a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
+    "lighthouse:ci": "lhci autorun",
+    "lighthouse:upload": "lhci upload",
+    "validate:all": "npm run security:audit",
+    "lint:fix": "eslint . --ext .js,.jsx,.mjs,.cjs,.ts,.tsx,.html --fix && stylelint \"**/*.{css,scss,sass,less,pcss}\" --fix --allow-empty-input",
+    "prepare": "husky"
   },
   "dependencies": {
     "expo": "~49.0.15",
@@ -43,7 +52,17 @@
     "eslint-config-expo": "^7.0.0",
     "jest": "^29.2.1",
     "jest-expo": "~49.0.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.9.0",
+    "stylelint": "^16.8.0",
+    "stylelint-config-standard": "^37.0.0",
+    "@lhci/cli": "^0.14.0",
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^12.5.1"
   },
   "keywords": [
     "react-native",
@@ -53,5 +72,38 @@
     "starter"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "lint-staged": {
+    "package.json": [
+      "prettier --write"
+    ],
+    "**/*.{js,jsx,ts,tsx,mjs,cjs,html}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "**/*.{css,scss,sass,less,pcss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "volta": {
+    "node": "20.11.1",
+    "npm": "10.2.4"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "@testing-library/react-native/cleanup-after-each",
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native|@react-navigation|@react-native-community|expo(nent)?|@expo|expo-status-bar|@expo/vector-icons|expo-constants|expo-linking|expo-font|expo-splash-screen|react-native-gesture-handler|react-native-reanimated|react-native-safe-area-context|react-native-screens)/)"
+    ]
+  }
 }

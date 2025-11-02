@@ -14,7 +14,8 @@
     "security:audit": "npm audit --audit-level high",
     "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'][a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
     "lint:fix": "eslint . --ext .js,.jsx,.mjs,.cjs,.ts,.tsx,.html --fix && stylelint \"src/**/*.{css,scss,sass,less,pcss}\" --fix --allow-empty-input",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest run"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -46,7 +47,12 @@
     "stylelint": "^16.8.0",
     "stylelint-config-standard": "^37.0.0",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
-    "@typescript-eslint/parser": "^8.9.0"
+    "@typescript-eslint/parser": "^8.9.0",
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^22.1.0",
+    "vitest": "^1.6.0"
   },
   "keywords": [
     "saas",

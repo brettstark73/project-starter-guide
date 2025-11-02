@@ -97,9 +97,9 @@ npm audit --audit-level=moderate
 ## ⚡ Smoke Test Integration
 
 ### Quick Security Check
-Every commit runs:
+Template builds include security audits:
 ```bash
-npm audit --audit-level=high --production
+npm audit --audit-level=high --production || echo "⚠️ High/critical vulnerabilities found"
 ```
 
 ### Critical Dependency Check
@@ -108,9 +108,9 @@ Checks for major version updates of:
 - Core dependencies (TypeScript, Express)
 
 ### Non-blocking Warnings
-- Informs about available updates
-- Doesn't fail the build
-- Guides to full audit workflow
+- Reports available major updates
+- Provides informational output only
+- Guides to comprehensive dependency audit for details
 
 ## 📊 Monitoring Dashboard
 

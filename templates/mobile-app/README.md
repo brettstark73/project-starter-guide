@@ -4,6 +4,8 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
 
 **Complexity Level:** 2 | **Timeline:** 2-3 days | **Tech Stack:** React Native + Expo + TypeScript
 
+> Need the one-page checklist? See the shared [Template Quick-Start Guide](../../docs/template-quickstart.md#mobile-app-expo--react-native).
+
 ## Features
 
 - 📱 **React Native** with Expo SDK for cross-platform development
@@ -67,7 +69,6 @@ mobile-app/
 │   └── utils/               # Utility functions
 ├── App.tsx                  # App entry point
 ├── package.json
-├── app.json                 # Expo configuration
 └── README.md
 ```
 
@@ -107,7 +108,7 @@ mobile-app/
 ## Customization
 
 ### 1. App Configuration
-Edit `app.json` to customize:
+Add an Expo configuration file (`app.config.ts` or `app.json`) to customize:
 - App name and description
 - Icon and splash screen
 - App store information
@@ -193,8 +194,10 @@ npm test
 npm test -- --watch
 
 # Run specific test
-npm test HomeScreen.test.tsx
+npm test -- App.test.tsx
 ```
+
+The template includes starter tests in `__tests__/` that verify the navigation shell and profile screen layout. Use them as a reference when adding new screens.
 
 ### Example Test
 ```typescript

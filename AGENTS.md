@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-Root docs (`README.md`, `CONTRIBUTING.md`) define scope—align any additions with them. Store deep-dives inside `docs/`, grouped by topic such as architecture, security, quality, or `project-types/`. Implementation examples live in `templates/`: `saas-level-1/` (Next.js SaaS), `api-service/` (Express + Prisma), `mobile-app/` (Expo React Native), and `about-me-page/` (static site). Keep template assets alongside their code and mirror existing layout when adding new guides or starters.
+Root docs (`README.md`, `CONTRIBUTING.md`) define scope—align any additions with them. Store deep-dives inside `docs/`, grouped by topic such as architecture, security, quality, or `project-types/`. Use `docs/template-quickstart.md` for the shared checklist that each template README references. Implementation examples live in `templates/`: `saas-level-1/` (Next.js SaaS), `api-service/` (Express + Prisma), `mobile-app/` (Expo React Native), and `about-me-page/` (static site). Keep template assets alongside their code and mirror existing layout when adding new guides or starters.
 
 ## Build, Test, and Development Commands
 Run commands from the relevant template directory. SaaS starter: `npm install`, `npm run dev`, `npm run build`, plus `npm run security:audit` after dependency updates. API service: `npm run dev` (nodemon), `npm run build` to emit `dist/`, `npm run start` for production. Mobile app: `npm install`, `npm run start` for Expo, with platform builds via `npm run build:android` / `npm run build:ios`. Document any new workflow in the template README.

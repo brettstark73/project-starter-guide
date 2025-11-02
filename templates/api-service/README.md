@@ -4,6 +4,8 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
 
 **Complexity Level:** 2-3 | **Timeline:** 3-5 days | **Tech Stack:** Express + TypeScript + PostgreSQL + Prisma
 
+> Need the one-page checklist? See the shared [Template Quick-Start Guide](../../docs/template-quickstart.md#api-service-express--prisma).
+
 ## Features
 
 - 🚀 **Express.js** with TypeScript for type safety
@@ -36,7 +38,11 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
    ```
 
 3. **Environment Setup**
-   Create `.env` file:
+   Copy the sample environment file and update values as needed:
+   ```bash
+   cp .env.example .env
+   ```
+
    ```env
    NODE_ENV=development
    PORT=3000
