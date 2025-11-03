@@ -2,10 +2,62 @@
   "extends": [
     "next/core-web-vitals"
   ],
+  "plugins": ["security"],
+  "env": {
+    "es6": true,
+    "node": true
+  },
   "rules": {
     "no-eval": "error",
     "no-implied-eval": "error",
     "no-new-func": "error",
-    "no-script-url": "error"
-  }
+    "no-script-url": "error",
+    "security/detect-object-injection": "warn",
+    "security/detect-non-literal-regexp": "error",
+    "security/detect-unsafe-regex": "error",
+    "security/detect-buffer-noassert": "error",
+    "security/detect-child-process": "warn",
+    "security/detect-disable-mustache-escape": "error",
+    "security/detect-eval-with-expression": "error",
+    "security/detect-no-csrf-before-method-override": "error",
+    "security/detect-non-literal-fs-filename": "warn",
+    "security/detect-non-literal-require": "error",
+    "security/detect-possible-timing-attacks": "error",
+    "security/detect-pseudoRandomBytes": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint", "security"],
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_|token|user" }],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "prefer-const": "error",
+        "no-var": "error",
+        "no-eval": "error",
+        "no-implied-eval": "error",
+        "no-new-func": "error",
+        "no-script-url": "error"
+      }
+    },
+    {
+      "files": ["**/__tests__/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-explicit-any": "warn"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    "*.js"
+  ]
 }

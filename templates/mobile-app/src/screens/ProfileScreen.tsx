@@ -17,7 +17,7 @@ interface Props {
   navigation: ProfileScreenNavigationProp;
 }
 
-export default function ProfileScreen({ navigation }: Props) {
+export default function ProfileScreen({ navigation: _navigation }: Props) {
   const handleSignOut = () => {
     Alert.alert(
       'Sign Out',

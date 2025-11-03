@@ -11,6 +11,7 @@ export default defineConfig({
     globals: true,
     setupFiles: [resolve(__dirname, 'vitest.setup.tsx')],
     coverage: {
+      provider: 'v8',
       reporter: ['text', 'lcov'],
     },
   },
