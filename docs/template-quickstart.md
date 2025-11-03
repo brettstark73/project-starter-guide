@@ -33,6 +33,7 @@ This cheat sheet keeps the essential commands for each starter in one place. Use
 - Install & prepare:
   ```bash
   npm install
+  cp .env.example .env
   ```
 - Development: `npm start` (plus `npm run ios` / `npm run android` / `npm run web`)
 - Quality checks: `npm run lint`, `npm test`

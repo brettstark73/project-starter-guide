@@ -1,14 +1,16 @@
 import { Request, Response, NextFunction } from 'express'
 
 export const errorHandler = (
-  err: any,
+  err: Error & { statusCode?: number; code?: number; errors?: Record<string, { message: string }> },
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   // Default error
-  let error = { ...err }
-  error.message = err.message
+  let error = {
+    message: err.message,
+    statusCode: err.statusCode || 500
+  }
 
   // Log error
   console.error(err)
@@ -27,7 +29,7 @@ export const errorHandler = (
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val: any) => val.message).join(', ')
+    const message = Object.values(err.errors || {}).map((val) => val.message).join(', ')
     error = { message, statusCode: 400 }
   }
 

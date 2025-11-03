@@ -9,10 +9,14 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: [resolve(__dirname, 'vitest.setup.ts')],
+    setupFiles: [resolve(__dirname, 'vitest.setup.tsx')],
     coverage: {
       reporter: ['text', 'lcov'],
     },
+  },
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: 'react',
   },
   resolve: {
     alias: {

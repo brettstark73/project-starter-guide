@@ -97,9 +97,9 @@ npm audit --audit-level=moderate
 ## ⚡ Smoke Test Integration
 
 ### Quick Security Check
-Template builds include security audits:
+Template smoke tests include security audits via `scripts/template-smoke-test.sh`:
 ```bash
-npm audit --audit-level=high --production || echo "⚠️ High/critical vulnerabilities found"
+npm audit --audit-level=high --production
 ```
 
 ### Critical Dependency Check
@@ -154,6 +154,45 @@ gh workflow run dependency-audit.yml
 # Via GitHub web interface
 # Actions → Dependency Audit → Run workflow
 ```
+
+## 📅 Quarterly Dependency Review Process
+
+| Quarter Window | Kickoff Date | Owners | Scope |
+| --- | --- | --- | --- |
+| Q1 (Jan–Mar) | January 6, 2026 | SaaS → Frontend lead<br>API → Backend lead<br>Mobile → Mobile lead | Next.js, React, TypeScript, Prisma, Express, Expo SDK, React Native |
+| Q2 (Apr–Jun) | April 7, 2026 | Same rotation | Include database clients (PostgreSQL), auth libs (NextAuth, JWT), and Stripe SDKs |
+| Q3 (Jul–Sep) | July 7, 2026 | Same rotation | Review navigation stacks, Expo managed packages, Prisma studio tooling |
+| Q4 (Oct–Dec) | October 6, 2026 | Same rotation | Align with holiday freezes; prep long-term support upgrade plans |
+
+### Step-by-Step Checklist
+
+1. **Prep Week (Monday prior to kickoff)**  
+   - Export dependency inventories with `npx npm-check-updates --target minor --jsonUpgraded > .ncu-report.json` for each template.  
+   - Capture framework release notes:  
+     - Next.js / React (SaaS)  
+     - Prisma / Express / jsonwebtoken (API)  
+     - Expo SDK / React Native / React Navigation (Mobile)
+
+2. **Kickoff Day (Dates above)**  
+   - Hold a 30-minute sync to assign upgrade candidates and confirm testing windows.  
+   - Log issues titled `chore(deps): Q# YYYY upgrade – <template>` referencing the relevant `.ncu-report.json`.  
+   - Prioritize security advisories surfaced by `npm audit --production`.
+
+3. **Execution Week**  
+   - Pilot upgrades on feature branches, running `scripts/template-smoke-test.sh <template>` plus the full template CI workflow.  
+   - Update `.env.example` and README setup instructions if new environment variables are introduced.  
+   - Record migrations or breaking changes in `docs/releases/`.
+
+4. **Closeout (Within 10 business days)**  
+   - Merge completed upgrades or document deferrals with justification and planned revisit date.  
+   - Archive findings in `docs/technology-matrix.md` under each ecosystem column.  
+   - Post summary in the monthly update email (see operations cadence) and tag stakeholders.
+
+### Review Artifacts
+
+- `reports/<template>/q#-YYYY-ncu.json` — stored alongside upgrade PRs for traceability.  
+- GitHub Project board column **Quarterly Dependency Review** tracking issue status.  
+- Meeting notes attached to `docs/releases/` when major upgrades land.
 
 ## 🔧 Configuration
 

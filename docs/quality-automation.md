@@ -336,6 +336,21 @@ npx create-quality-automation@latest
 # - Glob patterns for all packages
 ```
 
+### **Smoke Test Integration**
+
+Kick off the CLI _and_ run the curated smoke-test suite in one step:
+```bash
+volta run node scripts/create-quality-automation-runner.mjs --smoke=saas-level-1
+```
+
+- Omit a value (`--smoke`) or pass `all` to exercise every template (`saas-level-1`, `api-service`, `mobile-app`).
+- Provide a comma-delimited list to target specific templates:  
+  `volta run node scripts/create-quality-automation-runner.mjs --smoke=api-service,mobile-app`
+- Additional flags are forwarded to `create-quality-automation`; for example:  
+  `volta run node scripts/create-quality-automation-runner.mjs --smoke --update`
+
+The runner invokes `scripts/template-smoke-test.sh` so local results match the GitHub Actions smoke workflow.
+
 ### **Existing Projects**
 
 Safe to run on existing projects:

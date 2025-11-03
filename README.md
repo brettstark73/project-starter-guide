@@ -64,6 +64,11 @@ npx create-quality-automation@latest
 npm install && npm run prepare
 ```
 
+```bash
+# Optionally chain the CLI with template smoke tests
+volta run node scripts/create-quality-automation-runner.mjs --smoke
+```
+
 **What you get:**
 - 🔍 **ESLint + Security Rules** - Catch XSS, injections, hardcoded secrets
 - 🎨 **Prettier Formatting** - Consistent code style

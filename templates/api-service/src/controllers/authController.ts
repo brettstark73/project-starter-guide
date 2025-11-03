@@ -47,14 +47,14 @@ export const register = async (req: Request, res: Response) => {
       { expiresIn: '7d' }
     )
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'User created successfully',
       user,
       token
     })
   } catch (error) {
     console.error('Registration error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
 
@@ -92,7 +92,7 @@ export const login = async (req: Request, res: Response) => {
       data: { lastLogin: new Date() }
     })
 
-    res.json({
+    return res.json({
       message: 'Login successful',
       user: {
         id: user.id,
@@ -103,7 +103,7 @@ export const login = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.error('Login error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }
 
@@ -126,9 +126,9 @@ export const getProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User not found' })
     }
 
-    res.json({ user })
+    return res.json({ user })
   } catch (error) {
     console.error('Get profile error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: 'Internal server error' })
   }
 }

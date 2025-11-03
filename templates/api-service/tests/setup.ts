@@ -37,12 +37,19 @@ jest.mock('@prisma/client', () => ({
 
         // Return only selected fields if select is specified
         if (select) {
-          const result = {};
-          Object.keys(select).forEach(key => {
-            if (select[key] && newUser[key] !== undefined) {
-              result[key] = newUser[key];
+          const typedSelect = select as Partial<
+            Record<keyof typeof newUser, boolean>
+          >;
+          const result: Partial<typeof newUser> = {};
+
+          (Object.keys(typedSelect) as Array<keyof typeof newUser>).forEach(
+            key => {
+              if (typedSelect[key] && newUser[key] !== undefined) {
+                result[key] = newUser[key];
+              }
             }
-          });
+          );
+
           return Promise.resolve(result);
         }
 

@@ -71,6 +71,9 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    npm test
    ```
 
+7. **Optional CI Setup**
+   Use the sample workflow in `.github/workflows/ci.yml` as a starting point for GitHub Actions.
+
 ## Project Structure
 
 ```

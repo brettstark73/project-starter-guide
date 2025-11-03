@@ -38,6 +38,15 @@ run_if_script_exists() {
   fi
 }
 
+run_security_audit() {
+  echo "🔐 Running security audit"
+  if has_script "security:audit"; then
+    npm run security:audit
+  else
+    npm audit --audit-level=high --production
+  fi
+}
+
 # Provide safe defaults for templates that need environment variables
 if [[ "$TEMPLATE_PATH" == "saas-level-1" ]]; then
   export NEXTAUTH_SECRET="test-secret"
@@ -52,6 +61,7 @@ run_if_script_exists lint "npm run lint"
 run_if_script_exists "type-check" "npm run type-check"
 run_if_script_exists test "npm test -- --runInBand"
 run_if_script_exists build "npm run build"
+run_security_audit
 
 popd >/dev/null
 

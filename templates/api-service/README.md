@@ -67,6 +67,9 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
    curl http://localhost:3000/health
    ```
 
+6. **Optional CI Setup**
+   Copy `.github/workflows/ci.yml` to your repository root to enable GitHub Actions lint/test/build checks.
+
 ## Project Structure
 
 ```

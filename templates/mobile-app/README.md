@@ -24,7 +24,12 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
    npm install
    ```
 
-2. **Setup Quality Automation** (Recommended)
+2. **Copy Environment Variables**
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Setup Quality Automation** (Recommended)
    ```bash
    # Add comprehensive quality automation
    npx create-quality-automation@latest
@@ -36,12 +41,12 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
    npm run security:audit  # Mobile security vulnerability scanning
    ```
 
-3. **Start Development Server**
+4. **Start Development Server**
    ```bash
    npm start
    ```
 
-3. **Run on Device/Simulator**
+5. **Run on Device/Simulator**
    ```bash
    # iOS Simulator
    npm run ios
@@ -53,7 +58,7 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
    npm run web
    ```
 
-4. **Scan QR Code** with Expo Go app on your device
+6. **Scan QR Code** with Expo Go app on your device
 
 ## Project Structure
 
@@ -198,6 +203,9 @@ npm test -- App.test.tsx
 ```
 
 The template includes starter tests in `__tests__/` that verify the navigation shell and profile screen layout. Use them as a reference when adding new screens.
+
+### Continuous Integration
+Use the example workflow at `.github/workflows/ci.yml` to wire linting and tests into GitHub Actions.
 
 ### Example Test
 ```typescript
