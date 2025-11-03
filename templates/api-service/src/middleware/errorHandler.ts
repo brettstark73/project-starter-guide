@@ -6,8 +6,8 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  // Default error
-  let error = {
+  // Default error response
+  let errorResponse = {
     message: err.message,
     statusCode: err.statusCode || 500
   }
@@ -18,23 +18,23 @@ export const errorHandler = (
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {
     const message = 'Resource not found'
-    error = { message, statusCode: 404 }
+    errorResponse = { message, statusCode: 404 }
   }
 
   // Mongoose duplicate key
   if (err.code === 11000) {
     const message = 'Duplicate field value entered'
-    error = { message, statusCode: 400 }
+    errorResponse = { message, statusCode: 400 }
   }
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     const message = Object.values(err.errors || {}).map((val) => val.message).join(', ')
-    error = { message, statusCode: 400 }
+    errorResponse = { message, statusCode: 400 }
   }
 
-  res.status(error.statusCode || 500).json({
+  res.status(errorResponse.statusCode || 500).json({
     success: false,
-    error: error.message || 'Server Error'
+    error: errorResponse.message || 'Server Error'
   })
 }
