@@ -3,17 +3,23 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
 import { validateRegister, validateLogin } from '../utils/validation'
+import type { AuthenticatedRequest } from '../types/express'
 
 const prisma = new PrismaClient()
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { error } = validateRegister(req.body)
+    const { error, value } = validateRegister(req.body)
     if (error) {
       return res.status(400).json({ error: error.details[0].message })
     }
 
-    const { email, password, name } = req.body
+    const { email, password, name } = value
+
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not configured')
+      return res.status(500).json({ error: 'Authentication not configured correctly' })
+    }
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } })
@@ -41,11 +47,9 @@ export const register = async (req: Request, res: Response) => {
     })
 
     // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET!,
-      { expiresIn: '7d' }
-    )
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    })
 
     return res.status(201).json({
       message: 'User created successfully',
@@ -60,12 +64,17 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { error } = validateLogin(req.body)
+    const { error, value } = validateLogin(req.body)
     if (error) {
       return res.status(400).json({ error: error.details[0].message })
     }
 
-    const { email, password } = req.body
+    const { email, password } = value
+
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not configured')
+      return res.status(500).json({ error: 'Authentication not configured correctly' })
+    }
 
     // Find user
     const user = await prisma.user.findUnique({ where: { email } })
@@ -80,11 +89,9 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET!,
-      { expiresIn: '7d' }
-    )
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    })
 
     // Update last login
     await prisma.user.update({
@@ -107,12 +114,14 @@ export const login = async (req: Request, res: Response) => {
   }
 }
 
-export const getProfile = async (req: Request, res: Response) => {
+export const getProfile = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const userId = (req as any).userId
+    if (typeof req.userId !== 'number') {
+      return res.status(401).json({ error: 'Unauthorized' })
+    }
 
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: req.userId },
       select: {
         id: true,
         email: true,

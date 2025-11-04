@@ -20,8 +20,12 @@ fi
 
 pushd "$PROJECT_DIR" >/dev/null
 
+export npm_config_cache="$PROJECT_DIR/.npm-cache"
+mkdir -p "$npm_config_cache"
+export HUSKY=0
+
 echo "📦 Installing dependencies..."
-npm install --no-audit --no-fund
+npm ci --no-audit --no-fund
 
 has_script() {
   node -e "const pkg = require('./package.json'); process.exit(pkg.scripts && Object.prototype.hasOwnProperty.call(pkg.scripts, '$1') ? 0 : 1);"
@@ -32,7 +36,7 @@ run_if_script_exists() {
   local description=$2
   if has_script "$script"; then
     echo "▶️  $description"
-    npm run "$script"
+    HUSKY=0 npm run "$script"
   else
     echo "⏭️  Skipping $description (script not defined)"
   fi
@@ -41,7 +45,7 @@ run_if_script_exists() {
 run_security_audit() {
   echo "🔐 Running security audit"
   if has_script "security:audit"; then
-    npm run security:audit
+    HUSKY=0 npm run security:audit
   else
     npm audit --audit-level=high --production
   fi

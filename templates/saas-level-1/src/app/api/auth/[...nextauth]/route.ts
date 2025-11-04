@@ -4,33 +4,73 @@ import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
-const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
+const providers: NextAuthOptions['providers'] = []
+
+if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
+  providers.push(
     GitHubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    })
+  )
+} else {
+  console.warn(
+    '[auth] GitHub provider disabled – GITHUB_ID and/or GITHUB_SECRET not set.'
+  )
+}
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  )
+} else {
+  console.warn(
+    '[auth] Google provider disabled – GOOGLE_CLIENT_ID and/or GOOGLE_CLIENT_SECRET not set.'
+  )
+}
+
+const hasEmailConfig =
+  process.env.EMAIL_SERVER_HOST &&
+  process.env.EMAIL_SERVER_PORT &&
+  process.env.EMAIL_SERVER_USER &&
+  process.env.EMAIL_SERVER_PASSWORD &&
+  process.env.EMAIL_FROM
+
+if (hasEmailConfig) {
+  providers.push(
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
+        port: Number(process.env.EMAIL_SERVER_PORT),
         auth: {
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
       from: process.env.EMAIL_FROM,
-    }),
-  ],
+    })
+  )
+} else {
+  console.warn(
+    '[auth] Email provider disabled – EMAIL_SERVER_* variables not fully configured.'
+  )
+}
+
+if (providers.length === 0) {
+  throw new Error(
+    'No authentication providers are configured. Set environment variables for at least one provider.'
+  )
+}
+
+const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers,
   callbacks: {
     async session({ session, token, user }) {
       // Send properties to the client

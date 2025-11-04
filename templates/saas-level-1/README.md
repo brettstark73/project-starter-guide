@@ -21,10 +21,10 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
 
 1. **Clone and Install**
    ```bash
-   npm install
-   # or
-   yarn install
+   npm install        # or: npm ci
    ```
+
+   > `npm install` (or `npm ci`) automatically runs `prisma generate`. If you skip the install step (e.g., using a cached node_modules), run `npx prisma generate` manually before building.
 
 2. **Setup Quality Automation** (Recommended)
    ```bash
@@ -53,25 +53,24 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    STRIPE_WEBHOOK_SECRET=whsec_...
    ```
 
-3. **Database Setup**
+4. **Database Setup**
    ```bash
-   npx prisma generate
    npx prisma db push
    ```
 
-4. **Run Development Server**
+5. **Run Development Server**
    ```bash
    npm run dev
    ```
 
-5. **Open** [http://localhost:3000](http://localhost:3000)
+6. **Open** [http://localhost:3000](http://localhost:3000)
 
-6. **Run Component Tests**
+7. **Run Component Tests**
    ```bash
    npm test
    ```
 
-7. **Optional CI Setup**
+8. **Optional CI Setup**
    Use the sample workflow in `.github/workflows/ci.yml` as a starting point for GitHub Actions.
 
 ## Project Structure

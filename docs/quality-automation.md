@@ -350,6 +350,7 @@ volta run node scripts/create-quality-automation-runner.mjs --smoke=saas-level-1
   `volta run node scripts/create-quality-automation-runner.mjs --smoke --update`
 
 The runner invokes `scripts/template-smoke-test.sh` so local results match the GitHub Actions smoke workflow.
+- The smoke script now runs `npm ci` with an isolated cache inside each template and disables Husky hooks (`HUSKY=0`), which avoids permission issues in sandboxes and keeps installs reproducible. Override `npm_config_cache` before invoking the runner if you want a shared cache.
 
 ### **Existing Projects**
 

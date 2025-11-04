@@ -6,14 +6,14 @@ This cheat sheet keeps the essential commands for each starter in one place. Use
 - Location: `templates/saas-level-1/`
 - Install & prepare:
   ```bash
-  npm install
+  npm install        # or: npm ci
   cp .env.example .env.local
-  npx prisma generate
   ```
 - Development: `npm run dev`
 - Quality checks: `npm run lint`, `npm run type-check`, `npm test`
 - Production build: `npm run build && npm run start`
 - Docs: [templates/saas-level-1/README.md](../templates/saas-level-1/README.md)
+  - `npm install` (or `npm ci`) automatically runs `prisma generate`. Run `npx prisma generate` manually only if you skipped the install step.
 
 ## API Service (Express + Prisma)
 - Location: `templates/api-service/`
