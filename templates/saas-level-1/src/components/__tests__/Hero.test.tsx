@@ -16,10 +16,11 @@ describe('Hero component', () => {
   it('includes call-to-action links', () => {
     render(<Hero />)
 
-    expect(screen.getByRole('link', { name: /start building/i })).toHaveAttribute(
-      'href',
-      '/signup'
-    )
-    expect(screen.getByRole('button', { name: /watch demo/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /start building/i })
+    ).toHaveAttribute('href', '/signup')
+    expect(
+      screen.getByRole('button', { name: /watch demo/i })
+    ).toBeInTheDocument()
   })
 })

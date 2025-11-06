@@ -20,6 +20,7 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
 ## Quick Start
 
 1. **Clone and Install**
+
    ```bash
    npm install        # or: npm ci
    ```
@@ -27,6 +28,7 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    > `npm install` (or `npm ci`) automatically runs `prisma generate`. If you skip the install step (e.g., using a cached node_modules), run `npx prisma generate` manually before building.
 
 2. **Setup Quality Automation** (Recommended)
+
    ```bash
    # Add comprehensive quality automation
    npx create-quality-automation@latest
@@ -40,6 +42,7 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
 
 3. **Environment Setup**
    Copy the sample environment file and update values as needed:
+
    ```bash
    cp .env.example .env.local
    ```
@@ -54,11 +57,13 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
    ```
 
 4. **Database Setup**
+
    ```bash
    npx prisma db push
    ```
 
 5. **Run Development Server**
+
    ```bash
    npm run dev
    ```
@@ -66,6 +71,7 @@ A production-ready SaaS starter template built with Next.js 14, TypeScript, Tail
 6. **Open** [http://localhost:3000](http://localhost:3000)
 
 7. **Run Component Tests**
+
    ```bash
    npm test
    ```
@@ -100,30 +106,38 @@ saas-level-1/
 ## Customization
 
 ### 1. Branding
+
 - Update `SaaS Starter` in components to your product name
 - Modify colors in `tailwind.config.js`
 - Replace logo and favicon in `public/`
 
 ### 2. Content
+
 - Edit hero section text in `src/components/Hero.tsx`
 - Update features in `src/components/Features.tsx`
 - Modify pricing plans in `src/components/Pricing.tsx`
 
 ### 3. Styling
+
 The template uses Tailwind CSS with custom components:
+
 - Primary color: `primary-600` (blue by default)
 - Component classes: `.btn`, `.card`, `.feature-card`
 - Responsive breakpoints: `sm:`, `md:`, `lg:`, `xl:`
 
 ### 4. Authentication
+
 Set up authentication providers in `src/app/api/auth/[...nextauth]/route.ts`:
+
 - Google OAuth
 - GitHub OAuth
 - Email/Password
 - Magic links
 
 ### 5. Payments
+
 Configure Stripe products and prices:
+
 - Create products in Stripe Dashboard
 - Update price IDs in pricing component
 - Set up webhooks for subscription management
@@ -131,17 +145,20 @@ Configure Stripe products and prices:
 ## Additional Pages to Create
 
 ### Authentication Pages
+
 - `/signup` - User registration
 - `/login` - User login
 - `/dashboard` - User dashboard
 
 ### Marketing Pages
+
 - `/features` - Detailed features page
 - `/pricing` - Expanded pricing page
 - `/about` - Company information
 - `/contact` - Contact form
 
 ### Legal Pages
+
 - `/privacy` - Privacy policy
 - `/terms` - Terms of service
 - `/cookies` - Cookie policy
@@ -149,17 +166,20 @@ Configure Stripe products and prices:
 ## Deployment
 
 ### Vercel (Recommended)
+
 1. Push to GitHub repository
 2. Connect to Vercel
 3. Add environment variables
 4. Deploy automatically
 
 ### Railway
+
 1. Connect GitHub repository
 2. Add environment variables
 3. Deploy with automatic builds
 
 ### Other Platforms
+
 - Netlify (static export)
 - AWS Amplify
 - Docker deployment

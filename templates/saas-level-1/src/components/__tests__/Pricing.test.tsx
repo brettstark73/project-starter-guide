@@ -7,6 +7,8 @@ describe('Pricing component', () => {
 
     expect(screen.getByText(/Most Popular/i)).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /Pro/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Contact Sales/i })).toHaveAttribute('href', '/signup')
+    expect(
+      screen.getByRole('link', { name: /Contact Sales/i })
+    ).toHaveAttribute('href', '/signup')
   })
 })

@@ -7,11 +7,13 @@ This API service includes a complete testing setup with Jest and Supertest for i
 ## Test Configuration
 
 ### Server Setup
+
 - **App Export**: Tests import `src/app.ts` (Express app without server startup)
 - **Server Isolation**: `src/index.ts` only starts server when run directly
 - **No Port Conflicts**: Tests don't start HTTP listener, preventing hanging
 
 ### Database Testing
+
 - **Intelligent Mocking**: Prisma client is mocked in `tests/setup.ts` with realistic return values
 - **No External Dependencies**: Tests run without requiring PostgreSQL
 - **Fast Execution**: In-memory mocks for quick test runs
@@ -42,15 +44,18 @@ tests/
 ## Database Testing Options
 
 ### Option 1: Mocked Prisma (Default)
+
 - ✅ Fast execution
 - ✅ No external dependencies
 - ✅ Isolated tests
 - ❌ Doesn't test actual database logic
 
 ### Option 2: SQLite In-Memory (Advanced)
+
 For more realistic database testing:
 
 1. **Update Prisma schema:**
+
    ```prisma
    datasource db {
      provider = "sqlite"
@@ -59,6 +64,7 @@ For more realistic database testing:
    ```
 
 2. **Install SQLite support:**
+
    ```bash
    npm install --save-dev sqlite3
    ```
@@ -70,6 +76,7 @@ For more realistic database testing:
    ```
 
 ### Option 3: Test Database (Production-like)
+
 For full integration testing:
 
 1. **Setup test PostgreSQL database**
@@ -80,16 +87,15 @@ For full integration testing:
 ## Example Test
 
 ```typescript
-import request from 'supertest';
-import app from '../src/app';
+import request from "supertest";
+import app from "../src/app";
 
-describe('API Endpoints', () => {
-  it('should return health status', async () => {
-    const response = await request(app)
-      .get('/health');
+describe("API Endpoints", () => {
+  it("should return health status", async () => {
+    const response = await request(app).get("/health");
 
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe('OK');
+    expect(response.body.status).toBe("OK");
   });
 });
 ```

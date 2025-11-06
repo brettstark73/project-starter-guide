@@ -4,7 +4,8 @@ const features = [
   {
     icon: Shield,
     title: 'Secure by Default',
-    description: 'Built-in authentication, data encryption, and security best practices.',
+    description:
+      'Built-in authentication, data encryption, and security best practices.',
   },
   {
     icon: Zap,
@@ -32,7 +33,8 @@ export function Features() {
             Everything You Need to Succeed
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our starter template includes all the essential features to build and scale your SaaS business.
+            Our starter template includes all the essential features to build
+            and scale your SaaS business.
           </p>
         </div>
 
@@ -45,9 +47,7 @@ export function Features() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 {feature.title}
               </h3>
-              <p className="text-gray-600">
-                {feature.description}
-              </p>
+              <p className="text-gray-600">{feature.description}</p>
             </div>
           ))}
         </div>

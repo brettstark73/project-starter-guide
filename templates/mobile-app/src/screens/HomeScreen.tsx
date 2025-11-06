@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
 
 interface Props {
   navigation: HomeScreenNavigationProp;
@@ -42,7 +42,7 @@ export default function HomeScreen({ navigation }: Props) {
         <View style={styles.actions}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate("Profile")}
           >
             <Text style={styles.buttonText}>Go to Profile</Text>
           </TouchableOpacity>
@@ -59,34 +59,34 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: "#f8fafc",
   },
   content: {
     padding: 20,
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 40,
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1e293b',
+    fontWeight: "bold",
+    color: "#1e293b",
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748b',
-    textAlign: 'center',
+    color: "#64748b",
+    textAlign: "center",
     lineHeight: 24,
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
     padding: 20,
     marginBottom: 24,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#1e293b',
+    fontWeight: "600",
+    color: "#1e293b",
     marginBottom: 16,
   },
   featureList: {
@@ -106,35 +106,35 @@ const styles = StyleSheet.create({
   },
   feature: {
     fontSize: 16,
-    color: '#475569',
+    color: "#475569",
     lineHeight: 24,
   },
   actions: {
     gap: 12,
   },
   button: {
-    backgroundColor: '#3b82f6',
+    backgroundColor: "#3b82f6",
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   secondaryButton: {
     borderWidth: 2,
-    borderColor: '#3b82f6',
+    borderColor: "#3b82f6",
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   secondaryButtonText: {
-    color: '#3b82f6',
+    color: "#3b82f6",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

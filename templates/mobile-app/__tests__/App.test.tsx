@@ -1,42 +1,38 @@
-import { jest } from '@jest/globals'
-import React from 'react'
-import { render } from '@testing-library/react-native'
-import App from '../App'
+import { jest } from "@jest/globals";
+import React from "react";
+import { render } from "@testing-library/react-native";
+import App from "../App";
 
-jest.mock('react-native-safe-area-context', () => {
-  const React = require('react')
+jest.mock("react-native-safe-area-context", () => {
+  const React = require("react");
 
   return {
     SafeAreaProvider: ({ children }: { children: React.ReactNode }) => (
       <>{children}</>
     ),
-    SafeAreaView: ({
-      children,
-    }: {
-      children: React.ReactNode
-    }) => children,
+    SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
     useSafeAreaInsets: () => ({
       top: 0,
       right: 0,
       bottom: 0,
       left: 0,
     }),
-  }
-})
+  };
+});
 
-jest.mock('@react-navigation/native', () => {
-  const React = require('react')
+jest.mock("@react-navigation/native", () => {
+  const React = require("react");
 
   return {
     NavigationContainer: ({ children }: { children: React.ReactNode }) => (
       <>{children}</>
     ),
-  }
-})
+  };
+});
 
-jest.mock('@react-navigation/stack', () => {
-  const React = require('react')
-  const { jest: testJest } = require('@jest/globals')
+jest.mock("@react-navigation/stack", () => {
+  const React = require("react");
+  const { jest: testJest } = require("@jest/globals");
 
   return {
     createStackNavigator: () => {
@@ -44,26 +40,24 @@ jest.mock('@react-navigation/stack', () => {
         component: Component,
         ...rest
       }: {
-        component: React.ComponentType<any>
-        name: string
-        options?: Record<string, unknown>
-      }) => (
-        <Component navigation={{ navigate: testJest.fn() }} {...rest} />
-      )
+        component: React.ComponentType<any>;
+        name: string;
+        options?: Record<string, unknown>;
+      }) => <Component navigation={{ navigate: testJest.fn() }} {...rest} />;
 
       const Navigator = ({ children }: { children: React.ReactNode }) => (
         <>{children}</>
-      )
+      );
 
-      return { Screen, Navigator }
+      return { Screen, Navigator };
     },
-  }
-})
+  };
+});
 
-describe('App entry', () => {
-  it('renders the home screen title', async () => {
-    const { findByText } = render(<App />)
+describe("App entry", () => {
+  it("renders the home screen title", async () => {
+    const { findByText } = render(<App />);
 
-    await expect(findByText('Welcome to Your App')).resolves.toBeTruthy()
-  })
-})
+    await expect(findByText("Welcome to Your App")).resolves.toBeTruthy();
+  });
+});

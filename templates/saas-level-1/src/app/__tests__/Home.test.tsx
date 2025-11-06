@@ -6,7 +6,9 @@ describe('Home page', () => {
     render(<Home />)
 
     expect(screen.getByRole('navigation')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /everything you need to succeed/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /everything you need to succeed/i })
+    ).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /pricing/i })).toBeInTheDocument()
     expect(screen.getByText(/© 2024 saas starter/i)).toBeInTheDocument()
   })

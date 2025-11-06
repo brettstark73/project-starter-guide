@@ -1,38 +1,40 @@
-import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
 export const authenticateToken = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ error: 'Access token required' })
+    return res.status(401).json({ error: "Access token required" });
   }
 
   if (!process.env.JWT_SECRET) {
-    console.error('JWT_SECRET is not configured')
-    return res.status(500).json({ error: 'Authentication not configured correctly' })
+    console.error("JWT_SECRET is not configured");
+    return res
+      .status(500)
+      .json({ error: "Authentication not configured correctly" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userIdCandidate =
-      typeof decoded === 'object' && decoded !== null && 'userId' in decoded
+      typeof decoded === "object" && decoded !== null && "userId" in decoded
         ? (decoded as Record<string, unknown>).userId
-        : undefined
+        : undefined;
 
-    const userId = Number(userIdCandidate)
+    const userId = Number(userIdCandidate);
     if (Number.isNaN(userId)) {
-      return res.status(403).json({ error: 'Invalid token payload' })
+      return res.status(403).json({ error: "Invalid token payload" });
     }
 
-    req.userId = userId
-    return next()
+    req.userId = userId;
+    return next();
   } catch (error) {
-    return res.status(403).json({ error: 'Invalid or expired token' })
+    return res.status(403).json({ error: "Invalid or expired token" });
   }
-}
+};

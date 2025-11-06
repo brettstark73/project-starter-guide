@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
-type ProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Profile'>;
+type ProfileScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
 
 interface Props {
   navigation: ProfileScreenNavigationProp;
@@ -19,17 +22,17 @@ interface Props {
 
 export default function ProfileScreen({ navigation: _navigation }: Props) {
   const handleSignOut = () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Sign Out', style: 'destructive', onPress: () => {
+    Alert.alert("Sign Out", "Are you sure you want to sign out?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Sign Out",
+        style: "destructive",
+        onPress: () => {
           // Add sign out logic here
-          console.log('User signed out');
-        }},
-      ]
-    );
+          console.log("User signed out");
+        },
+      },
+    ]);
   };
 
   return (
@@ -87,44 +90,44 @@ export default function ProfileScreen({ navigation: _navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: "#f8fafc",
   },
   content: {
     padding: 20,
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 32,
   },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#3b82f6',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#3b82f6",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 16,
   },
   avatarText: {
-    color: 'white',
+    color: "white",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1e293b',
+    fontWeight: "bold",
+    color: "#1e293b",
     marginBottom: 4,
   },
   email: {
     fontSize: 16,
-    color: '#64748b',
+    color: "#64748b",
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
     marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -135,39 +138,39 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#1e293b',
+    fontWeight: "600",
+    color: "#1e293b",
     padding: 20,
     paddingBottom: 10,
   },
   menuItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
+    borderBottomColor: "#f1f5f9",
   },
   menuText: {
     fontSize: 16,
-    color: '#475569',
+    color: "#475569",
   },
   chevron: {
     fontSize: 20,
-    color: '#94a3b8',
+    color: "#94a3b8",
   },
   signOutButton: {
-    backgroundColor: '#ef4444',
+    backgroundColor: "#ef4444",
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   signOutText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

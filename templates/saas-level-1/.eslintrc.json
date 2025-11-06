@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "next/core-web-vitals"
-  ],
+  "extends": ["next/core-web-vitals"],
   "plugins": ["security"],
   "env": {
     "es6": true,
@@ -35,7 +33,10 @@
         "sourceType": "module"
       },
       "rules": {
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_|token|user" }],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_|token|user" }
+        ],
         "@typescript-eslint/no-explicit-any": "warn",
         "prefer-const": "error",
         "no-var": "error",
@@ -51,13 +52,13 @@
         "jest": true
       },
       "rules": {
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
         "@typescript-eslint/no-explicit-any": "warn"
       }
     }
   ],
-  "ignorePatterns": [
-    "node_modules/",
-    "*.js"
-  ]
+  "ignorePatterns": ["node_modules/", "*.js"]
 }

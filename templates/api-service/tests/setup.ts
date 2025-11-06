@@ -1,22 +1,22 @@
 // Test setup file
-process.env.NODE_ENV = 'test';
-process.env.JWT_SECRET = 'test-secret-key';
+process.env.NODE_ENV = "test";
+process.env.JWT_SECRET = "test-secret-key";
 
 // Use SQLite in-memory database for tests (no external dependencies)
-process.env.DATABASE_URL = 'file:./test.db';
+process.env.DATABASE_URL = "file:./test.db";
 
 // Mock Prisma for tests that don't need real database
 // This provides realistic return values that match what the real Prisma client returns
 const mockUser = {
   id: 1,
-  email: 'test@example.com',
-  name: 'Test User',
-  password: '$2a$12$hashedpassword', // Mock bcrypt hash
-  createdAt: new Date('2023-01-01T00:00:00Z'),
+  email: "test@example.com",
+  name: "Test User",
+  password: "$2a$12$hashedpassword", // Mock bcrypt hash
+  createdAt: new Date("2023-01-01T00:00:00Z"),
   lastLogin: null,
 };
 
-jest.mock('@prisma/client', () => ({
+jest.mock("@prisma/client", () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({
     user: {
       // For registration: return null (user doesn't exist)
@@ -32,7 +32,7 @@ jest.mock('@prisma/client', () => ({
           id: 1,
           email: data.email,
           name: data.name,
-          createdAt: new Date('2023-01-01T00:00:00Z'),
+          createdAt: new Date("2023-01-01T00:00:00Z"),
         };
 
         // Return only selected fields if select is specified
@@ -43,11 +43,11 @@ jest.mock('@prisma/client', () => ({
           const result: Partial<typeof newUser> = {};
 
           (Object.keys(typedSelect) as Array<keyof typeof newUser>).forEach(
-            key => {
+            (key) => {
               if (typedSelect[key] && newUser[key] !== undefined) {
                 result[key] = newUser[key];
               }
-            }
+            },
           );
 
           return Promise.resolve(result);

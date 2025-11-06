@@ -66,7 +66,8 @@ export function Pricing() {
             Simple, Transparent Pricing
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Choose the plan that fits your needs. All plans include a 14-day free trial.
+            Choose the plan that fits your needs. All plans include a 14-day
+            free trial.
           </p>
         </div>
 

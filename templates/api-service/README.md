@@ -21,11 +21,13 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
 ## Quick Start
 
 1. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Setup Quality Automation** (Recommended)
+
    ```bash
    # Add comprehensive quality automation
    npx create-quality-automation@latest
@@ -39,6 +41,7 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
 
 3. **Environment Setup**
    Copy the sample environment file and update values as needed:
+
    ```bash
    cp .env.example .env
    ```
@@ -51,23 +54,26 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
    CORS_ORIGIN=http://localhost:3000
    ```
 
-3. **Database Setup**
+4. **Database Setup**
+
    ```bash
    npx prisma generate
    npx prisma db push
    ```
 
-4. **Run Development Server**
+5. **Run Development Server**
+
    ```bash
    npm run dev
    ```
 
-5. **Test the API**
+6. **Test the API**
+
    ```bash
    curl http://localhost:3000/health
    ```
 
-6. **Optional CI Setup**
+7. **Optional CI Setup**
    Copy `.github/workflows/ci.yml` to your repository root to enable GitHub Actions lint/test/build checks.
 
 ## Project Structure
@@ -97,16 +103,19 @@ api-service/
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 - `GET /api/auth/profile` - Get user profile (protected)
 
 ### Health Check
+
 - `GET /health` - API health status
 
 ### Example Requests
 
 **Register User:**
+
 ```bash
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
@@ -118,6 +127,7 @@ curl -X POST http://localhost:3000/api/auth/register \
 ```
 
 **Login:**
+
 ```bash
 curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
@@ -128,6 +138,7 @@ curl -X POST http://localhost:3000/api/auth/login \
 ```
 
 **Get Profile:**
+
 ```bash
 curl -X GET http://localhost:3000/api/auth/profile \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
@@ -153,6 +164,7 @@ CORS_ORIGIN=http://localhost:3000
 ## Development
 
 ### Available Scripts
+
 - `npm run dev` - Start development server with hot reload
 - `npm run build` - Build for production
 - `npm start` - Start production server
@@ -160,12 +172,14 @@ CORS_ORIGIN=http://localhost:3000
 - `npm run lint` - Run ESLint
 
 ### Database Management
+
 - `npx prisma studio` - Open database GUI
 - `npx prisma generate` - Generate Prisma client
 - `npx prisma db push` - Push schema changes
 - `npx prisma migrate dev` - Create and apply migration
 
 ### Testing
+
 ```bash
 # Run all tests (uses mocked database - no setup required)
 npm test
@@ -178,6 +192,7 @@ npm test -- auth.test.ts
 ```
 
 **Test Setup:**
+
 - Tests use **mocked Prisma client** (no database required)
 - **Server isolation**: Tests import app without starting HTTP listener
 - **Fast execution**: No external dependencies
@@ -186,17 +201,20 @@ npm test -- auth.test.ts
 ## Deployment
 
 ### Railway
+
 1. Connect GitHub repository
 2. Add environment variables
 3. Deploy automatically
 
 ### Heroku
+
 1. Create Heroku app
 2. Add PostgreSQL addon
 3. Set environment variables
 4. Deploy from Git
 
 ### Docker
+
 ```dockerfile
 FROM node:18-alpine
 WORKDIR /app
@@ -220,16 +238,19 @@ CMD ["npm", "start"]
 ## Extending the API
 
 ### Adding New Routes
+
 1. Create controller in `src/controllers/`
 2. Add route file in `src/routes/`
 3. Register route in `src/index.ts`
 
 ### Adding Database Models
+
 1. Update `prisma/schema.prisma`
 2. Run `npx prisma db push`
 3. Generate client with `npx prisma generate`
 
 ### Adding Middleware
+
 1. Create middleware function in `src/middleware/`
 2. Apply to routes as needed
 

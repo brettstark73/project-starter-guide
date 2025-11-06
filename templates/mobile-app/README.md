@@ -20,16 +20,19 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
 ## Quick Start
 
 1. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Copy Environment Variables**
+
    ```bash
    cp .env.example .env
    ```
 
 3. **Setup Quality Automation** (Recommended)
+
    ```bash
    # Add comprehensive quality automation
    npx create-quality-automation@latest
@@ -42,11 +45,13 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
    ```
 
 4. **Start Development Server**
+
    ```bash
    npm start
    ```
 
 5. **Run on Device/Simulator**
+
    ```bash
    # iOS Simulator
    npm run ios
@@ -91,16 +96,19 @@ mobile-app/
 ### Expo Application Services (EAS)
 
 1. **Install EAS CLI**
+
    ```bash
    npm install -g eas-cli
    ```
 
 2. **Configure EAS**
+
    ```bash
    eas build:configure
    ```
 
 3. **Build for Android**
+
    ```bash
    npm run build:android
    ```
@@ -113,14 +121,18 @@ mobile-app/
 ## Customization
 
 ### 1. App Configuration
+
 Add an Expo configuration file (`app.config.ts` or `app.json`) to customize:
+
 - App name and description
 - Icon and splash screen
 - App store information
 - Permissions
 
 ### 2. Navigation
+
 Add new screens in `src/screens/` and register them in `App.tsx`:
+
 ```typescript
 <Stack.Screen
   name="NewScreen"
@@ -130,13 +142,17 @@ Add new screens in `src/screens/` and register them in `App.tsx`:
 ```
 
 ### 3. Styling
+
 The template uses StyleSheet for consistent styling:
+
 - Colors: Update color palette in styles
 - Typography: Consistent font sizes and weights
 - Spacing: Standardized padding and margins
 
 ### 4. Components
+
 Create reusable components in `src/components/`:
+
 ```typescript
 // src/components/Button.tsx
 import React from 'react';
@@ -159,31 +175,41 @@ export default function Button({ title, onPress }: Props) {
 ## Adding Features
 
 ### State Management
+
 For complex state, add Redux Toolkit or Zustand:
+
 ```bash
 npm install @reduxjs/toolkit react-redux
 ```
 
 ### API Integration
+
 Add Axios or fetch for API calls:
+
 ```bash
 npm install axios
 ```
 
 ### Push Notifications
+
 Add Expo Notifications:
+
 ```bash
 expo install expo-notifications
 ```
 
 ### Local Storage
+
 Add AsyncStorage:
+
 ```bash
 expo install @react-native-async-storage/async-storage
 ```
 
 ### Camera
+
 Add Expo Camera:
+
 ```bash
 expo install expo-camera
 ```
@@ -191,6 +217,7 @@ expo install expo-camera
 ## Testing
 
 ### Unit Tests
+
 ```bash
 # Run all tests
 npm test
@@ -205,9 +232,11 @@ npm test -- App.test.tsx
 The template includes starter tests in `__tests__/` that verify the navigation shell and profile screen layout. Use them as a reference when adding new screens.
 
 ### Continuous Integration
+
 Use the example workflow at `.github/workflows/ci.yml` to wire linting and tests into GitHub Actions.
 
 ### Example Test
+
 ```typescript
 // __tests__/HomeScreen.test.tsx
 import React from 'react';
@@ -227,11 +256,13 @@ test('renders welcome message', () => {
 ## Deployment
 
 ### App Store (iOS)
+
 1. Build with EAS: `npm run build:ios`
 2. Submit to App Store: `npm run submit:ios`
 3. Complete App Store Connect setup
 
 ### Google Play Store (Android)
+
 1. Build with EAS: `npm run build:android`
 2. Submit to Play Store: `npm run submit:android`
 3. Complete Play Console setup
@@ -247,6 +278,7 @@ test('renders welcome message', () => {
 ## Common Issues
 
 ### Metro Bundler Issues
+
 ```bash
 # Clear cache
 npx expo start --clear
@@ -256,12 +288,14 @@ npx expo start --reset-cache
 ```
 
 ### iOS Simulator Issues
+
 ```bash
 # Reset iOS Simulator
 xcrun simctl erase all
 ```
 
 ### Android Emulator Issues
+
 ```bash
 # Cold boot emulator
 emulator -avd YOUR_AVD_NAME -cold-boot
@@ -270,6 +304,7 @@ emulator -avd YOUR_AVD_NAME -cold-boot
 ## Expo SDK Features
 
 The template is ready to use Expo SDK features:
+
 - **Camera**: expo-camera
 - **Location**: expo-location
 - **Notifications**: expo-notifications
@@ -280,6 +315,7 @@ The template is ready to use Expo SDK features:
 ## TypeScript Support
 
 Full TypeScript support with:
+
 - Type definitions for navigation
 - Strict type checking
 - IntelliSense support

@@ -13,19 +13,30 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold text-primary-600">SaaS Starter</span>
+              <span className="text-xl font-bold text-primary-600">
+                SaaS Starter
+              </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="#features" className="text-gray-700 hover:text-primary-600 transition-colors">
+            <Link
+              href="#features"
+              className="text-gray-700 hover:text-primary-600 transition-colors"
+            >
               Features
             </Link>
-            <Link href="#pricing" className="text-gray-700 hover:text-primary-600 transition-colors">
+            <Link
+              href="#pricing"
+              className="text-gray-700 hover:text-primary-600 transition-colors"
+            >
               Pricing
             </Link>
-            <Link href="/login" className="text-gray-700 hover:text-primary-600 transition-colors">
+            <Link
+              href="/login"
+              className="text-gray-700 hover:text-primary-600 transition-colors"
+            >
               Sign In
             </Link>
             <Link href="/signup" className="btn btn-primary">

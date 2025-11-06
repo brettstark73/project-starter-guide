@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "expo",
-    "eslint:recommended"
-  ],
+  "extends": ["expo", "eslint:recommended"],
   "env": {
     "es6": true,
     "node": true
@@ -25,7 +22,10 @@
         "sourceType": "module"
       },
       "rules": {
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
         "@typescript-eslint/no-explicit-any": "warn",
         "prefer-const": "error",
         "no-var": "error",
@@ -40,13 +40,13 @@
         "jest": true
       },
       "rules": {
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
         "@typescript-eslint/no-explicit-any": "warn"
       }
     }
   ],
-  "ignorePatterns": [
-    "node_modules/",
-    "*.js"
-  ]
+  "ignorePatterns": ["node_modules/", "*.js"]
 }
