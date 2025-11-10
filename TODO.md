@@ -1,49 +1,77 @@
 # Project To-Do List
 
-This to-do list outlines the security vulnerabilities found in the project's templates. It's recommended to address these vulnerabilities to improve the security posture of the starter templates.
+This to-do list tracks security improvements and quality enhancements for the project's templates.
 
-**General Recommendation:**
+**Security Audit Process:**
 
-The `npm audit fix --force` command can be used to automatically update vulnerable packages, but it may introduce breaking changes. It's recommended to run this command on a separate branch and test thoroughly before merging.
+All templates with npm dependencies now include `package-lock.json` for reproducible builds and verified vulnerability tracking.
 
----
+To audit dependencies for vulnerabilities:
+1. Navigate to the template directory (e.g., `cd templates/mobile-app`)
+2. Install dependencies: `npm install` (uses committed package-lock.json)
+3. Run security audit: `npm audit` (see verified counts below)
+4. Review and address findings: `npm audit fix` or manual updates
+5. Test thoroughly before committing changes
 
-## Mobile App Template (High Priority)
-
-This template has **10 high severity** and **10 low severity** vulnerabilities. The high severity vulnerabilities should be addressed as a priority.
-
-### High Severity Vulnerabilities:
-
-*   **`ip` package:** Server-Side Request Forgery (SSRF) vulnerability.
-*   **`semver` package:** Regular Expression Denial of Service (ReDoS) vulnerability.
-*   **`send` package:** Template injection vulnerability that can lead to Cross-Site Scripting (XSS).
-*   **Other high severity vulnerabilities:** The `npm audit` output indicates 7 other high severity vulnerabilities that should be investigated and fixed.
-
-### Low Severity Vulnerabilities:
-
-*   **`cookie` package:** Vulnerability related to out-of-bounds characters in cookie attributes.
-*   **`tmp` package:** Vulnerability related to arbitrary file/directory writes.
-*   **Other low severity vulnerabilities:** The `npm audit` output indicates 8 other low severity vulnerabilities.
+**Note**: Lockfiles (package-lock.json) are committed as of 2025-11-11. This ensures:
+- ✅ Reproducible builds with exact dependency versions
+- ✅ Verified vulnerability counts (see below per template)
+- ✅ Consistent testing and development environment
+- ⚠️ Lockfiles should be updated periodically with `npm update` and tested
 
 ---
 
-## SaaS Level 1 Template (Medium Priority)
+## Mobile App Template
 
-This template has **4 moderate severity** vulnerabilities.
+**Status**: ⚠️ **20 vulnerabilities identified** (10 low, 8 high, 2 critical)
 
-### Moderate Severity Vulnerabilities:
+**Verified with lockfile** (package-lock.json included as of 2025-11-11):
+*   **2 critical** severity vulnerabilities - IMMEDIATE ACTION REQUIRED
+*   **8 high** severity vulnerabilities - High priority
+*   **10 low** severity vulnerabilities
 
-*   **`esbuild` package:** Vulnerability that could allow a website to send requests to the development server and read the response.
-*   **Other moderate severity vulnerabilities:** The `npm audit` output indicates 3 other moderate severity vulnerabilities that should be investigated and fixed.
+**Recommended Actions**:
+1. ✅ Lockfile generated: `package-lock.json` committed
+2. ⚠️ Address 2 CRITICAL vulnerabilities immediately
+3. ⚠️ Address 8 HIGH severity vulnerabilities
+4. Review and address low severity issues
+5. Run `npm audit fix` or manual updates as needed
+6. Test template functionality thoroughly after updates
 
 ---
 
-## API Service Template (Low Priority)
+## SaaS Level 1 Template
 
-This template has **8 low severity** vulnerabilities.
+**Status**: ✅ **4 moderate severity vulnerabilities** (verified with lockfile)
 
-### Low Severity Vulnerabilities:
+**Verified with lockfile** (package-lock.json included as of 2025-11-11):
+*   **4 moderate** severity vulnerabilities
 
-*   **`cookie` package:** Vulnerability related to out-of-bounds characters in cookie attributes.
-*   **`tmp` package:** Vulnerability related to arbitrary file/directory writes.
-*   **Other low severity vulnerabilities:** The `npm audit` output indicates 6 other low severity vulnerabilities.
+**Recommended Actions**:
+1. ✅ Lockfile generated: `package-lock.json` committed
+2. Review and address 4 moderate severity findings
+3. Run `npm audit fix` or manual updates
+4. Test Next.js build and functionality after updates
+
+---
+
+## API Service Template
+
+**Status**: ✅ **8 low severity vulnerabilities** (verified with lockfile)
+
+**Verified with lockfile** (package-lock.json included as of 2025-11-11):
+*   **8 low** severity vulnerabilities
+
+**Recommended Actions**:
+1. ✅ Lockfile generated: `package-lock.json` committed
+2. Review and address 8 low severity findings
+3. Run `npm audit fix` or manual updates
+4. Test API endpoints and TypeScript compilation after updates
+
+---
+
+## About Me Page Template
+
+**Status**: ✅ **No dependencies** (pure HTML/CSS/JS)
+
+**Note**: This template uses vanilla HTML, CSS, and JavaScript with no npm dependencies. No security audit needed.

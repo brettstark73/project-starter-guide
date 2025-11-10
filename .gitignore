@@ -19,12 +19,13 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
-yarn.lock
 .next/
 .npm-cache/
 .prisma-cache/
 .prisma-home/
+
+# Note: package-lock.json and yarn.lock are now committed for reproducible builds
+# Previously ignored, but now included as of 2025-11-11
 
 # Build outputs
 dist/
