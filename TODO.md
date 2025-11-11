@@ -78,16 +78,31 @@ To audit dependencies for vulnerabilities:
 
 ## API Service Template
 
-**Status**: ✅ **8 low severity vulnerabilities** (verified with lockfile)
+**Status**: ⚠️ **8 low severity vulnerabilities** - **DOCUMENTED**
 
 **Verified with lockfile** (package-lock.json included as of 2025-11-11):
-*   **8 low** severity vulnerabilities
+*   **8 low** severity vulnerabilities - Development dependencies only
 
-**Recommended Actions**:
+**Important**: See `templates/api-service/SECURITY.md` for full details.
+
+**Status Summary**:
 1. ✅ Lockfile generated: `package-lock.json` committed
-2. Review and address 8 low severity findings
-3. Run `npm audit fix` or manual updates
-4. Test API endpoints and TypeScript compilation after updates
+2. ✅ Vulnerabilities documented in SECURITY.md
+3. ⚠️ Auto-fix attempted with `npm audit fix --force` - **FAILED**
+   - Git repository branch reference errors
+   - @lhci/cli version conflict
+4. ✅ Assessment: **Production builds are safe**
+   - All vulnerabilities in development dependencies only
+   - @lhci/cli is optional CI tooling, not runtime code
+
+**Recommended Actions for Users**:
+1. **Option A (Recommended)**: Accept known issues, proceed with development
+   - Development dependencies only, production unaffected
+   - Consider removing @lhci/cli if not needed for performance auditing
+2. **Option B**: Remove Lighthouse CI dependency
+   - `npm uninstall @lhci/cli --save-dev`
+3. **Option C**: Update dependencies after project initialization
+   - `npm update && npm audit fix` after creating project
 
 ---
 
