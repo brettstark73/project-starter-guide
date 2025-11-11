@@ -65,12 +65,17 @@ run_security_audit() {
 
 # Provide safe defaults for templates that need environment variables
 if [[ "$TEMPLATE_PATH" == "saas-level-1" ]]; then
-  export NEXTAUTH_SECRET="test-secret"
+  export NEXTAUTH_SECRET="test-secret-at-least-32-characters-long-for-ci"
   export NEXTAUTH_URL="http://localhost:3000"
   export DATABASE_URL="postgresql://user:password@localhost:5432/test_db"
   export STRIPE_PUBLISHABLE_KEY="pk_test_dummy"
   export STRIPE_SECRET_KEY="sk_test_dummy"
   export STRIPE_WEBHOOK_SECRET="whsec_dummy"
+  # Auth providers (at least one required for Next.js build)
+  export GITHUB_ID="dummy-github-client-id"
+  export GITHUB_SECRET="dummy-github-client-secret"
+  export GOOGLE_CLIENT_ID="dummy-google-client-id.apps.googleusercontent.com"
+  export GOOGLE_CLIENT_SECRET="dummy-google-client-secret"
 fi
 
 run_if_script_exists lint "npm run lint"
