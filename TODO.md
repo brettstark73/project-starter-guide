@@ -23,20 +23,41 @@ To audit dependencies for vulnerabilities:
 
 ## Mobile App Template
 
-**Status**: ⚠️ **20 vulnerabilities identified** (10 low, 8 high, 2 critical)
+**Status**: ⚠️ **20 known vulnerabilities** (10 low, 8 high, 2 critical) - **DOCUMENTED**
 
 **Verified with lockfile** (package-lock.json included as of 2025-11-11):
-*   **2 critical** severity vulnerabilities - IMMEDIATE ACTION REQUIRED
-*   **8 high** severity vulnerabilities - High priority
+*   **2 critical** severity vulnerabilities - Development dependencies only
+*   **8 high** severity vulnerabilities - Development dependencies only
 *   **10 low** severity vulnerabilities
 
-**Recommended Actions**:
+**Important**: See `templates/mobile-app/SECURITY.md` for full details.
+
+**Status Summary**:
 1. ✅ Lockfile generated: `package-lock.json` committed
-2. ⚠️ Address 2 CRITICAL vulnerabilities immediately
-3. ⚠️ Address 8 HIGH severity vulnerabilities
-4. Review and address low severity issues
-5. Run `npm audit fix` or manual updates as needed
-6. Test template functionality thoroughly after updates
+2. ✅ Vulnerabilities documented in SECURITY.md
+3. ⚠️ Auto-fix attempted with `npm audit fix --force` - **FAILED**
+   - React 18/19 peer dependency conflicts
+   - Cannot update without breaking template
+4. ✅ Assessment: **Production builds are safe**
+   - All vulnerabilities in development dependencies only
+   - CLI tools, not runtime code
+   - EAS/Expo builds exclude development dependencies
+
+**Recommended Actions for Users**:
+1. **Option A (Recommended)**: Accept known issues, proceed with development
+   - Development dependencies only, production unaffected
+   - Follow security best practices in development environment
+2. **Option B**: Update dependencies after project initialization
+   - `npm update && npm audit fix` after creating project
+   - Test thoroughly after updates
+3. **Option C**: Wait for ecosystem updates
+   - React Native transitioning to React 19
+   - Future versions will resolve conflicts
+
+**For Template Maintainers**:
+- Monitor React Native + Expo quarterly for updates
+- Test React 19 compatibility when ecosystem ready
+- Update template when stable migration path exists
 
 ---
 
