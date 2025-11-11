@@ -26,9 +26,13 @@ To audit dependencies for vulnerabilities:
 **Status**: ⚠️ **20 known vulnerabilities** (10 low, 8 high, 2 critical) - **DOCUMENTED**
 
 **Verified with lockfile** (package-lock.json included as of 2025-11-11):
-*   **2 critical** severity vulnerabilities - Development dependencies only
-*   **8 high** severity vulnerabilities - Development dependencies only
+*   **2 critical** severity vulnerabilities
+*   **8 high** severity vulnerabilities
 *   **10 low** severity vulnerabilities
+
+**Dependency Breakdown**:
+*   **12 vulnerabilities in production dependencies** (2 critical, 8 high, 2 low)
+*   **8 vulnerabilities in dev dependencies** (8 low)
 
 **Important**: See `templates/mobile-app/SECURITY.md` for full details.
 
@@ -38,21 +42,24 @@ To audit dependencies for vulnerabilities:
 3. ⚠️ Auto-fix attempted with `npm audit fix --force` - **FAILED**
    - React 18/19 peer dependency conflicts
    - Cannot update without breaking template
-4. ✅ Assessment: **Production builds are safe**
-   - All vulnerabilities in development dependencies only
-   - CLI tools, not runtime code
-   - EAS/Expo builds exclude development dependencies
+4. ⚠️ Assessment: **12 production vulnerabilities ship with template**
+   - Upstream dependencies (react-native, expo, @react-native-community/cli)
+   - Cannot be fixed until upstream maintainers release patches
+   - Users should assess risk based on their specific use case
 
 **Recommended Actions for Users**:
-1. **Option A (Recommended)**: Accept known issues, proceed with development
-   - Development dependencies only, production unaffected
-   - Follow security best practices in development environment
+1. **Option A**: Assess risk for your use case
+   - Review SECURITY.md for detailed vulnerability breakdown
+   - Determine if vulnerabilities apply to your app's architecture
+   - Consider risk tolerance (prototype vs enterprise app)
 2. **Option B**: Update dependencies after project initialization
    - `npm update && npm audit fix` after creating project
    - Test thoroughly after updates
+   - May still have upstream dependency issues
 3. **Option C**: Wait for ecosystem updates
    - React Native transitioning to React 19
    - Future versions will resolve conflicts
+   - Monitor upstream package release notes
 
 **For Template Maintainers**:
 - Monitor React Native + Expo quarterly for updates

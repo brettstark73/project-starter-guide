@@ -109,6 +109,8 @@ jobs:
 
           # Check each package for deprecation
           deprecated_found=false
+
+          # Check production dependencies
           while IFS= read -r package; do
             if [[ ! -z "$package" ]]; then
               dep_info=$(npm view "$package" --json 2>/dev/null || echo '{}')
@@ -119,10 +121,26 @@ jobs:
                   deprecated_found=true
                 fi
                 deprecated_msg=$(echo "$dep_info" | jq -r '.deprecated')
-                echo "- **$package**: $deprecated_msg" >> $GITHUB_STEP_SUMMARY
+                echo "- **$package** (production): $deprecated_msg" >> $GITHUB_STEP_SUMMARY
               fi
             fi
           done < <(jq -r '.dependencies // {} | keys[]' package-list.json)
+
+          # Check development dependencies
+          while IFS= read -r package; do
+            if [[ ! -z "$package" ]]; then
+              dep_info=$(npm view "$package" --json 2>/dev/null || echo '{}')
+              if echo "$dep_info" | jq -e '.deprecated' >/dev/null 2>&1; then
+                if [[ "$deprecated_found" == "false" ]]; then
+                  echo "⚠️ Deprecated packages found in ${{ matrix.template }}:" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  deprecated_found=true
+                fi
+                deprecated_msg=$(echo "$dep_info" | jq -r '.deprecated')
+                echo "- **$package** (dev): $deprecated_msg" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+          done < <(jq -r '.devDependencies // {} | keys[]' package-list.json)
 
           if [[ "$deprecated_found" == "false" ]]; then
             echo "✅ No deprecated packages found in ${{ matrix.template }}"

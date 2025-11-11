@@ -1,0 +1,322 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@expo/cli": {
+      "name": "@expo/cli",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@expo/prebuild-config",
+        "send"
+      ],
+      "effects": [
+        "expo"
+      ],
+      "range": "<=0.0.0-canary-20231123-1b19f96-4 || 0.0.1-canary-20231125-d600e44 - 0.21.1 || 1.0.0-canary-20240927-ab8a962 - 1.0.0-canary-20241021-c4b5a93",
+      "nodes": [
+        "node_modules/@expo/cli"
+      ],
+      "fixAvailable": {
+        "name": "expo",
+        "version": "54.0.23",
+        "isSemVerMajor": true
+      }
+    },
+    "@expo/image-utils": {
+      "name": "@expo/image-utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "semver"
+      ],
+      "effects": [
+        "@expo/prebuild-config"
+      ],
+      "range": "<=0.0.1-canary-20240109-93608d8 || 0.3.10-alpha.0 - 0.4.2",
+      "nodes": [
+        "node_modules/@expo/image-utils"
+      ],
+      "fixAvailable": {
+        "name": "expo",
+        "version": "54.0.23",
+        "isSemVerMajor": true
+      }
+    },
+    "@expo/prebuild-config": {
+      "name": "@expo/prebuild-config",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@expo/image-utils"
+      ],
+      "effects": [
+        "@expo/cli",
+        "expo-splash-screen"
+      ],
+      "range": "<=7.0.0-beta.0",
+      "nodes": [
+        "node_modules/@expo/prebuild-config"
+      ],
+      "fixAvailable": {
+        "name": "expo",
+        "version": "54.0.23",
+        "isSemVerMajor": true
+      }
+    },
+    "@react-native-community/cli": {
+      "name": "@react-native-community/cli",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "@react-native-community/cli-doctor",
+        "@react-native-community/cli-hermes",
+        {
+          "source": 1109627,
+          "name": "@react-native-community/cli",
+          "dependency": "@react-native-community/cli",
+          "title": "@react-native-community/cli has arbitrary OS command injection",
+          "url": "https://github.com/advisories/GHSA-399j-vxmf-hjvr",
+          "severity": "critical",
+          "cwe": [
+            "CWE-78"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<17.0.1"
+        }
+      ],
+      "effects": [
+        "react-native"
+      ],
+      "range": "<=17.0.0",
+      "nodes": [
+        "node_modules/@react-native-community/cli"
+      ],
+      "fixAvailable": {
+        "name": "react-native",
+        "version": "0.82.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@react-native-community/cli-doctor": {
+      "name": "@react-native-community/cli-doctor",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "ip"
+      ],
+      "effects": [
+        "@react-native-community/cli"
+      ],
+      "range": "<=10.2.5 || 11.0.0-alpha.0 - 11.4.0 || 12.0.0-alpha.0 - 12.3.5 || 13.0.0 - 13.5.2",
+      "nodes": [
+        "node_modules/@react-native-community/cli-doctor"
+      ],
+      "fixAvailable": {
+        "name": "react-native",
+        "version": "0.82.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@react-native-community/cli-hermes": {
+      "name": "@react-native-community/cli-hermes",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "ip"
+      ],
+      "effects": [
+        "@react-native-community/cli"
+      ],
+      "range": "<=10.2.0 || 11.0.0-alpha.0 - 11.4.0 || 12.0.0-alpha.0 - 12.3.5 || 13.0.0 - 13.5.2",
+      "nodes": [
+        "node_modules/@react-native-community/cli-hermes"
+      ],
+      "fixAvailable": {
+        "name": "react-native",
+        "version": "0.82.1",
+        "isSemVerMajor": true
+      }
+    },
+    "expo": {
+      "name": "expo",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "@expo/cli"
+      ],
+      "effects": [],
+      "range": "46.0.0-alpha.0 - 52.0.4",
+      "nodes": [
+        "node_modules/expo"
+      ],
+      "fixAvailable": {
+        "name": "expo",
+        "version": "54.0.23",
+        "isSemVerMajor": true
+      }
+    },
+    "expo-splash-screen": {
+      "name": "expo-splash-screen",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@expo/prebuild-config"
+      ],
+      "effects": [],
+      "range": "<=0.0.1-canary-20240109-93608d8 || 0.11.0 - 0.27.0 || 0.30.11-canary-20250709-136b77f - 1.0.0-canary-20241018-f71b3e0",
+      "nodes": [
+        "node_modules/expo-splash-screen"
+      ],
+      "fixAvailable": {
+        "name": "expo-splash-screen",
+        "version": "31.0.10",
+        "isSemVerMajor": true
+      }
+    },
+    "ip": {
+      "name": "ip",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1101851,
+          "name": "ip",
+          "dependency": "ip",
+          "title": "ip SSRF improper categorization in isPublic",
+          "url": "https://github.com/advisories/GHSA-2p57-rm9w-gvfp",
+          "severity": "high",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<=2.0.1"
+        }
+      ],
+      "effects": [
+        "@react-native-community/cli-doctor",
+        "@react-native-community/cli-hermes"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/ip"
+      ],
+      "fixAvailable": {
+        "name": "react-native",
+        "version": "0.82.1",
+        "isSemVerMajor": true
+      }
+    },
+    "react-native": {
+      "name": "react-native",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        "@react-native-community/cli"
+      ],
+      "effects": [],
+      "range": "<=0.0.0-ffdfbbec0 || 0.59.0-rc.0 - 0.76.0-rc.6 || >=0.83.0-nightly-20250903-f33a1cd26",
+      "nodes": [
+        "node_modules/react-native"
+      ],
+      "fixAvailable": {
+        "name": "react-native",
+        "version": "0.82.1",
+        "isSemVerMajor": true
+      }
+    },
+    "semver": {
+      "name": "semver",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1101088,
+          "name": "semver",
+          "dependency": "semver",
+          "title": "semver vulnerable to Regular Expression Denial of Service",
+          "url": "https://github.com/advisories/GHSA-c2qf-rxjj-qqgw",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=7.0.0 <7.5.2"
+        }
+      ],
+      "effects": [
+        "@expo/image-utils"
+      ],
+      "range": "7.0.0 - 7.5.1",
+      "nodes": [
+        "node_modules/@expo/image-utils/node_modules/semver"
+      ],
+      "fixAvailable": {
+        "name": "expo",
+        "version": "54.0.23",
+        "isSemVerMajor": true
+      }
+    },
+    "send": {
+      "name": "send",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1109556,
+          "name": "send",
+          "dependency": "send",
+          "title": "send vulnerable to template injection that can lead to XSS",
+          "url": "https://github.com/advisories/GHSA-m6fv-jmcg-4jfg",
+          "severity": "low",
+          "cwe": [
+            "CWE-79"
+          ],
+          "cvss": {
+            "score": 5,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L"
+          },
+          "range": "<0.19.0"
+        }
+      ],
+      "effects": [
+        "@expo/cli"
+      ],
+      "range": "<0.19.0",
+      "nodes": [
+        "node_modules/send"
+      ],
+      "fixAvailable": {
+        "name": "expo",
+        "version": "54.0.23",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 2,
+      "moderate": 0,
+      "high": 8,
+      "critical": 2,
+      "total": 12
+    },
+    "dependencies": {
+      "prod": 1157,
+      "dev": 621,
+      "optional": 45,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 1792
+    }
+  }
+}

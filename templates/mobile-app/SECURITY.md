@@ -96,36 +96,44 @@ npm audit fix
 
 ## Production Impact Assessment
 
-### ✅ Production Builds Are Safe
+### ⚠️ Production Dependencies Contain 12 Vulnerabilities
 
-**Why these vulnerabilities don't affect production**:
+**Accurate Assessment (verified with npm audit --omit=dev)**:
 
-1. **Development Dependencies Only**:
-   - `@react-native-community/cli` - Used only during `expo start`, not in builds
-   - `@lhci/cli` - Lighthouse CI tool, development only
-   - `tmp`, `inquirer` - Development tooling
+1. **Production Dependencies** (12 vulnerabilities):
+   - **2 critical**, **8 high**, **2 low**
+   - Packages: `@react-native-community/cli` (via react-native), `expo`, and transitive dependencies
+   - **These ship with production builds** via react-native dependency tree
+   - Cannot be removed without breaking the template
 
-2. **Build Process**:
-   - EAS Build/Expo builds use clean, controlled environments
-   - Only production dependencies are bundled
-   - Development tools are excluded from final app
+2. **Development Dependencies** (8 vulnerabilities):
+   - **8 low** severity
+   - Packages: Development tooling only
+   - **These do NOT ship with production builds**
 
-3. **Runtime**:
-   - Vulnerabilities in CLI tools don't execute in the app
-   - App bundle contains only runtime code
-   - No development servers in production
+3. **Upstream Issue**:
+   - Vulnerabilities exist in third-party packages we don't maintain
+   - Waiting for React Native team, Expo team, etc. to release patches
+   - Template cannot fix vulnerabilities in dependencies we don't control
 
-### ⚠️ Development Environment Risks
+### 🔍 Risk Assessment for Your Use Case
 
-**Minimal Risk If**:
-- You're using the template in a controlled environment
-- Not running untrusted code during development
-- Development machine is isolated/secure
+**Production Risk Depends On**:
+- **CLI injection vulnerabilities**: Affect build-time tooling (metro bundler, CLI tools)
+- **Runtime vs Build-time**: Some vulnerabilities only execute during development/build
+- **Your app's architecture**: How you use react-native features
+- **User environment**: Whether vulnerable code paths are exercised
 
-**Higher Risk If**:
+**Questions to Assess Your Risk**:
+1. Does your app use features that trigger the vulnerable code paths?
+2. Are you building for enterprise/sensitive use cases?
+3. Can you accept risk until upstream patches are available?
+4. Do you need immediate mitigation (consider alternative frameworks)?
+
+**Development Environment Risks**:
+- Running untrusted code during development
+- Shared/public development networks
 - Multiple developers with varying security practices
-- Running untrusted npm scripts
-- Development on shared/public networks
 
 ## Mitigation Strategies
 
