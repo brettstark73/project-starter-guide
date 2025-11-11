@@ -118,4 +118,22 @@ Annual Potential: ~$78,000
 
 ---
 
+## Private Repository Integration
+
+**Location**: `~/Projects/brettstark-private/brettstark-private/project-starter-guide/`
+
+This project has persistent documentation in a private repository:
+- **backlog.md**: Prioritized TODO list (P0/P1/P2/P3 items)
+- **planning/current-sprint.md**: Daily progress tracking
+- **review-history/**: Past code review findings
+- **README.md**: Project overview and current focus
+- **strategy/**: Long-term planning documents
+- **metrics/**: GitHub stats, coverage, quality metrics
+
+**Quick Sync**: After completing work, use `/sync-private` to update the private repo automatically.
+
+**Manual Location**: `~/Projects/brettstark-private/brettstark-private/project-starter-guide/`
+
+---
+
 *Project-specific configuration for Project Starter Guide development and monetization*
