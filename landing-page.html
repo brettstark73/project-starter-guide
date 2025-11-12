@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Project Starter Guide - Choose the Right Tech Stack for Any Project
+    </title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #fff;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        opacity: 0.95;
+      }
+
+      .hero .tagline {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 30px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: white;
+        color: #667eea;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+      }
+
+      .btn-secondary:hover {
+        background: white;
+        color: #667eea;
+      }
+
+      /* Stats Section */
+      .stats {
+        background: #f8f9fa;
+        padding: 60px 20px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .stat-item h3 {
+        font-size: 2.5rem;
+        color: #667eea;
+        margin-bottom: 10px;
+      }
+
+      .stat-item p {
+        color: #666;
+      }
+
+      /* Table Section */
+      .table-section {
+        padding: 80px 20px;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #2d3748;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 50px;
+      }
+
+      .decision-table {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .decision-table th {
+        background: #667eea;
+        color: white;
+        padding: 16px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .decision-table td {
+        padding: 16px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .decision-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .decision-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      /* Features Section */
+      .features {
+        padding: 80px 20px;
+        background: #f8f9fa;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+
+      .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #2d3748;
+      }
+
+      .feature-card p {
+        color: #666;
+        line-height: 1.6;
+      }
+
+      .feature-badge {
+        display: inline-block;
+        background: #48bb78;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 10px;
+      }
+
+      /* GitHub Section */
+      .github-cta {
+        background: #2d3748;
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+      }
+
+      .github-cta h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .github-cta p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero p {
+          font-size: 1.2rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>🚀 Project Starter Guide</h1>
+        <p>Choose the right architecture and tech stack for any project</p>
+        <p class="tagline">
+          From simple landing pages to enterprise systems — comprehensive
+          guides, decision matrices, and production-ready templates
+        </p>
+        <div class="cta-buttons">
+          <a
+            href="https://github.com/brettstark73/project-starter-guide"
+            class="btn btn-primary"
+            target="_blank"
+            >View on GitHub</a
+          >
+          <a href="#decision-matrix" class="btn btn-secondary">Get Started</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h3>5</h3>
+          <p>Complexity Levels</p>
+        </div>
+        <div class="stat-item">
+          <h3>100%</h3>
+          <p>Free & Open Source</p>
+        </div>
+        <div class="stat-item">
+          <h3>10+</h3>
+          <p>Project Templates</p>
+        </div>
+        <div class="stat-item">
+          <h3>MIT</h3>
+          <p>License</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decision Matrix Section -->
+    <section class="table-section" id="decision-matrix">
+      <div class="container">
+        <h2 class="section-title">Quick Decision Matrix</h2>
+        <p class="section-subtitle">
+          Choose your project type and get immediate stack recommendations
+        </p>
+
+        <table class="decision-table">
+          <thead>
+            <tr>
+              <th>Project Type</th>
+              <th>Complexity</th>
+              <th>Recommended Stack</th>
+              <th>Time to MVP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>About Me / Portfolio</strong></td>
+              <td>Level 1</td>
+              <td>HTML5 + CSS3 + Vanilla JS</td>
+              <td>1-2 days</td>
+            </tr>
+            <tr>
+              <td><strong>Landing Page</strong></td>
+              <td>Level 1</td>
+              <td>Next.js + Tailwind</td>
+              <td>2-3 days</td>
+            </tr>
+            <tr>
+              <td><strong>Blog / Documentation</strong></td>
+              <td>Level 2</td>
+              <td>Next.js + MDX or Astro</td>
+              <td>1 week</td>
+            </tr>
+            <tr>
+              <td><strong>SaaS MVP</strong></td>
+              <td>Level 3</td>
+              <td>Next.js + Supabase + Stripe</td>
+              <td>2-4 weeks</td>
+            </tr>
+            <tr>
+              <td><strong>E-commerce</strong></td>
+              <td>Level 3</td>
+              <td>Next.js + Shopify/Stripe + DB</td>
+              <td>3-6 weeks</td>
+            </tr>
+            <tr>
+              <td><strong>Enterprise SaaS</strong></td>
+              <td>Level 4</td>
+              <td>Microservices + K8s + Multiple DBs</td>
+              <td>3-6 months</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title">Everything You Need to Start Right</h2>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Complexity Levels <span class="feature-badge">FREE</span></h3>
+            <p>
+              5 levels from static sites to enterprise systems. Clear guidance
+              on when to use each architecture pattern.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🏗️</div>
+            <h3>
+              Architecture Patterns <span class="feature-badge">FREE</span>
+            </h3>
+            <p>
+              Proven patterns for monoliths, microservices, serverless, and
+              distributed systems with real-world examples.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Technology Matrix <span class="feature-badge">FREE</span></h3>
+            <p>
+              Compare frameworks, databases, and hosting solutions. Decision
+              trees help you choose the right tools.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3>
+              Production Templates <span class="feature-badge">FREE</span>
+            </h3>
+            <p>
+              Ready-to-use templates for portfolios, SaaS apps, APIs, and
+              mobile apps with quality automation.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Security First <span class="feature-badge">FREE</span></h3>
+            <p>
+              Comprehensive security guide covering authentication, data
+              protection, and common vulnerabilities.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <h3>Quality Automation <span class="feature-badge">FREE</span></h3>
+            <p>
+              One-command setup for linting, formatting, security scanning, and
+              CI/CD workflows.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GitHub CTA Section -->
+    <section class="github-cta">
+      <div class="container">
+        <h2>Open Source & Community Driven</h2>
+        <p>
+          MIT licensed. Star us on GitHub, contribute guides, or share your
+          success stories!
+        </p>
+        <div class="cta-buttons">
+          <a
+            href="https://github.com/brettstark73/project-starter-guide"
+            class="btn btn-primary"
+            target="_blank"
+          >
+            ⭐ Star on GitHub
+          </a>
+          <a
+            href="https://github.com/brettstark73/project-starter-guide/issues"
+            class="btn btn-secondary"
+            target="_blank"
+          >
+            💬 Contribute
+          </a>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
