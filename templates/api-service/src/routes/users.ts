@@ -1,7 +1,6 @@
 import express from 'express'
 import { authenticateToken } from '../middleware/auth'
 import { getProfile } from '../controllers/authController'
-import type { AuthenticatedRequest } from '../types/express'
 
 const router = express.Router()
 

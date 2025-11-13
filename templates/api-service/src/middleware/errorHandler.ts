@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 export const errorHandler = (
-  err: Error & { statusCode?: number; code?: number; errors?: Record<string, { message: string }> },
+  err: Error & { statusCode?: number; code?: string; errors?: Record<string, { message: string }> },
   req: Request,
   res: Response,
   _next: NextFunction
