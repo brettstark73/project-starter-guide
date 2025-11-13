@@ -94,13 +94,6 @@ if (providers.length === 0) {
   console.error('[auth] For production: set environment variables for at least one provider')
   console.error('[auth] Available providers: GitHub, Google, Email')
 
-  // In production, this is critical - throw error
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error(
-      'No authentication providers configured. Set environment variables for at least one provider.'
-    )
-  }
-
   // In development, add fallback mock provider
   providers.push(
     CredentialsProvider({
@@ -109,6 +102,13 @@ if (providers.length === 0) {
         email: { label: "Email", type: "email" },
       },
       async authorize(credentials) {
+        // In production, refuse to authenticate
+        if (process.env.NODE_ENV === 'production') {
+          throw new Error(
+            'Mock authentication is not available in production. Configure real auth providers.'
+          )
+        }
+
         return {
           id: 'mock-user',
           email: credentials?.email || 'mock@example.com',
@@ -120,18 +120,30 @@ if (providers.length === 0) {
   console.warn('[auth] Using fallback mock provider - configure real providers for production!')
 }
 
+// Determine if we're using credentials providers (dev/mock)
+const hasCredentialsProvider = providers.some(p => p.id === 'credentials')
+
 const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // Only use Prisma adapter for OAuth providers (not credentials)
+  adapter: hasCredentialsProvider ? undefined : PrismaAdapter(prisma),
   providers,
   callbacks: {
     async session({ session, token, user }) {
       // Send properties to the client
       if (session.user) {
-        session.user.id = user.id
+        // For JWT strategy, user comes from token
+        // For database strategy, user comes from database
+        session.user.id = user?.id || token?.sub || ''
       }
       return session
     },
     async jwt({ token, user, account }) {
+      // For credentials provider, store user info in token
+      if (user) {
+        token.id = user.id
+        token.email = user.email
+        token.name = user.name
+      }
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token
@@ -147,7 +159,9 @@ const authOptions: NextAuthOptions = {
     // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   session: {
-    strategy: 'database',
+    // Use JWT strategy for credentials providers (dev/mock) to avoid DB FK errors
+    // Use database strategy for OAuth providers (GitHub, Google, Email)
+    strategy: hasCredentialsProvider ? 'jwt' : 'database',
   },
   secret: process.env.NEXTAUTH_SECRET,
 }
