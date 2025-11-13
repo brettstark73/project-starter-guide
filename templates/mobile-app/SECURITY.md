@@ -10,7 +10,9 @@
 - **8 High** severity
 - **10 Low** severity
 
-## Critical Vulnerabilities (Development Dependencies Only)
+## Critical Vulnerabilities
+
+**IMPORTANT**: Initial assessment indicated these were development-only, but audit shows 12 vulnerabilities are in production dependencies (2 critical, 8 high, 2 low). The remaining 8 are in development dependencies.
 
 ### 1. @react-native-community/cli - Arbitrary OS Command Injection
 - **Package**: `@react-native-community/cli`

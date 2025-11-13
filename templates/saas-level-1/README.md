@@ -1,21 +1,34 @@
 # SaaS Level 1 Starter Template
 
-A production-ready SaaS starter template built with Next.js 14, TypeScript, Tailwind CSS, and Stripe integration.
+A **starter template** with modern tooling for building SaaS applications. Includes pre-configured Next.js 14, TypeScript, Tailwind CSS, NextAuth.js, Prisma, and Stripe setup.
 
-**Complexity Level:** 2 | **Timeline:** 1-2 weeks | **Tech Stack:** Next.js + TypeScript + Tailwind + Stripe
+**Complexity Level:** 2 | **Timeline:** 1-2 weeks to customize | **Tech Stack:** Next.js + TypeScript + Tailwind + Prisma + NextAuth + Stripe
 
 > Need the one-page checklist? See the shared [Template Quick-Start Guide](../../docs/template-quickstart.md#saas-level-1-nextjs).
 
-## Features
+## What's Included
 
 - 🚀 **Next.js 14** with App Router and TypeScript
-- 🎨 **Tailwind CSS** for beautiful, responsive UI
-- 💳 **Stripe Integration** ready for payments
-- 🔐 **NextAuth.js** for authentication
-- 📊 **Prisma** ORM with database setup
-- 📱 **Fully Responsive** design
-- ⚡ **Performance Optimized** with modern best practices
-- 🎯 **SEO Ready** with meta tags and structured data
+- 🎨 **Tailwind CSS** with responsive marketing page components
+- 💳 **Stripe Integration** (requires setup - see below)
+- 🔐 **NextAuth.js** configured (development mock provider included)
+- 📊 **Prisma** ORM setup (database schema ready to extend)
+- 📱 **Fully Responsive** marketing page components
+- ⚡ **Performance Optimized** build configuration
+- 🎯 **SEO Ready** with meta tags structure
+
+## What You Need to Build
+
+This is a **starter template**, not a complete SaaS application. You'll need to implement:
+
+- ✏️ **User Authentication Flows** - Sign up, login, password reset pages
+- ✏️ **User Dashboard** - Protected user area with account management
+- ✏️ **Stripe Integration** - Payment flows, subscription management, webhooks
+- ✏️ **Database Models** - Extend Prisma schema for your application data
+- ✏️ **API Routes** - Backend logic for your application features
+- ✏️ **Business Logic** - Your unique SaaS functionality
+
+**Current State:** Marketing page shell with configured tooling and authentication scaffolding ready to extend.
 
 ## Quick Start
 

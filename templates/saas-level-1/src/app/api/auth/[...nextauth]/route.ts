@@ -3,11 +3,37 @@ import { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 import { prisma } from '@/lib/prisma'
 
 const providers: NextAuthOptions['providers'] = []
+
+// Development-only provider for easy local testing
+if (process.env.NODE_ENV === 'development') {
+  providers.push(
+    CredentialsProvider({
+      name: 'Development',
+      credentials: {
+        email: { label: "Email", type: "email", placeholder: "dev@example.com" },
+      },
+      async authorize(credentials) {
+        // WARNING: This is for DEVELOPMENT ONLY
+        // Returns a mock user for any email
+        if (credentials?.email) {
+          return {
+            id: 'dev-user-1',
+            email: credentials.email,
+            name: 'Dev User',
+          }
+        }
+        return null
+      },
+    })
+  )
+  console.log('[auth] Development credentials provider enabled')
+}
 
 if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
   providers.push(
@@ -63,9 +89,35 @@ if (hasEmailConfig) {
 }
 
 if (providers.length === 0) {
-  throw new Error(
-    'No authentication providers are configured. Set environment variables for at least one provider.'
+  console.error('[auth] No authentication providers configured!')
+  console.error('[auth] For development: app will use mock provider automatically')
+  console.error('[auth] For production: set environment variables for at least one provider')
+  console.error('[auth] Available providers: GitHub, Google, Email')
+
+  // In production, this is critical - throw error
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(
+      'No authentication providers configured. Set environment variables for at least one provider.'
+    )
+  }
+
+  // In development, add fallback mock provider
+  providers.push(
+    CredentialsProvider({
+      name: 'Mock Auth',
+      credentials: {
+        email: { label: "Email", type: "email" },
+      },
+      async authorize(credentials) {
+        return {
+          id: 'mock-user',
+          email: credentials?.email || 'mock@example.com',
+          name: 'Mock User (configure real auth providers)',
+        }
+      },
+    })
   )
+  console.warn('[auth] Using fallback mock provider - configure real providers for production!')
 }
 
 const authOptions: NextAuthOptions = {

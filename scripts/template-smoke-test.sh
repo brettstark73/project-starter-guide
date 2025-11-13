@@ -45,18 +45,25 @@ run_if_script_exists() {
 run_security_audit() {
   echo "🔐 Running security audit"
 
-  # Skip security audit if SECURITY.md exists (documented vulnerabilities)
-  if [ -f "SECURITY.md" ]; then
-    echo "ℹ️  SECURITY.md found - vulnerabilities documented, skipping audit"
-    echo "   See SECURITY.md for details on known issues"
-    return 0
+  # Check if there's a documented waiver file
+  if [ -f ".security-waivers.json" ]; then
+    echo "ℹ️  Security waivers file found - checking for waived CVEs"
+    # Still run audit but parse waivers (implementation TBD)
   fi
 
+  # Always run audit - SECURITY.md documents issues but doesn't suppress checks
   if has_script "security:audit"; then
     HUSKY=0 npm run security:audit
   else
     npm audit --audit-level=high --production || {
       echo "⚠️  High/critical vulnerabilities found in production dependencies"
+
+      # If SECURITY.md exists, remind to review documented issues
+      if [ -f "SECURITY.md" ]; then
+        echo "📋 SECURITY.md documents known vulnerabilities"
+        echo "   Review if these are newly introduced issues or already documented"
+      fi
+
       echo "   Run 'npm audit' locally for details"
       exit 1
     }
