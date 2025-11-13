@@ -48,25 +48,87 @@ run_security_audit() {
   # Check if there's a documented waiver file
   if [ -f ".security-waivers.json" ]; then
     echo "ℹ️  Security waivers file found - checking for waived CVEs"
-    # Still run audit but parse waivers (implementation TBD)
-  fi
 
-  # Always run audit - SECURITY.md documents issues but doesn't suppress checks
-  if has_script "security:audit"; then
-    HUSKY=0 npm run security:audit
-  else
-    npm audit --audit-level=high --production || {
-      echo "⚠️  High/critical vulnerabilities found in production dependencies"
+    # Extract waived advisory IDs
+    WAIVED_IDS=$(node -e "
+      const waivers = require('./.security-waivers.json');
+      const ids = waivers.waivedAdvisories.map(a => a.id);
+      console.log(ids.join(','));
+    ")
 
-      # If SECURITY.md exists, remind to review documented issues
-      if [ -f "SECURITY.md" ]; then
-        echo "📋 SECURITY.md documents known vulnerabilities"
-        echo "   Review if these are newly introduced issues or already documented"
-      fi
+    # Run audit and capture JSON output
+    AUDIT_JSON=$(npm audit --json --audit-level=high --production 2>/dev/null || true)
 
+    # Extract all advisory IDs from audit output
+    FOUND_IDS=$(echo "$AUDIT_JSON" | node -e "
+      const fs = require('fs');
+      const stdin = fs.readFileSync(0, 'utf-8');
+      try {
+        const audit = JSON.parse(stdin);
+        const advisoryIds = new Set();
+
+        if (audit.vulnerabilities) {
+          Object.values(audit.vulnerabilities).forEach(vuln => {
+            if (Array.isArray(vuln.via)) {
+              vuln.via.forEach(v => {
+                if (typeof v === 'object' && v.source) {
+                  advisoryIds.add(v.source.toString());
+                }
+              });
+            }
+          });
+        }
+
+        console.log(Array.from(advisoryIds).join(','));
+      } catch (e) {
+        console.error('Error parsing audit JSON:', e.message);
+        process.exit(0);
+      }
+    ")
+
+    if [ -z "$FOUND_IDS" ]; then
+      echo "✅ No high/critical vulnerabilities found"
+      return 0
+    fi
+
+    # Check for NEW (non-waived) vulnerabilities
+    NEW_VULNS=$(node -e "
+      const waived = '$WAIVED_IDS'.split(',').filter(Boolean);
+      const found = '$FOUND_IDS'.split(',').filter(Boolean);
+      const newVulns = found.filter(id => !waived.includes(id));
+      console.log(newVulns.join(','));
+    ")
+
+    if [ -n "$NEW_VULNS" ]; then
+      echo "🚨 NEW vulnerabilities found (not in .security-waivers.json):"
+      echo "   Advisory IDs: $NEW_VULNS"
       echo "   Run 'npm audit' locally for details"
+      echo "   If these are acceptable, add them to .security-waivers.json"
       exit 1
-    }
+    fi
+
+    echo "✅ All vulnerabilities are documented in .security-waivers.json"
+    WAIVED_COUNT=$(echo "$FOUND_IDS" | tr ',' '\n' | grep -c .)
+    echo "   ($WAIVED_COUNT waived advisories: $FOUND_IDS)"
+
+  else
+    # No waiver file - run audit normally
+    if has_script "security:audit"; then
+      HUSKY=0 npm run security:audit
+    else
+      npm audit --audit-level=high --production || {
+        echo "⚠️  High/critical vulnerabilities found in production dependencies"
+
+        # If SECURITY.md exists, remind to review documented issues
+        if [ -f "SECURITY.md" ]; then
+          echo "📋 SECURITY.md documents known vulnerabilities"
+          echo "   Review if these are newly introduced issues or already documented"
+        fi
+
+        echo "   Run 'npm audit' locally for details"
+        exit 1
+      }
+    fi
   fi
 }
 
