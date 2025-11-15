@@ -2,14 +2,14 @@ import NextAuth from 'next-auth'
 import { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-import EmailProvider from 'next-auth/providers/email'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 // Lazy-load Prisma only when needed (OAuth providers)
 // This prevents DATABASE_URL errors when using mock/credentials providers
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let prisma: any = null
-let getPrisma = () => {
+const getPrisma = () => {
   if (!prisma) {
     const { prisma: prismaInstance } = require('@/lib/prisma')
     prisma = prismaInstance
@@ -78,6 +78,8 @@ const hasEmailConfig =
   process.env.EMAIL_FROM
 
 if (hasEmailConfig) {
+  // Lazy-load EmailProvider to avoid requiring nodemailer when not needed
+  const EmailProvider = require('next-auth/providers/email').default
   providers.push(
     EmailProvider({
       server: {

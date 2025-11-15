@@ -48,6 +48,17 @@
 - **Scope**: Development dependency
 - **Impact**: Symbolic link vulnerability
 
+## Moderate Severity Vulnerabilities
+
+### js-yaml - Prototype Pollution (GHSA-mh29-5h37-fv8m)
+- **Package**: js-yaml <4.1.1
+- **Scope**: Development tooling (Expo CLI, Jest, Metro)
+- **Impact**: Prototype pollution via merge operation
+- **Mitigation**:
+  - Transitive dependency only, not directly used in application code
+  - Affects build/test tools, not production runtime
+  - Cannot upgrade without Expo SDK and Jest major version bumps
+
 ## Why Not Auto-Fixed?
 
 **Dependency Conflict**:

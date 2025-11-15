@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
   "description": "Documented security vulnerabilities that are waived from failing CI builds",
-  "lastUpdated": "2025-11-13",
+  "lastUpdated": "2025-11-15",
   "waivedAdvisories": [
     {
       "id": "1109627",
@@ -40,6 +40,16 @@
       "severity": "high",
       "title": "Template injection that can lead to XSS",
       "reason": "Development server only. Cannot upgrade without @expo/cli upgrade. Documented in SECURITY.md.",
+      "documentedIn": "SECURITY.md",
+      "expiresAfter": "2026-01-01"
+    },
+    {
+      "id": "1109754",
+      "ghsa": "GHSA-mh29-5h37-fv8m",
+      "package": "js-yaml",
+      "severity": "moderate",
+      "title": "Prototype pollution in merge (<<)",
+      "reason": "Transitive dependency via @expo/cli, Jest, and Metro. Development tooling only. Cannot upgrade without Expo SDK and Jest upgrades. Documented in SECURITY.md.",
       "documentedIn": "SECURITY.md",
       "expiresAfter": "2026-01-01"
     }

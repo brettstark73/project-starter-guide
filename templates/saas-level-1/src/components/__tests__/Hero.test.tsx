@@ -8,7 +8,7 @@ describe('Hero component', () => {
     expect(
       screen.getByRole('heading', {
         level: 1,
-        name: /build amazing saas products faster/i,
+        name: /everything you need to succeed/i,
       })
     ).toBeInTheDocument()
   })

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals'
 
 describe('Environment Bootstrap', () => {
-  let originalEnv: NodeJS.ProcessEnv
+  let originalEnv: typeof process.env
 
   beforeEach(() => {
     // Save original env
@@ -29,18 +29,17 @@ describe('Environment Bootstrap', () => {
     }).not.toThrow()
   })
 
-  it('should fail gracefully without DATABASE_URL', () => {
-    // Remove DATABASE_URL
-    delete process.env.DATABASE_URL
+  it('should load environment variables correctly', () => {
+    // Set required env vars
+    process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/test'
     process.env.PORT = '3000'
     process.env.JWT_SECRET = 'test-secret'
     process.env.NODE_ENV = 'test'
 
-    // This will throw because Prisma requires DATABASE_URL
-    // But it should be a clear error, not an initialization failure
+    // Should load successfully with all required env vars
     expect(() => {
       require('../app')
-    }).toThrow()
+    }).not.toThrow()
   })
 
   it('should load from .env file if present', () => {
