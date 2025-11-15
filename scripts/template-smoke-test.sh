@@ -168,7 +168,7 @@ test_minimal_env "$TEMPLATE_PATH"
 # Test 2: Full production-like env (all providers enabled)
 echo "🚀 Testing production-like configuration..."
 if [[ "$TEMPLATE_PATH" == "saas-level-1" ]]; then
-  # Now add full env for production-like testing
+  # Add full OAuth/database env for production testing
   export DATABASE_URL="postgresql://user:password@localhost:5432/test_db"
   export STRIPE_PUBLISHABLE_KEY="pk_test_dummy"
   export STRIPE_SECRET_KEY="sk_test_dummy"
@@ -180,8 +180,13 @@ if [[ "$TEMPLATE_PATH" == "saas-level-1" ]]; then
   echo "   Testing with OAuth providers and database..."
 fi
 
+# Run lint/type-check/build with production env for production code path testing
+export NODE_ENV="production"
 run_if_script_exists lint "npm run lint"
 run_if_script_exists "type-check" "npm run type-check"
+
+# Run tests with test env (tests don't run in production mode)
+export NODE_ENV="test"
 run_if_script_exists test "npm test -- --runInBand"
 run_if_script_exists build "npm run build"
 run_security_audit

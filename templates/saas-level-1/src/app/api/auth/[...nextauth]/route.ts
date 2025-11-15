@@ -131,12 +131,15 @@ if (providers.length === 0) {
   console.warn('[auth] Using fallback mock provider - configure real providers for production!')
 }
 
-// Determine if we're using credentials providers (dev/mock)
-const hasCredentialsProvider = providers.some(p => p.id === 'credentials')
+// Determine if we have any OAuth/email providers (require database)
+const hasOAuthProviders = providers.some(p =>
+  p.id === 'github' || p.id === 'google' || p.id === 'email'
+)
 
 const authOptions: NextAuthOptions = {
-  // Only use Prisma adapter for OAuth providers (not credentials)
-  adapter: hasCredentialsProvider ? undefined : PrismaAdapter(getPrisma()),
+  // Use Prisma adapter when OAuth/email providers are present
+  // Credentials-only mode uses JWT (no database needed)
+  adapter: hasOAuthProviders ? PrismaAdapter(getPrisma()) : undefined,
   providers,
   callbacks: {
     async session({ session, token, user }) {
@@ -167,12 +170,12 @@ const authOptions: NextAuthOptions = {
     // signOut: '/auth/signout',
     // error: '/auth/error', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // (used for check email message)
-    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out of interest)
   },
   session: {
-    // Use JWT strategy for credentials providers (dev/mock) to avoid DB FK errors
-    // Use database strategy for OAuth providers (GitHub, Google, Email)
-    strategy: hasCredentialsProvider ? 'jwt' : 'database',
+    // Use database strategy when OAuth/email providers present
+    // Use JWT strategy for credentials-only mode (dev/mock)
+    strategy: hasOAuthProviders ? 'database' : 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
 }
