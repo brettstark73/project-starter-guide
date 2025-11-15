@@ -41,4 +41,17 @@
 
 ---
 
+## Command Permissions
+
+**Custom commands in this project have full tool access** (unless explicitly restricted):
+
+**All workflow commands** (`/execute-backlog`, `/project-status`, `/sync-private`, `/specify`, `/tasks`, `/review-code`, `/eureka`) have access to:
+- **All standard tools**: Read, Write, Edit, MultiEdit, Bash, Grep, Glob, TodoWrite, WebFetch, WebSearch
+- **All git operations**: Bash(git:*)
+- **All project operations**: Read/Write anywhere in project directory
+
+This allows autonomous execution without permission prompts for routine operations.
+
+---
+
 *Project-specific configuration for Project Starter Guide development*

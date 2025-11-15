@@ -6,7 +6,16 @@ import EmailProvider from 'next-auth/providers/email'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
-import { prisma } from '@/lib/prisma'
+// Lazy-load Prisma only when needed (OAuth providers)
+// This prevents DATABASE_URL errors when using mock/credentials providers
+let prisma: any = null
+let getPrisma = () => {
+  if (!prisma) {
+    const { prisma: prismaInstance } = require('@/lib/prisma')
+    prisma = prismaInstance
+  }
+  return prisma
+}
 
 const providers: NextAuthOptions['providers'] = []
 
@@ -125,7 +134,7 @@ const hasCredentialsProvider = providers.some(p => p.id === 'credentials')
 
 const authOptions: NextAuthOptions = {
   // Only use Prisma adapter for OAuth providers (not credentials)
-  adapter: hasCredentialsProvider ? undefined : PrismaAdapter(prisma),
+  adapter: hasCredentialsProvider ? undefined : PrismaAdapter(getPrisma()),
   providers,
   callbacks: {
     async session({ session, token, user }) {

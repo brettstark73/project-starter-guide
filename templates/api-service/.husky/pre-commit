@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged for code quality
+npx lint-staged
+
+# Run tests to catch regressions
+npm run test -- --passWithNoTests --bail
+
+# Security checks
+npm run security:secrets
+
+echo "✅ Pre-commit checks passed"

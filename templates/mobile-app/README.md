@@ -285,6 +285,269 @@ Full TypeScript support with:
 - IntelliSense support
 - Type-safe props and state
 
+## Troubleshooting
+
+### Husky ".git can't be found" Warning
+
+**Issue:** During `npm install`, you see `.git can't be found`
+
+**Cause:** You copied the template files instead of cloning with git
+
+**Fix:**
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+npm install  # Re-run to set up git hooks
+```
+
+**Impact:** None - this only affects git hooks setup. The app works fine without git hooks.
+
+---
+
+### npm Audit Vulnerabilities
+
+**Issue:** `npm install` reports 48 vulnerabilities (7 low, 31 moderate, 10 high)
+
+**Status:** ✅ **Expected and documented**
+
+**Details:**
+- All vulnerabilities reviewed and documented in `.security-waivers.json`
+- 12 production vulnerabilities are React Native ecosystem dependencies
+- Security team has assessed and waived these for the mobile development context
+
+**Action:**
+1. Review `.security-waivers.json` for rationale
+2. Run `npm audit` to see specific packages
+3. Update dependencies as the React Native ecosystem matures
+4. See `SECURITY.md` for our security policy
+
+**Do NOT run** `npm audit fix --force` - this may break React Native compatibility
+
+---
+
+### Slow npm install (5+ minutes)
+
+**Issue:** `npm install` takes 5-13 minutes
+
+**Cause:** React Native has a large dependency tree (~1,800 packages)
+
+**Status:** ✅ **Expected for React Native projects**
+
+**Tips to speed up:**
+```bash
+# Use npm ci for faster installs (requires package-lock.json)
+npm ci
+
+# Enable caching in CI/CD
+# See .github/workflows/ci.yml for GitHub Actions caching example
+```
+
+**Expected times:**
+- **First install:** 5-10 minutes
+- **With cache:** 1-2 minutes
+- **npm ci:** 3-5 minutes
+
+---
+
+### Metro Bundler Cache Issues
+
+**Issue:** App not updating or showing old code
+
+**Fix:**
+```bash
+# Clear Expo cache
+npx expo start --clear
+
+# Reset metro bundler cache
+npx expo start --reset-cache
+
+# Nuclear option - clear all caches
+rm -rf node_modules .expo .expo-shared
+npm install
+npx expo start --clear
+```
+
+---
+
+### iOS Simulator Not Starting
+
+**Issue:** `npm run ios` fails or simulator doesn't launch
+
+**Fixes:**
+```bash
+# Reset all simulators
+xcrun simctl erase all
+
+# List available simulators
+xcrun simctl list devices
+
+# Boot specific simulator
+xcrun simctl boot "iPhone 15 Pro"
+
+# Open simulator manually
+open -a Simulator
+```
+
+---
+
+### Android Emulator Issues
+
+**Issue:** `npm run android` fails to connect to emulator
+
+**Fixes:**
+```bash
+# List running emulators
+adb devices
+
+# Restart adb server
+adb kill-server && adb start-server
+
+# Cold boot emulator (reset state)
+emulator -avd YOUR_AVD_NAME -cold-boot
+
+# Check if emulator is running
+emulator -list-avds
+```
+
+---
+
+### TypeScript Errors in Tests
+
+**Issue:** ESLint warnings about `@typescript-eslint/no-explicit-any`
+
+**Status:** ✅ **Acceptable in test files**
+
+**Why:** Test mocks often use `any` for navigation, props, and callbacks
+
+**Fix (optional):**
+```typescript
+// Instead of:
+const mockNavigation = {} as any;
+
+// Use proper typing:
+import { NavigationProp } from '@react-navigation/native';
+const mockNavigation: Partial<NavigationProp<any>> = {
+  navigate: jest.fn(),
+};
+```
+
+---
+
+### Expo Go Connection Issues
+
+**Issue:** QR code scanning doesn't connect to dev server
+
+**Fixes:**
+1. **Check network:** Phone and computer must be on same WiFi
+2. **Disable VPN:** VPNs can block local network connections
+3. **Try tunnel mode:**
+   ```bash
+   npx expo start --tunnel
+   ```
+4. **Manual connection:** In Expo Go app, manually enter your computer's IP:
+   ```
+   exp://192.168.1.XXX:8081
+   ```
+
+---
+
+### Build Errors with EAS
+
+**Issue:** `eas build` fails with unclear errors
+
+**Common fixes:**
+```bash
+# Ensure EAS CLI is up to date
+npm install -g eas-cli@latest
+
+# Clear EAS cache
+eas build --clear-cache
+
+# Check app.json configuration
+# Ensure all required fields are present
+
+# Verify credentials
+eas credentials
+```
+
+---
+
+### Performance Issues
+
+**Issue:** App feels slow or laggy
+
+**Diagnostic steps:**
+1. **Enable performance monitor:**
+   - Shake device → "Show Performance Monitor"
+   - Look for dropped frames (should be 60 FPS)
+
+2. **Check bundle size:**
+   ```bash
+   npx expo-doctor
+   ```
+
+3. **Optimize images:**
+   - Use appropriate formats (WebP for photos, PNG for icons)
+   - Compress images before bundling
+   - Lazy load large images
+
+4. **Profile with Flipper:**
+   - Install Flipper
+   - Connect to app
+   - Monitor render times and memory
+
+---
+
+### Environment Variables Not Loading
+
+**Issue:** `.env` values not accessible in app
+
+**Fix:**
+```bash
+# Expo uses .env differently than web apps
+# Install expo-constants
+expo install expo-constants
+
+# Access variables:
+import Constants from 'expo-constants';
+const apiUrl = Constants.expoConfig?.extra?.apiUrl;
+```
+
+**Note:** Restart dev server after changing `.env` file
+
+---
+
+### Common Dependency Conflicts
+
+**Issue:** Peer dependency warnings during install
+
+**Fix:**
+```bash
+# Use --legacy-peer-deps for compatibility
+npm install --legacy-peer-deps
+
+# Or update to compatible versions
+npm install expo@latest
+```
+
+---
+
+### Still Having Issues?
+
+1. **Check Expo documentation:** https://docs.expo.dev
+2. **Search GitHub issues:** https://github.com/expo/expo/issues
+3. **Ask on Discord:** https://discord.gg/expo
+4. **Review validation results:** See `claudedocs/fresh-clone-validation-results.md`
+
+**Need more help?** Open an issue with:
+- Node version (`node --version`)
+- npm version (`npm --version`)
+- Expo version (`expo --version`)
+- Operating system
+- Full error message
+- Steps to reproduce
+
 ## License
 
 MIT License - free to use for personal and commercial projects.

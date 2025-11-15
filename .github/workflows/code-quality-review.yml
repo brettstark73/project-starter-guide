@@ -1,0 +1,254 @@
+name: Code Quality & Review
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  quality-review:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template: [saas-level-1, api-service, mobile-app]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: templates/${{ matrix.template }}/package-lock.json
+
+      - name: Cache template node_modules
+        uses: actions/cache@v4
+        with:
+          path: templates/${{ matrix.template }}/node_modules
+          key: ${{ runner.os }}-node-${{ matrix.template }}-${{ hashFiles('templates/${{ matrix.template }}/package-lock.json') }}
+
+      - name: Install dependencies
+        working-directory: templates/${{ matrix.template }}
+        run: npm ci --no-audit --no-fund
+
+      # Pattern 1: Check dotenv loading order (API template)
+      - name: Check Environment Loading Patterns
+        if: matrix.template == 'api-service'
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Checking dotenv loading order in API template..."
+
+          # Check if dotenv.config() is called before other imports
+          if ! head -10 src/app.ts | grep -q "dotenv.config()"; then
+            echo "❌ CRITICAL: dotenv.config() not in first 10 lines of app.ts"
+            echo "   This will cause DATABASE_URL not found errors"
+            echo "   Fix: Move dotenv import and config to top of file"
+            exit 1
+          fi
+
+          echo "✅ dotenv loading order correct"
+
+      # Pattern 2: Check Prisma lazy-loading (SaaS template)
+      - name: Check Prisma Import Patterns
+        if: matrix.template == 'saas-level-1'
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Checking Prisma import patterns in SaaS template..."
+
+          AUTH_ROUTE="src/app/api/auth/[...nextauth]/route.ts"
+
+          # Check for lazy-loading pattern
+          if grep -q "import.*prisma.*from.*@/lib/prisma" "$AUTH_ROUTE" && ! grep -q "getPrisma\|require.*@/lib/prisma" "$AUTH_ROUTE"; then
+            echo "❌ WARNING: Prisma imported at top level without lazy-loading"
+            echo "   This will fail when using mock providers (no DATABASE_URL)"
+            echo "   Fix: Use lazy-loading pattern with require() or dynamic import"
+            exit 1
+          fi
+
+          echo "✅ Prisma lazy-loading pattern correct"
+
+      # Pattern 3: Check trust proxy configuration (API template)
+      - name: Check Trust Proxy Configuration
+        if: matrix.template == 'api-service'
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Checking trust proxy configuration..."
+
+          # Check if trust proxy is set before rate limiter
+          if ! grep -q "app.set('trust proxy'" src/app.ts; then
+            echo "❌ WARNING: trust proxy not configured"
+            echo "   Rate limiting won't work correctly behind proxies"
+            echo "   Fix: Add app.set('trust proxy', 1) before rate limiter"
+            exit 1
+          fi
+
+          echo "✅ Trust proxy configuration correct"
+
+      # Pattern 4: Test assertions match components (SaaS template)
+      - name: Check Test-Component Alignment
+        if: matrix.template == 'saas-level-1'
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔍 Checking test assertions match component text..."
+
+          # Run tests - if they pass, alignment is good
+          npm test -- --run --reporter=verbose
+
+          if [ $? -ne 0 ]; then
+            echo "❌ Tests failed - check for text mismatches between components and tests"
+            echo "   Fix: Keep Hero component text in sync with Home.test.tsx assertions"
+            exit 1
+          fi
+
+          echo "✅ Test-component alignment verified"
+
+      # Pattern 5: Bootstrap integration tests
+      - name: Run Bootstrap Integration Tests
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🧪 Running bootstrap integration tests..."
+
+          case "${{ matrix.template }}" in
+            "api-service")
+              # Test minimal env scenario
+              export DATABASE_URL="postgresql://test:test@localhost:5432/test"
+              export JWT_SECRET="test-secret-32-chars-minimum"
+              export PORT="3000"
+              npm test -- --testPathPattern=bootstrap || {
+                echo "❌ Bootstrap tests failed - environment loading broken"
+                exit 1
+              }
+              ;;
+            "saas-level-1")
+              # Test without DATABASE_URL (mock provider)
+              export NEXTAUTH_SECRET="test-secret-at-least-32-characters-long"
+              export NEXTAUTH_URL="http://localhost:3000"
+              export NODE_ENV="development"
+              npm test -- --run --testPathPattern=auth-bootstrap || {
+                echo "❌ Auth bootstrap tests failed - lazy-loading broken"
+                exit 1
+              }
+              ;;
+            "mobile-app")
+              echo "Mobile app - no bootstrap tests needed"
+              ;;
+          esac
+
+          echo "✅ Bootstrap tests passed"
+
+      # Pattern 6: Security patterns check
+      - name: Security Patterns Review
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔐 Checking security patterns..."
+
+          # Check for hardcoded secrets
+          if grep -r "sk_live\|pk_live\|password.*=" src/ --exclude-dir=__tests__ --exclude-dir=node_modules; then
+            echo "❌ CRITICAL: Potential hardcoded secrets found"
+            exit 1
+          fi
+
+          # Check .env is in .gitignore
+          if ! grep -q "^\.env$" .gitignore; then
+            echo "❌ CRITICAL: .env not in .gitignore"
+            exit 1
+          fi
+
+          # Check .env.example exists
+          if [ ! -f ".env.example" ]; then
+            echo "⚠️ WARNING: .env.example not found"
+          fi
+
+          echo "✅ Security patterns check passed"
+
+      # Summary report
+      - name: Generate Quality Report
+        if: always()
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "📊 Quality Review Summary for ${{ matrix.template }}"
+          echo "=============================================="
+          echo ""
+          echo "Checks performed:"
+          echo "  ✓ Environment loading patterns"
+          echo "  ✓ Database/Prisma import patterns"
+          echo "  ✓ Configuration correctness"
+          echo "  ✓ Test-component alignment"
+          echo "  ✓ Bootstrap integration tests"
+          echo "  ✓ Security patterns"
+          echo ""
+          echo "See job logs above for any failures or warnings"
+
+  # Create issue if quality checks fail
+  create-issue-on-failure:
+    runs-on: ubuntu-latest
+    needs: quality-review
+    if: failure() && github.event_name == 'push'
+    steps:
+      - name: Create Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `[Quality Alert] Code quality checks failed on ${context.sha.substring(0, 7)}`
+            const body = `## Quality Review Failed
+
+            The automated code quality review found issues with the recent commit.
+
+            **Commit**: ${context.sha}
+            **Branch**: ${context.ref}
+            **Workflow**: ${context.workflow}
+
+            ### Common Issues to Check:
+
+            1. **Dotenv loading order** (API template)
+               - Ensure dotenv.config() is in first 10 lines
+
+            2. **Prisma lazy-loading** (SaaS template)
+               - Check for lazy-loading pattern in auth route
+
+            3. **Trust proxy configuration** (API template)
+               - Verify app.set('trust proxy', 1) before rate limiter
+
+            4. **Test alignment** (SaaS template)
+               - Ensure component text matches test assertions
+
+            5. **Bootstrap tests**
+               - Check integration tests pass with minimal .env
+
+            Please review the [failed workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.
+
+            /cc @${context.actor}
+            `
+
+            // Check if similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'quality-alert'
+            })
+
+            const existingIssue = issues.data.find(i => i.title.includes('[Quality Alert]'))
+
+            if (existingIssue) {
+              // Comment on existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `New quality check failure:\n\n${body}`
+              })
+            } else {
+              // Create new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['quality-alert', 'automated']
+              })
+            }

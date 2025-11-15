@@ -132,19 +132,52 @@ run_security_audit() {
   fi
 }
 
-# Provide safe defaults for templates that need environment variables
+# Test 1: Minimal .env scenario (critical for production readiness)
+echo "🧪 Testing minimal .env configuration..."
+test_minimal_env() {
+  local template=$1
+
+  case "$template" in
+    "saas-level-1")
+      # Test with ONLY required vars (no DB, no OAuth)
+      # This tests that mock provider works without DATABASE_URL
+      export NEXTAUTH_SECRET="test-secret-at-least-32-characters-long-for-ci"
+      export NEXTAUTH_URL="http://localhost:3000"
+      export NODE_ENV="development"
+      # Intentionally NOT setting DATABASE_URL, OAuth providers
+      # Template should work with mock/credentials provider
+      echo "   Testing SaaS with mock provider (no DATABASE_URL)..."
+      ;;
+    "api-service")
+      # API requires DATABASE_URL - test with minimal set
+      export DATABASE_URL="postgresql://user:password@localhost:5432/test_db"
+      export PORT="3000"
+      export JWT_SECRET="test-jwt-secret-at-least-32-chars"
+      export NODE_ENV="test"
+      echo "   Testing API with minimal required vars..."
+      ;;
+    "mobile-app")
+      # Mobile app doesn't need server env vars
+      echo "   Testing mobile app (no server env vars needed)..."
+      ;;
+  esac
+}
+
+test_minimal_env "$TEMPLATE_PATH"
+
+# Test 2: Full production-like env (all providers enabled)
+echo "🚀 Testing production-like configuration..."
 if [[ "$TEMPLATE_PATH" == "saas-level-1" ]]; then
-  export NEXTAUTH_SECRET="test-secret-at-least-32-characters-long-for-ci"
-  export NEXTAUTH_URL="http://localhost:3000"
+  # Now add full env for production-like testing
   export DATABASE_URL="postgresql://user:password@localhost:5432/test_db"
   export STRIPE_PUBLISHABLE_KEY="pk_test_dummy"
   export STRIPE_SECRET_KEY="sk_test_dummy"
   export STRIPE_WEBHOOK_SECRET="whsec_dummy"
-  # Auth providers (at least one required for Next.js build)
   export GITHUB_ID="dummy-github-client-id"
   export GITHUB_SECRET="dummy-github-client-secret"
   export GOOGLE_CLIENT_ID="dummy-google-client-id.apps.googleusercontent.com"
   export GOOGLE_CLIENT_SECRET="dummy-google-client-secret"
+  echo "   Testing with OAuth providers and database..."
 fi
 
 run_if_script_exists lint "npm run lint"

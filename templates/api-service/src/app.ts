@@ -1,8 +1,12 @@
+// IMPORTANT: Load environment variables FIRST, before any other imports
+// This ensures Prisma and other modules can access process.env at initialization
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import dotenv from 'dotenv'
 import rateLimit from 'express-rate-limit'
 
 import { errorHandler } from './middleware/errorHandler'
@@ -11,9 +15,11 @@ import authRoutes from './routes/auth'
 import userRoutes from './routes/users'
 import healthRoutes from './routes/health'
 
-dotenv.config()
-
 const app = express()
+
+// Trust proxy - Required for rate limiting behind reverse proxies (Nginx, AWS ALB, etc.)
+// Without this, all requests appear to come from the proxy IP
+app.set('trust proxy', 1)
 
 // Security middleware
 app.use(helmet())

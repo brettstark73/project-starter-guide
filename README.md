@@ -22,6 +22,8 @@
 | **E-commerce** | Level 3 | Next.js + Shopify/Stripe + DB | 3-6 weeks |
 | **Enterprise SaaS** | Level 4 | Microservices + K8s + Multiple DBs | 3-6 months |
 
+**Not sure which template to use?** Check our [📊 Template Comparison Guide](docs/template-comparison.md) for detailed feature comparisons, use cases, and decision criteria.
+
 ## 🏗️ Complexity Levels
 
 ### Level 1: Static & Simple
@@ -100,6 +102,185 @@ volta run node scripts/create-quality-automation-runner.mjs --smoke
 - Basic dependency health checks
 
 [📖 **Dependency Monitoring Guide**](docs/dependency-monitoring.md)
+
+## 📦 Dependency Management Strategy
+
+### Lockfiles - Committed for Reproducibility
+
+**All templates include committed lockfiles** (`package-lock.json`) to ensure:
+- ✅ **Reproducible builds** - Same dependencies across all environments
+- ✅ **Security verification** - Audit exact installed versions
+- ✅ **Faster installs** - Use `npm ci` for deterministic, faster installs
+- ✅ **Supply chain protection** - Verify integrity of installed packages
+
+**Best practices:**
+```bash
+# Development: Use npm ci for faster, reproducible installs
+npm ci
+
+# Adding new dependencies: Updates lockfile automatically
+npm install package-name
+
+# Never manually edit lockfiles - let npm manage them
+```
+
+---
+
+### Security Vulnerability Handling
+
+**Our approach to security issues:**
+
+1. **All vulnerabilities documented** - See each template's `.security-waivers.json` and `SECURITY.md`
+2. **Production vs dev dependencies** - Understand the real impact
+3. **Framework ecosystem reality** - Some vulnerabilities unavoidable in cutting-edge frameworks
+
+**Template-specific security status:**
+
+| Template | Vulnerabilities | Status | Notes |
+|----------|----------------|--------|-------|
+| **mobile-app** | 48 total (12 prod, 36 dev) | ✅ Documented | React Native ecosystem - waived with rationale |
+| **saas-level-1** | 0 | ✅ Clean | Upgraded to latest versions |
+| **api-service** | 27 (dev-only) | ✅ Safe | Test/build tools only |
+
+**When you encounter vulnerabilities:**
+
+1. **Check `.security-waivers.json`** - See if already assessed
+2. **Read `SECURITY.md`** - Understand impact and mitigation
+3. **Run `npm audit --production`** - See only production vulnerabilities
+4. **Don't panic on dev vulnerabilities** - They don't affect production builds
+
+---
+
+### Update Strategy
+
+**Regular updates:**
+```bash
+# Check outdated packages
+npm outdated
+
+# Update non-breaking changes (patch/minor)
+npm update
+
+# Major version upgrades (manual testing required)
+npm install package@latest
+npm test  # Always test after major upgrades
+```
+
+**Framework-specific guidance:**
+
+- **React Native/Expo**: Follow [Expo SDK upgrade guide](https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/)
+- **Next.js**: Use `npx @next/codemod` for breaking changes
+- **Express/Node**: Check migration guides for major version bumps
+
+---
+
+### CI/CD Integration
+
+**Our templates use npm caching for fast CI:**
+
+```yaml
+# GitHub Actions example (already in templates)
+- name: Cache node_modules
+  uses: actions/cache@v4
+  with:
+    path: node_modules
+    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+```
+
+**Expected install times:**
+- **First run**: 2-15 minutes (depending on template)
+- **With cache**: 1-3 minutes
+- **Using `npm ci`**: 30-50% faster than `npm install`
+
+---
+
+### Dependabot Configuration
+
+**Already configured** in `.github/dependabot.yml`:
+
+- ✅ Weekly security updates
+- ✅ Framework-specific grouping (React, Next.js, etc.)
+- ✅ Auto-merge for patch versions (security fixes)
+
+**What Dependabot does:**
+1. Monitors for new versions and security patches
+2. Creates pull requests with grouped updates
+3. Auto-merges security patches (configurable)
+4. Keeps dependencies fresh with minimal effort
+
+---
+
+### When to Update
+
+**Update immediately (P0):**
+- 🚨 Critical security vulnerabilities in production dependencies
+- 🚨 Breaking bugs in current versions
+
+**Update soon (P1):**
+- ⚠️ High severity vulnerabilities in production dependencies
+- ⚠️ Important framework updates with security fixes
+
+**Update regularly (P2):**
+- 📅 Quarterly: Review all dependencies, update majors with testing
+- 📅 Monthly: Review Dependabot PRs, merge non-breaking updates
+- 📅 Weekly: Auto-merge security patches via Dependabot
+
+**Can defer (P3):**
+- Dev-only low/moderate vulnerabilities
+- Minor version bumps without features you need
+- Experimental/alpha versions
+
+---
+
+### Troubleshooting Dependency Issues
+
+**Common scenarios:**
+
+**Issue: `npm audit` shows vulnerabilities**
+```bash
+# Step 1: Check if already waived
+cat .security-waivers.json
+
+# Step 2: See only production vulns
+npm audit --production
+
+# Step 3: Try safe fixes
+npm audit fix
+
+# Step 4: Document if can't fix
+# Add to .security-waivers.json with rationale
+```
+
+**Issue: Dependency conflicts**
+```bash
+# Option 1: Use legacy peer deps (React Native, older packages)
+npm install --legacy-peer-deps
+
+# Option 2: Force resolution (use cautiously)
+npm install --force
+
+# Option 3: Update to compatible versions
+npm install package@compatible-version
+```
+
+**Issue: Slow `npm install`**
+```bash
+# Use ci for faster installs
+npm ci
+
+# Enable caching in CI/CD (see templates)
+# Clear npm cache if corrupted
+npm cache clean --force
+```
+
+---
+
+### Resources
+
+- 📖 [npm audit documentation](https://docs.npmjs.com/cli/v8/commands/npm-audit)
+- 📖 [Dependabot configuration](https://docs.github.com/en/code-security/dependabot)
+- 📖 [Security Policy (SECURITY.md)](docs/security-guide.md)
+- 📖 [Dependency Monitoring Guide](docs/dependency-monitoring.md)
 
 ## 📦 Template Quick-Start
 
