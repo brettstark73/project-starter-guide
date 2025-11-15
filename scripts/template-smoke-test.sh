@@ -184,11 +184,11 @@ fi
 export NODE_ENV="production"
 run_if_script_exists lint "npm run lint"
 run_if_script_exists "type-check" "npm run type-check"
+run_if_script_exists build "npm run build"
 
 # Run tests with test env (tests don't run in production mode)
 export NODE_ENV="test"
 run_if_script_exists test "npm test -- --runInBand"
-run_if_script_exists build "npm run build"
 run_security_audit
 
 popd >/dev/null
