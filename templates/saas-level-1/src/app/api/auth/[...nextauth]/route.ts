@@ -19,31 +19,6 @@ const getPrisma = () => {
 
 const providers: NextAuthOptions['providers'] = []
 
-// Development-only provider for easy local testing
-if (process.env.NODE_ENV === 'development') {
-  providers.push(
-    CredentialsProvider({
-      name: 'Development',
-      credentials: {
-        email: { label: "Email", type: "email", placeholder: "dev@example.com" },
-      },
-      async authorize(credentials) {
-        // WARNING: This is for DEVELOPMENT ONLY
-        // Returns a mock user for any email
-        if (credentials?.email) {
-          return {
-            id: 'dev-user-1',
-            email: credentials.email,
-            name: 'Dev User',
-          }
-        }
-        return null
-      },
-    })
-  )
-  console.log('[auth] Development credentials provider enabled')
-}
-
 if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
   providers.push(
     GitHubProvider({
