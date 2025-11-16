@@ -75,12 +75,20 @@ if (hasEmailConfig) {
 }
 
 if (providers.length === 0) {
-  console.error('[auth] No authentication providers configured!')
-  console.error('[auth] For development: app will use mock provider automatically')
-  console.error('[auth] For production: set environment variables for at least one provider')
-  console.error('[auth] Available providers: GitHub, Google, Email')
+  // Fail fast in production - don't boot with no real providers
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(
+      '[auth] FATAL: No authentication providers configured in production. ' +
+      'Set environment variables for at least one provider (GitHub, Google, Email). ' +
+      'Application startup aborted.'
+    )
+  }
 
-  // In development, add fallback mock provider
+  // Development only: add fallback mock provider
+  console.warn('[auth] No authentication providers configured!')
+  console.warn('[auth] Using fallback mock provider - configure real providers for production!')
+  console.warn('[auth] Available providers: GitHub, Google, Email')
+
   providers.push(
     CredentialsProvider({
       name: 'Mock Auth',
@@ -88,13 +96,6 @@ if (providers.length === 0) {
         email: { label: "Email", type: "email" },
       },
       async authorize(credentials) {
-        // In production, refuse to authenticate
-        if (process.env.NODE_ENV === 'production') {
-          throw new Error(
-            'Mock authentication is not available in production. Configure real auth providers.'
-          )
-        }
-
         return {
           id: 'mock-user',
           email: credentials?.email || 'mock@example.com',
@@ -103,7 +104,15 @@ if (providers.length === 0) {
       },
     })
   )
-  console.warn('[auth] Using fallback mock provider - configure real providers for production!')
+}
+
+// Validate NEXTAUTH_SECRET in production
+if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_SECRET) {
+  throw new Error(
+    '[auth] FATAL: NEXTAUTH_SECRET is required in production. ' +
+    'Generate one with: openssl rand -base64 32. ' +
+    'Missing secret will cause session invalidation across serverless instances.'
+  )
 }
 
 // Determine if we have any OAuth/email providers (require database)
@@ -120,9 +129,12 @@ const authOptions: NextAuthOptions = {
     async session({ session, token, user }) {
       // Send properties to the client
       if (session.user) {
-        // For JWT strategy, user comes from token
-        // For database strategy, user comes from database
-        session.user.id = user?.id || token?.sub || ''
+        // Database strategy: user comes from Prisma (already has id)
+        // JWT strategy: user comes from token
+        // Only set id if it's not already populated (preserve Prisma user.id)
+        if (!session.user.id) {
+          session.user.id = user?.id || token?.sub || ''
+        }
       }
       return session
     },
