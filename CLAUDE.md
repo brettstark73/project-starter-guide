@@ -10,10 +10,25 @@
 - **Validate documentation accuracy** against actual implementation
 - **Security scanning** for configuration exposure and hardcoded secrets
 
+#### **Template Validation Process**
+- **Before commits**: Run validation in `~/Projects/template-validation/`
+- **Parallel testing**: Test all 3 templates concurrently (mobile-app, saas-level-1, api-service)
+- **Full install + smoke tests**: `npm install && npm run lint && npm test && npm run build`
+- **Expected times**: mobile-app ~5min, saas-level-1 ~13min, api-service ~2min
+- **Security waivers**: mobile-app uses `.security-waivers.json` for documented vulnerabilities
+
+#### **Authentication Testing Requirements** (Codex Learnings)
+- **Integration tests required**: Complete auth flows (login → session → subsequent requests)
+- **Production validation**: Test fail-fast scenarios with `NODE_ENV=production`
+- **Strategy testing**: Test both JWT and database session strategies
+- **Session preservation**: Verify `session.user.id` persists across requests
+- **Reference**: `templates/saas-level-1/docs/architecture/nextauth-strategy-matrix.md`
+
 #### **Release Process**
 - **Free tier changes**: Direct to GitHub with proper versioning
 - **Documentation**: Always update both user-facing and internal docs
 - **Quality automation**: Continue as separate open-source project
+- **Post-commit**: Update private repo with `/sync-private`
 
 ---
 
@@ -51,6 +66,18 @@
 - **All project operations**: Read/Write anywhere in project directory
 
 This allows autonomous execution without permission prompts for routine operations.
+
+---
+
+## CLAUDE.md Maintenance
+
+**Review this file:**
+- ✅ Before major commits (workflow changes)
+- ✅ After completing sprint milestones
+- ✅ When adding new custom commands
+- ✅ After discovering new patterns/learnings (like Codex rounds)
+
+**Last Updated**: 2025-11-19 (Added template validation process, auth testing requirements)
 
 ---
 
