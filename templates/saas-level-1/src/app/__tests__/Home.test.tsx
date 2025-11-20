@@ -8,7 +8,7 @@ describe('Home page', () => {
     // Validate core page structure (not specific marketing copy)
     expect(screen.getByRole('navigation')).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: /everything you need to succeed/i })
+      screen.getByRole('heading', { level: 1, name: /everything you need to succeed/i })
     ).toBeInTheDocument()
     expect(screen.getByRole('region', { name: /pricing/i })).toBeInTheDocument()
     expect(screen.getByText(/© 2024 saas starter/i)).toBeInTheDocument()
