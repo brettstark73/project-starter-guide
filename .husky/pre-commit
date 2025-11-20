@@ -1,0 +1,43 @@
+# Check if CLAUDE.md needs review
+echo "🔍 Checking CLAUDE.md..."
+
+# Get files being committed
+STAGED_FILES=$(git diff --cached --name-only)
+
+# Trigger conditions
+NEEDS_REVIEW=false
+
+# Check 1: If workflow files changed
+if echo "$STAGED_FILES" | grep -q "\.github/workflows/\|scripts/\|\.claude/commands/"; then
+  echo "⚠️  Workflow files changed - CLAUDE.md may need update"
+  NEEDS_REVIEW=true
+fi
+
+# Check 2: If CLAUDE.md hasn't been updated in 30 days
+LAST_UPDATED=$(grep "Last Updated" CLAUDE.md | grep -oE "[0-9]{4}-[0-9]{2}-[0-9]{2}" || echo "2000-01-01")
+DAYS_OLD=$(( ($(date +%s) - $(date -j -f "%Y-%m-%d" "$LAST_UPDATED" +%s 2>/dev/null || echo 0)) / 86400 ))
+
+if [ $DAYS_OLD -gt 30 ]; then
+  echo "⚠️  CLAUDE.md not updated in $DAYS_OLD days - consider reviewing"
+  NEEDS_REVIEW=true
+fi
+
+# Check 3: If major template changes
+if echo "$STAGED_FILES" | grep -q "templates/.*/package.json\|templates/.*/.*auth\|templates/.*/.*config"; then
+  echo "⚠️  Template configuration changed - CLAUDE.md may need update"
+  NEEDS_REVIEW=true
+fi
+
+if [ "$NEEDS_REVIEW" = true ]; then
+  echo ""
+  echo "📝 Reminder: CLAUDE.md may need updating"
+  echo "   Review checklist:"
+  echo "   - New workflow patterns documented?"
+  echo "   - Testing requirements updated?"
+  echo "   - Last Updated timestamp current?"
+  echo ""
+  echo "   Run '/review-claude-md' after commit to update"
+fi
+
+echo "✅ CLAUDE.md check complete"
+exit 0

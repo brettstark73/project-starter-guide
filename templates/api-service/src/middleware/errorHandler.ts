@@ -1,11 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 export const errorHandler = (
-  err: Error & {
-    statusCode?: number;
-    code?: number;
-    errors?: Record<string, { message: string }>;
-  },
+  err: Error & { statusCode?: number; code?: string; errors?: Record<string, { message: string }> },
   req: Request,
   res: Response,
   _next: NextFunction,
@@ -19,24 +15,22 @@ export const errorHandler = (
   // Log error
   console.error(err);
 
-  // Mongoose bad ObjectId
-  if (err.name === "CastError") {
-    const message = "Resource not found";
-    errorResponse = { message, statusCode: 404 };
+  // Prisma validation error
+  if (err.name === 'PrismaClientValidationError') {
+    const message = 'Invalid data provided'
+    errorResponse = { message, statusCode: 400 }
   }
 
-  // Mongoose duplicate key
-  if (err.code === 11000) {
-    const message = "Duplicate field value entered";
-    errorResponse = { message, statusCode: 400 };
+  // Prisma unique constraint violation
+  if (err.name === 'PrismaClientKnownRequestError' && err.code === 'P2002') {
+    const message = 'Duplicate field value entered'
+    errorResponse = { message, statusCode: 400 }
   }
 
-  // Mongoose validation error
-  if (err.name === "ValidationError") {
-    const message = Object.values(err.errors || {})
-      .map((val) => val.message)
-      .join(", ");
-    errorResponse = { message, statusCode: 400 };
+  // Prisma record not found
+  if (err.name === 'PrismaClientKnownRequestError' && err.code === 'P2025') {
+    const message = 'Resource not found'
+    errorResponse = { message, statusCode: 404 }
   }
 
   res.status(errorResponse.statusCode || 500).json({

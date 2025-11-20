@@ -7,12 +7,12 @@ export function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Build Amazing{' '}
-            <span className="text-primary-600">SaaS Products</span> Faster
+            Everything you need to{' '}
+            <span className="text-primary-600">succeed</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Everything you need to launch your SaaS business. Authentication,
-            payments, database, and beautiful UI components - all ready to go.
+            Build amazing SaaS products faster. Authentication, payments,
+            database, and beautiful UI components - all ready to go.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Link href="/signup" className="btn btn-primary text-lg px-8 py-3">

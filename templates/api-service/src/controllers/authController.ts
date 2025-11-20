@@ -1,11 +1,9 @@
-import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
-import { validateRegister, validateLogin } from "../utils/validation";
-import type { AuthenticatedRequest } from "../types/express";
-
-const prisma = new PrismaClient();
+import { Request, Response } from 'express'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import { validateRegister, validateLogin } from '../utils/validation'
+import type { AuthenticatedRequest } from '../types/express'
+import { prisma } from '../lib/prisma'
 
 export const register = async (req: Request, res: Response) => {
   try {

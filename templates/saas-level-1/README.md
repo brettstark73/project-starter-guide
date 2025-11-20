@@ -1,21 +1,34 @@
 # SaaS Level 1 Starter Template
 
-A production-ready SaaS starter template built with Next.js 14, TypeScript, Tailwind CSS, and Stripe integration.
+A **starter template** with modern tooling for building SaaS applications. Includes pre-configured Next.js 14, TypeScript, Tailwind CSS, NextAuth.js, Prisma, and Stripe setup.
 
-**Complexity Level:** 2 | **Timeline:** 1-2 weeks | **Tech Stack:** Next.js + TypeScript + Tailwind + Stripe
+**Complexity Level:** 2 | **Timeline:** 1-2 weeks to customize | **Tech Stack:** Next.js + TypeScript + Tailwind + Prisma + NextAuth + Stripe
 
 > Need the one-page checklist? See the shared [Template Quick-Start Guide](../../docs/template-quickstart.md#saas-level-1-nextjs).
 
-## Features
+## What's Included
 
 - 🚀 **Next.js 14** with App Router and TypeScript
-- 🎨 **Tailwind CSS** for beautiful, responsive UI
-- 💳 **Stripe Integration** ready for payments
-- 🔐 **NextAuth.js** for authentication
-- 📊 **Prisma** ORM with database setup
-- 📱 **Fully Responsive** design
-- ⚡ **Performance Optimized** with modern best practices
-- 🎯 **SEO Ready** with meta tags and structured data
+- 🎨 **Tailwind CSS** with responsive marketing page components
+- 💳 **Stripe Integration** (requires setup - see below)
+- 🔐 **NextAuth.js** configured (development mock provider included)
+- 📊 **Prisma** ORM setup (database schema ready to extend)
+- 📱 **Fully Responsive** marketing page components
+- ⚡ **Performance Optimized** build configuration
+- 🎯 **SEO Ready** with meta tags structure
+
+## What You Need to Build
+
+This is a **starter template**, not a complete SaaS application. You'll need to implement:
+
+- ✏️ **User Authentication Flows** - Sign up, login, password reset pages
+- ✏️ **User Dashboard** - Protected user area with account management
+- ✏️ **Stripe Integration** - Payment flows, subscription management, webhooks
+- ✏️ **Database Models** - Extend Prisma schema for your application data
+- ✏️ **API Routes** - Backend logic for your application features
+- ✏️ **Business Logic** - Your unique SaaS functionality
+
+**Current State:** Marketing page shell with configured tooling and authentication scaffolding ready to extend.
 
 ## Quick Start
 
@@ -229,6 +242,344 @@ GITHUB_CLIENT_SECRET=your-github-client-secret
 - **Database:** Prisma ORM (PostgreSQL recommended)
 - **Payments:** Stripe for subscription billing
 - **Deployment:** Vercel/Railway recommended
+
+## Troubleshooting
+
+### Husky ".git can't be found" Warning
+
+**Issue:** During `npm install`, you see `.git can't be found`
+
+**Cause:** You copied the template files instead of cloning with git
+
+**Fix:**
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+npm install  # Re-run to set up git hooks
+```
+
+**Impact:** None - this only affects git hooks setup. The app works fine without git hooks.
+
+---
+
+### Slow npm install (13+ minutes)
+
+**Issue:** `npm install` takes 10-15 minutes
+
+**Cause:** Next.js full-stack dependencies (~780 packages including Prisma, NextAuth, Tailwind)
+
+**Status:** ✅ **Expected for full-stack SaaS templates**
+
+**Tips to speed up:**
+```bash
+# Use npm ci for faster installs (requires package-lock.json)
+npm ci
+
+# Enable caching in CI/CD
+# See .github/workflows/ci.yml for caching example
+```
+
+**Expected times:**
+- **First install:** 10-15 minutes
+- **With cache:** 2-3 minutes
+- **npm ci:** 5-8 minutes
+
+---
+
+### Prisma Client Not Generated
+
+**Issue:** Build fails with "Cannot find module '@prisma/client'"
+
+**Cause:** Prisma client not generated after install
+
+**Fix:**
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Or reinstall (runs postinstall script)
+npm install
+```
+
+**Note:** `npm install` automatically runs `prisma generate` via postinstall script
+
+---
+
+### Database Connection Errors
+
+**Issue:** `PrismaClientInitializationError: Can't reach database server`
+
+**Fixes:**
+
+1. **Check DATABASE_URL in .env.local:**
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/saas_db"
+   ```
+
+2. **Verify database is running:**
+   ```bash
+   # For PostgreSQL
+   psql -U postgres -c "SELECT version();"
+
+   # For MySQL
+   mysql -u root -p -e "SELECT version();"
+   ```
+
+3. **Create database if it doesn't exist:**
+   ```bash
+   # PostgreSQL
+   createdb saas_db
+
+   # MySQL
+   mysql -u root -p -e "CREATE DATABASE saas_db;"
+   ```
+
+4. **Push schema to database:**
+   ```bash
+   npx prisma db push
+   ```
+
+---
+
+### NextAuth Configuration Errors
+
+**Issue:** `[next-auth][error][CALLBACK_CREDENTIALS_HANDLER_ERROR]`
+
+**Common causes:**
+
+1. **Missing NEXTAUTH_SECRET:**
+   ```bash
+   # Generate a secret
+   openssl rand -base64 32
+
+   # Add to .env.local
+   NEXTAUTH_SECRET=your-generated-secret
+   ```
+
+2. **Wrong NEXTAUTH_URL:**
+   ```env
+   # Development
+   NEXTAUTH_URL=http://localhost:3000
+
+   # Production
+   NEXTAUTH_URL=https://yourdomain.com
+   ```
+
+3. **Database schema not pushed:**
+   ```bash
+   npx prisma db push
+   ```
+
+---
+
+### Next.js Build Errors
+
+**Issue:** `Error: Cannot find module` or `Module not found`
+
+**Fixes:**
+
+1. **Clear Next.js cache:**
+   ```bash
+   rm -rf .next
+   npm run build
+   ```
+
+2. **Clear all caches:**
+   ```bash
+   rm -rf node_modules .next
+   npm install
+   npm run build
+   ```
+
+3. **Check import paths:**
+   - Use `@/` for src directory imports
+   - Ensure tsconfig.json paths are correct
+
+---
+
+### Tailwind Styles Not Loading
+
+**Issue:** Tailwind classes not applying in production
+
+**Fixes:**
+
+1. **Verify globals.css is imported:**
+   ```typescript
+   // src/app/layout.tsx
+   import './globals.css'
+   ```
+
+2. **Check tailwind.config.js content paths:**
+   ```javascript
+   content: [
+     './src/**/*.{js,ts,jsx,tsx,mdx}',
+   ]
+   ```
+
+3. **Rebuild:**
+   ```bash
+   rm -rf .next
+   npm run build
+   ```
+
+---
+
+### Type Errors with Prisma
+
+**Issue:** TypeScript errors about Prisma types
+
+**Fix:**
+```bash
+# Regenerate Prisma client
+npx prisma generate
+
+# Restart TypeScript server in VS Code
+# Cmd+Shift+P → "TypeScript: Restart TS Server"
+```
+
+---
+
+### Environment Variables Not Loading
+
+**Issue:** `process.env.VARIABLE_NAME` is undefined
+
+**Common issues:**
+
+1. **Using .env instead of .env.local:**
+   - Next.js loads `.env.local` by default
+   - Copy `.env.example` to `.env.local`
+
+2. **Variables need NEXT_PUBLIC_ prefix for client-side:**
+   ```env
+   # Server-side only
+   DATABASE_URL=postgresql://...
+
+   # Client-side accessible
+   NEXT_PUBLIC_API_URL=https://api.example.com
+   ```
+
+3. **Restart dev server after changing .env:**
+   ```bash
+   # Stop server (Ctrl+C)
+   npm run dev
+   ```
+
+---
+
+### Stripe Integration Issues
+
+**Issue:** Stripe checkout not working
+
+**Checklist:**
+
+1. **Verify Stripe keys:**
+   ```env
+   STRIPE_PUBLISHABLE_KEY=pk_test_...
+   STRIPE_SECRET_KEY=sk_test_...
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   ```
+
+2. **Test mode vs Live mode:**
+   - Use `pk_test_` and `sk_test_` for development
+   - Ensure keys match (both test or both live)
+
+3. **Webhook setup:**
+   ```bash
+   # Install Stripe CLI
+   brew install stripe/stripe-cli/stripe
+
+   # Forward webhooks to localhost
+   stripe listen --forward-to localhost:3000/api/webhooks/stripe
+   ```
+
+---
+
+### Hot Reload Not Working
+
+**Issue:** Changes don't appear without manual refresh
+
+**Fixes:**
+
+1. **Restart dev server:**
+   ```bash
+   npm run dev
+   ```
+
+2. **Clear browser cache:** Hard refresh (Cmd+Shift+R / Ctrl+Shift+R)
+
+3. **Check file watch limits (Linux/WSL):**
+   ```bash
+   echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+   sudo sysctl -p
+   ```
+
+---
+
+### Port Already in Use
+
+**Issue:** `Error: listen EADDRINUSE: address already in use :::3000`
+
+**Fixes:**
+
+1. **Find and kill process:**
+   ```bash
+   # macOS/Linux
+   lsof -ti:3000 | xargs kill -9
+
+   # Windows
+   netstat -ano | findstr :3000
+   taskkill /PID <PID> /F
+   ```
+
+2. **Use different port:**
+   ```bash
+   PORT=3001 npm run dev
+   ```
+
+---
+
+### Deployment Issues (Vercel)
+
+**Issue:** Build fails on Vercel but works locally
+
+**Common fixes:**
+
+1. **Add environment variables in Vercel dashboard**
+   - All variables from `.env.local`
+   - Mark sensitive ones as "Sensitive"
+
+2. **Check Node version:**
+   - Vercel uses Node 18 by default
+   - Add `.nvmrc` if needed:
+     ```bash
+     echo "18" > .nvmrc
+     ```
+
+3. **Build command issues:**
+   - Ensure `prisma generate` runs before build
+   - Check package.json `build` script
+
+4. **Database connection:**
+   - Use connection pooling for serverless (Prisma Data Proxy or PgBouncer)
+   - Increase connection limits
+
+---
+
+### Still Having Issues?
+
+1. **Check Next.js documentation:** https://nextjs.org/docs
+2. **Prisma troubleshooting:** https://www.prisma.io/docs/guides/troubleshooting
+3. **NextAuth docs:** https://next-auth.js.org/getting-started/introduction
+4. **Review validation results:** See `claudedocs/fresh-clone-validation-results.md`
+
+**Need more help?** Open an issue with:
+- Node version (`node --version`)
+- npm version (`npm --version`)
+- Next.js version (from package.json)
+- Database type (PostgreSQL/MySQL/SQLite)
+- Full error message
+- Steps to reproduce
 
 ## License
 
