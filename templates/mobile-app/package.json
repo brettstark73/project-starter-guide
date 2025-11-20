@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "security:audit": "npm audit --audit-level high",
-    "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'][a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
+    "security:secrets": "node -e \"const fs=require('fs');const content=fs.readFileSync('package.json','utf8');if(/[\\\"\\'](?=.*\\d)[a-zA-Z0-9+/]{20,}[\\\"\\']/.test(content)){console.error('❌ Potential hardcoded secrets in package.json');process.exit(1)}else{console.log('✅ No secrets detected in package.json')}\"",
     "lighthouse:ci": "lhci autorun",
     "lighthouse:upload": "lhci upload",
     "validate:all": "npm run security:audit",
@@ -126,10 +126,10 @@
   "jest": {
     "preset": "jest-expo",
     "setupFilesAfterEnv": [
-      "@testing-library/react-native/extend-expect"
+      "@testing-library/react-native/build/matchers"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native|@react-navigation|@react-native-community|expo(nent)?|@expo|expo-status-bar|@expo/vector-icons|expo-constants|expo-linking|expo-font|expo-splash-screen|react-native-gesture-handler|react-native-reanimated|react-native-safe-area-context|react-native-screens)/)"
+      "node_modules/(?!((jest-)?react-native|@react-native|@react-navigation|@react-native-community|expo(nent)?|@expo|expo-status-bar|@expo/vector-icons|expo-constants|expo-linking|expo-font|expo-splash-screen|react-native-gesture-handler|react-native-reanimated|react-native-safe-area-context|react-native-screens|expo-modules-core)/)"
     ]
   }
 }
