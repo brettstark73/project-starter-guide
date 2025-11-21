@@ -655,6 +655,50 @@ npm install  # Re-run to set up git hooks
 - Full error message/stack trace
 - Steps to reproduce
 
+## Docker Deployment
+
+The API service includes complete Docker support for both development and production environments.
+
+### Production Deployment
+
+```bash
+# Build and run with PostgreSQL
+docker-compose up -d
+
+# Check service health
+curl http://localhost:3000/health
+curl http://localhost:3000/health/ready
+```
+
+### Development Environment
+
+```bash
+# Run development server with hot reloading
+docker-compose --profile dev up api-dev
+
+# Or build production image locally
+docker build -t api-service .
+docker run -p 3000:3000 api-service
+```
+
+### Configuration
+
+Environment variables for Docker deployment:
+
+```bash
+DATABASE_URL=postgresql://api_user:api_password@db:5432/api_service
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+NODE_ENV=production
+CORS_ORIGIN=http://localhost:3000
+```
+
+### Health Checks
+
+The Docker setup includes health checks for both the API service and PostgreSQL:
+- **API Health**: `GET /health` (liveness probe)
+- **API Ready**: `GET /health/ready` (readiness probe with DB check)
+- **Database**: PostgreSQL `pg_isready` check
+
 ## License
 
 MIT License - free to use for personal and commercial projects.

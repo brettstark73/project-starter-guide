@@ -9,6 +9,8 @@
     "start": "node dist/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:integration": "jest --config jest.integration.config.js",
+    "test:all": "npm run test && npm run test:integration",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write .",
