@@ -3,6 +3,10 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import { Alert } from 'react-native'
 import ProfileScreen from '../src/screens/ProfileScreen'
+import type { StackNavigationProp } from '@react-navigation/stack'
+import type { RootStackParamList } from '../src/types/navigation'
+
+type MockNavigation = Partial<StackNavigationProp<RootStackParamList, 'Profile'>>
 
 // Mock Alert
 jest.spyOn(Alert, 'alert')
@@ -13,7 +17,7 @@ describe('ProfileScreen', () => {
   })
 
   it('shows account settings options', () => {
-    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as any} />)
+    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as MockNavigation} />)
 
     expect(getByText('Account Settings')).toBeTruthy()
     expect(getByText('Support')).toBeTruthy()
@@ -21,7 +25,7 @@ describe('ProfileScreen', () => {
   })
 
   it('shows sign out alert when sign out button is pressed', () => {
-    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as any} />)
+    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as MockNavigation} />)
 
     const signOutButton = getByText('Sign Out')
     fireEvent.press(signOutButton)
@@ -38,15 +42,16 @@ describe('ProfileScreen', () => {
 
   it('executes sign out logic when confirmed', () => {
     const consoleSpy = jest.spyOn(console, 'log')
-    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as any} />)
+    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as MockNavigation} />)
 
     const signOutButton = getByText('Sign Out')
     fireEvent.press(signOutButton)
 
     // Get the alert callback and execute it
-    const alertCall = (Alert.alert as any).mock.calls[0]
-    const signOutCallback = alertCall[2][1].onPress
-    signOutCallback()
+    const alertMock = Alert.alert as jest.MockedFunction<typeof Alert.alert>
+    const alertCall = alertMock.mock.calls[0]
+    const signOutCallback = alertCall[2]?.[1]?.onPress
+    signOutCallback?.()
 
     expect(consoleSpy).toHaveBeenCalledWith('User signed out')
 
