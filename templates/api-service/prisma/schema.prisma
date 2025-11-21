@@ -22,5 +22,6 @@ model User {
   updatedAt DateTime @updatedAt
   lastLogin DateTime?
 
+  @@index([lastLogin])
   @@map("users")
 }

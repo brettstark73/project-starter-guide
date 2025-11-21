@@ -1,32 +1,12 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-11-20",
+  "lastUpdated": "2025-11-21",
   "description": "Security vulnerability waivers for SaaS Level-1 template",
-  "waivers": [
-    {
-      "id": "GHSA-5j98-mcp5-4vw2",
-      "package": "glob",
-      "title": "glob CLI: Command injection via -c/--cmd executes matches with shell:true",
-      "severity": "high",
-      "reason": "Dev dependency only - used by @next/eslint-plugin-next, not exposed in production builds",
-      "impact": "No impact on production deployments",
-      "mitigation": "Waiting for Next.js ecosystem update",
-      "expires": "2025-03-01"
-    },
-    {
-      "id": "GHSA-mh29-5h37-fv8m",
-      "package": "js-yaml",
-      "title": "js-yaml has prototype pollution in merge (<<)",
-      "severity": "moderate",
-      "reason": "Dev dependency only - used by ESLint configuration, not in production runtime",
-      "impact": "No impact on production deployments",
-      "mitigation": "Waiting for ESLint ecosystem update",
-      "expires": "2025-03-01"
-    }
-  ],
+  "waivers": [],
   "notes": [
-    "All vulnerabilities are in development dependencies only",
-    "Production builds do not include these dependencies",
-    "Next.js production builds are safe from these vulnerabilities"
+    "All previous vulnerabilities have been resolved",
+    "glob vulnerability fixed by overriding to ^10.5.0",
+    "js-yaml vulnerability fixed by npm audit fix",
+    "Production builds remain safe and secure"
   ]
 }

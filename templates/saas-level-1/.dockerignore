@@ -6,7 +6,6 @@ yarn-error.log
 # Environment files
 .env
 .env.local
-.env.docker
 .env.*.local
 
 # Git
@@ -20,18 +19,20 @@ yarn-error.log
 *.swo
 
 # Tests
-tests
+**/__tests__
 coverage
 *.test.ts
+*.test.tsx
 *.spec.ts
+*.spec.tsx
+
+# Next.js
+.next
+out
 
 # Documentation
 README.md
 docs
-
-# Build artifacts
-dist
-build
 
 # Logs
 logs
