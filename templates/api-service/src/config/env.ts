@@ -66,6 +66,7 @@ function getEnvVar(
  */
 export function validateEnv(): EnvConfig {
   const isProduction = process.env.NODE_ENV === 'production'
+  const isTest = process.env.NODE_ENV === 'test'
 
   // Validate NODE_ENV
   const NODE_ENV = getEnvVar('NODE_ENV', {
@@ -85,8 +86,17 @@ export function validateEnv(): EnvConfig {
 
   // Validate DATABASE_URL
   const DATABASE_URL = getEnvVar('DATABASE_URL', {
-    validate: (val) => val.startsWith('postgresql://') || val.startsWith('postgres://'),
-    errorMessage: 'DATABASE_URL must be a valid PostgreSQL connection string (postgresql://...)'
+    validate: (val) => {
+      // In test mode, allow SQLite URLs (file:...)
+      if (isTest && val.startsWith('file:')) {
+        return true
+      }
+      // Otherwise require PostgreSQL
+      return val.startsWith('postgresql://') || val.startsWith('postgres://')
+    },
+    errorMessage: isTest
+      ? 'DATABASE_URL must be a valid database connection string (postgresql://... or file:... for tests)'
+      : 'DATABASE_URL must be a valid PostgreSQL connection string (postgresql://...)'
   })
 
   // Validate JWT_SECRET
@@ -106,8 +116,10 @@ export function validateEnv(): EnvConfig {
 
   // Validate CORS_ORIGIN
   const CORS_ORIGIN = getEnvVar('CORS_ORIGIN', {
+    required: !isTest, // Optional in test mode
+    defaultValue: isTest ? 'http://localhost:3000' : undefined,
     validate: (val) => {
-      // Allow '*' for development, require specific origins in production
+      // Allow '*' for development/test, require specific origins in production
       if (isProduction && val === '*') {
         return false
       }
@@ -120,7 +132,9 @@ export function validateEnv(): EnvConfig {
 
   // Log validation success
   console.log('✅ Environment variables validated successfully')
-  if (!isProduction) {
+  if (isTest) {
+    console.log('ℹ️  Running in test mode - validations relaxed for testing')
+  } else if (!isProduction) {
     console.log('ℹ️  Running in development mode - some validations are relaxed')
   }
 
