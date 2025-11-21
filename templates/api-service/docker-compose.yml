@@ -4,10 +4,12 @@ services:
   # PostgreSQL Database
   db:
     image: postgres:16-alpine
+    env_file:
+      - .env.docker
     environment:
-      POSTGRES_USER: api_user
-      POSTGRES_PASSWORD: api_password
-      POSTGRES_DB: api_service
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -23,11 +25,13 @@ services:
     build: .
     ports:
       - "3000:3000"
+    env_file:
+      - .env.docker
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://api_user:api_password@db:5432/api_service
-      JWT_SECRET: your-super-secret-jwt-key-change-in-production
-      CORS_ORIGIN: http://localhost:3000
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGIN: ${CORS_ORIGIN}
     depends_on:
       db:
         condition: service_healthy
@@ -44,11 +48,13 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3001:3000"
+    env_file:
+      - .env.docker
     environment:
       NODE_ENV: development
-      DATABASE_URL: postgresql://api_user:api_password@db:5432/api_service
-      JWT_SECRET: dev-jwt-secret
-      CORS_ORIGIN: http://localhost:3000
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET_DEV:-dev-jwt-secret}
+      CORS_ORIGIN: ${CORS_ORIGIN}
     volumes:
       - .:/app
       - /app/node_modules
