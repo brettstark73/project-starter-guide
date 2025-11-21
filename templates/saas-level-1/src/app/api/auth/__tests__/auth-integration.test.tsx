@@ -37,7 +37,13 @@ describe('NextAuth Integration Tests', () => {
       // This is a conceptual test - actual testing would require real NextAuth setup
       // The fix ensures session callback doesn't overwrite existing session.user.id
 
-      const sessionCallback = (params: { session: any; token: any; user: any }) => {
+      interface SessionCallbackParams {
+        session: { user?: { id?: string; name?: string; email?: string } }
+        token?: { sub?: string }
+        user?: { id?: string }
+      }
+
+      const sessionCallback = (params: SessionCallbackParams) => {
         const { session, token, user } = params
 
         if (session.user) {
@@ -61,11 +67,17 @@ describe('NextAuth Integration Tests', () => {
       })
 
       // Should preserve existing Prisma id
-      expect(result.user.id).toBe('prisma-user-123')
+      expect(result.user?.id).toBe('prisma-user-123')
     })
 
     it('should set session.user.id from token when not populated (JWT strategy)', () => {
-      const sessionCallback = (params: { session: any; token: any; user: any }) => {
+      interface SessionCallbackParams {
+        session: { user?: { id?: string; name?: string; email?: string } }
+        token?: { sub?: string }
+        user?: { id?: string }
+      }
+
+      const sessionCallback = (params: SessionCallbackParams) => {
         const { session, token, user } = params
 
         if (session.user) {
@@ -88,7 +100,7 @@ describe('NextAuth Integration Tests', () => {
       })
 
       // Should set id from token
-      expect(result.user.id).toBe('token-user-123')
+      expect(result.user?.id).toBe('token-user-123')
     })
   })
 

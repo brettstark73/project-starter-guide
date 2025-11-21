@@ -4,14 +4,16 @@ import GitHubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import type { PrismaClient } from '@prisma/client'
 
 // Lazy-load Prisma only when needed (OAuth providers)
 // This prevents DATABASE_URL errors when using mock/credentials providers
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let prisma: any = null
-const getPrisma = () => {
+let prisma: PrismaClient | null = null
+const getPrisma = (): PrismaClient => {
   if (!prisma) {
-    const { prisma: prismaInstance } = require('@/lib/prisma')
+    const { prisma: prismaInstance } = require('@/lib/prisma') as {
+      prisma: PrismaClient
+    }
     prisma = prismaInstance
   }
   return prisma

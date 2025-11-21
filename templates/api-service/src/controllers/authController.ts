@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import { validateRegister, validateLogin } from '../utils/validation'
 import type { AuthenticatedRequest } from '../types/express'
 import { prisma } from '../lib/prisma'
+import { env } from '../config/env'
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -13,13 +14,6 @@ export const register = async (req: Request, res: Response) => {
     }
 
     const { email, password, name } = value;
-
-    if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET is not configured");
-      return res
-        .status(500)
-        .json({ error: "Authentication not configured correctly" });
-    }
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -47,7 +41,7 @@ export const register = async (req: Request, res: Response) => {
     });
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -71,13 +65,6 @@ export const login = async (req: Request, res: Response) => {
 
     const { email, password } = value;
 
-    if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET is not configured");
-      return res
-        .status(500)
-        .json({ error: "Authentication not configured correctly" });
-    }
-
     // Find user
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
@@ -91,7 +78,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
