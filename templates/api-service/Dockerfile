@@ -6,14 +6,17 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (dev + prod needed for build)
+RUN npm ci
 
 # Copy source code
 COPY . .
 
 # Build application
 RUN npm run build
+
+# Prune to production dependencies only
+RUN npm prune --production
 
 # Production stage
 FROM node:20-alpine AS production

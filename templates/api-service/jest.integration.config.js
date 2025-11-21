@@ -9,6 +9,9 @@ module.exports = {
   collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts", "!src/index.ts"],
   coverageDirectory: "coverage-integration",
   coverageReporters: ["text", "lcov", "html"],
-  // No setup file - use real Prisma client
+  globalSetup: "<rootDir>/tests/setup/globalSetup.ts",
+  globalTeardown: "<rootDir>/tests/setup/globalTeardown.ts",
+  setupFilesAfterEnv: ["<rootDir>/tests/setup/testSetup.ts"],
   testTimeout: 30000, // Longer timeout for database operations
+  maxWorkers: 1, // Run tests sequentially to avoid database conflicts
 };

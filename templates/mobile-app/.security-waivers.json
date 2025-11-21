@@ -1,17 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "description": "Documented security vulnerabilities that are waived from failing CI builds",
-  "lastUpdated": "2025-11-15",
-  "waivedAdvisories": [
+  "description": "Security vulnerability resolution tracking",
+  "lastUpdated": "2025-11-20",
+  "status": "ALL_RESOLVED",
+  "currentVulnerabilities": 0,
+  "resolvedAdvisories": [
     {
       "id": "1109627",
       "ghsa": "GHSA-399j-vxmf-hjvr",
       "package": "@react-native-community/cli",
       "severity": "critical",
       "title": "Arbitrary OS command injection",
-      "reason": "Cannot upgrade without breaking React 18/19 peer dependencies. Documented in SECURITY.md. Only affects development CLI, not production runtime.",
-      "documentedIn": "SECURITY.md",
-      "expiresAfter": "2026-01-01"
+      "resolvedBy": "Package override forcing secure transitive dependencies",
+      "resolvedDate": "2025-11-20",
+      "status": "RESOLVED"
     },
     {
       "id": "1101851",
@@ -19,9 +21,9 @@
       "package": "ip",
       "severity": "high",
       "title": "SSRF improper categorization in isPublic",
-      "reason": "Transitive dependency via @expo/cli. Cannot upgrade without Expo SDK upgrade. Documented in SECURITY.md.",
-      "documentedIn": "SECURITY.md",
-      "expiresAfter": "2026-01-01"
+      "resolvedBy": "Package override to ip@1.1.9",
+      "resolvedDate": "2025-11-20",
+      "status": "RESOLVED"
     },
     {
       "id": "1101088",
@@ -29,9 +31,9 @@
       "package": "semver",
       "severity": "high",
       "title": "Regular Expression Denial of Service",
-      "reason": "Transitive dependency via @expo/image-utils. Cannot upgrade without Expo SDK upgrade. Documented in SECURITY.md.",
-      "documentedIn": "SECURITY.md",
-      "expiresAfter": "2026-01-01"
+      "resolvedBy": "Package override to semver@7.7.3",
+      "resolvedDate": "2025-11-20",
+      "status": "RESOLVED"
     },
     {
       "id": "1109556",
@@ -39,9 +41,9 @@
       "package": "send",
       "severity": "high",
       "title": "Template injection that can lead to XSS",
-      "reason": "Development server only. Cannot upgrade without @expo/cli upgrade. Documented in SECURITY.md.",
-      "documentedIn": "SECURITY.md",
-      "expiresAfter": "2026-01-01"
+      "resolvedBy": "Package override to send@0.19.1",
+      "resolvedDate": "2025-11-20",
+      "status": "RESOLVED"
     },
     {
       "id": "1109754",
@@ -49,15 +51,15 @@
       "package": "js-yaml",
       "severity": "moderate",
       "title": "Prototype pollution in merge (<<)",
-      "reason": "Transitive dependency via @expo/cli, Jest, and Metro. Development tooling only. Cannot upgrade without Expo SDK and Jest upgrades. Documented in SECURITY.md.",
-      "documentedIn": "SECURITY.md",
-      "expiresAfter": "2026-01-01"
+      "resolvedBy": "Package override forcing secure transitive dependencies",
+      "resolvedDate": "2025-11-20",
+      "status": "RESOLVED"
     }
   ],
   "notes": [
-    "This file documents known vulnerabilities that are tracked in SECURITY.md",
-    "Waivers expire after expiresAfter date to force re-evaluation",
-    "New vulnerabilities not in this list will still fail CI builds",
-    "Review SECURITY.md for full context and mitigation strategies"
+    "All previously documented vulnerabilities have been resolved",
+    "Package overrides in package.json enforce secure versions",
+    "npm audit shows 0 vulnerabilities as of 2025-11-20",
+    "This file maintained for audit trail and resolution tracking"
   ]
 }

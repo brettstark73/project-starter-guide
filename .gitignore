@@ -64,6 +64,12 @@ temp/
 .husky/_/
 .lint-staged.json
 
+# Test Database Files
+test-integration.db
+test-integration.db-journal
+*.db
+*.db-journal
+
 # Python Quality Tools
 .mypy_cache/
 .pytest_cache/

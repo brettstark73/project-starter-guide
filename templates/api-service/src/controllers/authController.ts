@@ -15,6 +15,13 @@ export const register = async (req: Request, res: Response) => {
 
     const { email, password, name } = value;
 
+    if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET is not configured");
+      return res
+        .status(500)
+        .json({ error: "Authentication not configured correctly" });
+    }
+
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -25,7 +32,7 @@ export const register = async (req: Request, res: Response) => {
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Create user
+    // Create user (database constraint handles uniqueness)
     const user = await prisma.user.create({
       data: {
         email,
@@ -50,8 +57,16 @@ export const register = async (req: Request, res: Response) => {
       user,
       token,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Registration error:", error);
+
+    // Handle unique constraint violation (email already exists)
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002' &&
+        'meta' in error && error.meta && typeof error.meta === 'object' && 'target' in error.meta &&
+        Array.isArray(error.meta.target) && error.meta.target.includes('email')) {
+      return res.status(400).json({ error: "User with this email already exists" });
+    }
+
     return res.status(500).json({ error: "Internal server error" });
   }
 };
