@@ -190,12 +190,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <span class="notification-message">${message}</span>
-                <button class="notification-close">&times;</button>
-            </div>
-        `;
+
+        // Use safe DOM manipulation instead of innerHTML to prevent XSS
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'notification-content';
+
+        const messageSpan = document.createElement('span');
+        messageSpan.className = 'notification-message';
+        messageSpan.textContent = message; // textContent prevents XSS
+
+        const closeButton = document.createElement('button');
+        closeButton.className = 'notification-close';
+        closeButton.innerHTML = '&times;'; // Safe: hardcoded HTML entity
+
+        contentDiv.appendChild(messageSpan);
+        contentDiv.appendChild(closeButton);
+        notification.appendChild(contentDiv);
 
         // Add notification styles if not already present
         if (!document.querySelector('#notification-styles')) {

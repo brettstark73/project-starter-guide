@@ -40,7 +40,7 @@ jest.mock("@react-navigation/stack", () => {
         component: Component,
         ...rest
       }: {
-        component: React.ComponentType<any>;
+        component: React.ComponentType<{ navigation?: unknown }>;
         name: string;
         options?: Record<string, unknown>;
       }) => <Component navigation={{ navigate: testJest.fn() }} {...rest} />;

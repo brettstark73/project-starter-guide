@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env";
 
 export const authenticateToken = (
   req: Request,
@@ -13,15 +14,8 @@ export const authenticateToken = (
     return res.status(401).json({ error: "Access token required" });
   }
 
-  if (!process.env.JWT_SECRET) {
-    console.error("JWT_SECRET is not configured");
-    return res
-      .status(500)
-      .json({ error: "Authentication not configured correctly" });
-  }
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.JWT_SECRET);
     const userIdCandidate =
       typeof decoded === "object" && decoded !== null && "userId" in decoded
         ? (decoded as Record<string, unknown>).userId

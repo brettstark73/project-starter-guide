@@ -1,12 +1,13 @@
 import app from "./app";
+import { env } from "./config/env";
 
-const PORT = process.env.PORT || 3000;
+// Validation happens on import - fails fast if env vars are invalid
 
 // Only start server when this file is run directly (not imported by tests)
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📝 Environment: ${process.env.NODE_ENV || "development"}`);
+  app.listen(env.PORT, () => {
+    console.log(`🚀 Server running on port ${env.PORT}`);
+    console.log(`📝 Environment: ${env.NODE_ENV}`);
   });
 }
 

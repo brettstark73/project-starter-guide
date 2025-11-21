@@ -3,6 +3,9 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
+// Validate environment variables early - fails fast if invalid
+import { env } from './config/env'
+
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -25,7 +28,7 @@ app.set('trust proxy', 1)
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: env.CORS_ORIGIN,
     credentials: true,
   }),
 );

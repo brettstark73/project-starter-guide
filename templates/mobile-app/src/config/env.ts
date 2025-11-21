@@ -28,7 +28,9 @@ export const config = {
 
 // Type-safe feature flag access
 export const isFeatureEnabled = (feature: string): boolean => {
-  return config.featureFlags[feature] === true
+  // Safe: feature parameter is developer-controlled, not user input
+  // eslint-disable-next-line security/detect-object-injection
+  return Object.hasOwn(config.featureFlags, feature) && config.featureFlags[feature] === true
 }
 
 // Log configuration in development
