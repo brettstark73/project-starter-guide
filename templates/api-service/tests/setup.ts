@@ -61,7 +61,14 @@ jest.mock("@prisma/client", () => ({
         ...mockUser,
         lastLogin: new Date(),
       }),
+
+      // For test cleanup: delete all users
+      deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
+
+      // For retrieving multiple users
+      findMany: jest.fn().mockResolvedValue([]),
     },
     $disconnect: jest.fn().mockResolvedValue(undefined),
+    $executeRaw: jest.fn().mockResolvedValue(undefined),
   })),
 }));
