@@ -136,11 +136,13 @@ npm install package-name
 
 **Template-specific security status:**
 
+*Last audited: 2025-11-22*
+
 | Template | Vulnerabilities | Status | Notes |
 |----------|----------------|--------|-------|
-| **mobile-app** | 48 total (12 prod, 36 dev) | ✅ Documented | React Native ecosystem - waived with rationale |
-| **saas-level-1** | 0 | ✅ Clean | Upgraded to latest versions |
-| **api-service** | 27 (dev-only) | ✅ Safe | Test/build tools only |
+| **mobile-app** | 0 | ✅ Clean | All dependencies secure |
+| **saas-level-1** | 0 | ✅ Clean | All dependencies secure |
+| **api-service** | 8 (dev-only) | ⚠️ Documented | Production: 0, Dev: 8 low-risk |
 
 **When you encounter vulnerabilities:**
 
@@ -148,6 +150,20 @@ npm install package-name
 2. **Read `SECURITY.md`** - Understand impact and mitigation
 3. **Run `npm audit --production`** - See only production vulnerabilities
 4. **Don't panic on dev vulnerabilities** - They don't affect production builds
+
+### Framework Version Status
+
+**Current framework versions vs. latest available:**
+
+| Template | Framework | Current | Latest | Gap | Status |
+|----------|-----------|---------|--------|-----|--------|
+| **saas-level-1** | Next.js | 14.0.0 | 16.0.3 | 2 major | 📋 Planned |
+| **api-service** | Express | 4.18.0 | 5.1.0 | 1 major | 📋 Planned |
+| **mobile-app** | Expo | 51.0.8 | 54.0.25 | 3 minor | 📋 Planned |
+
+**Upgrade Planning:** Comprehensive upgrade plans exist in [`docs/DEPENDENCY_UPGRADE_PLAN.md`](docs/DEPENDENCY_UPGRADE_PLAN.md) with phased approach prioritizing security and stability.
+
+**Why not latest?** Major framework upgrades require careful migration due to breaking changes. We prioritize stability and comprehensive testing over bleeding-edge versions.
 
 ---
 

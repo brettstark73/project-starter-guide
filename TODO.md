@@ -23,93 +23,109 @@ To audit dependencies for vulnerabilities:
 
 ## Mobile App Template
 
-**Status**: ⚠️ **20 known vulnerabilities** (10 low, 8 high, 2 critical) - **DOCUMENTED**
+**Status**: ✅ **0 vulnerabilities** - **SECURE**
 
-**Verified with lockfile** (package-lock.json included as of 2025-11-11):
-*   **2 critical** severity vulnerabilities
-*   **8 high** severity vulnerabilities
-*   **10 low** severity vulnerabilities
+**Verified with lockfile** (package-lock.json updated 2025-11-20):
+*   **0** vulnerabilities across all dependencies
 
-**Dependency Breakdown**:
-*   **12 vulnerabilities in production dependencies** (2 critical, 8 high, 2 low)
-*   **8 vulnerabilities in dev dependencies** (8 low)
+**Resolution Details**:
+*   All previous vulnerabilities fixed via package overrides in package.json
+*   Package overrides enforce secure versions of transitive dependencies
+*   Maintains React Native and Expo compatibility
 
-**Important**: See `templates/mobile-app/SECURITY.md` for full details.
+**Important**: See `templates/mobile-app/SECURITY.md` for full details and override strategy.
 
 **Status Summary**:
 1. ✅ Lockfile generated: `package-lock.json` committed
-2. ✅ Vulnerabilities documented in SECURITY.md
-3. ⚠️ Auto-fix attempted with `npm audit fix --force` - **FAILED**
-   - React 18/19 peer dependency conflicts
-   - Cannot update without breaking template
-4. ⚠️ Assessment: **12 production vulnerabilities ship with template**
-   - Upstream dependencies (react-native, expo, @react-native-community/cli)
-   - Cannot be fixed until upstream maintainers release patches
-   - Users should assess risk based on their specific use case
+2. ✅ All vulnerabilities resolved via package overrides
+3. ✅ Security documented in SECURITY.md with override configuration
+4. ✅ Template ready for production use
 
-**Recommended Actions for Users**:
-1. **Option A**: Assess risk for your use case
-   - Review SECURITY.md for detailed vulnerability breakdown
-   - Determine if vulnerabilities apply to your app's architecture
-   - Consider risk tolerance (prototype vs enterprise app)
-2. **Option B**: Update dependencies after project initialization
-   - `npm update && npm audit fix` after creating project
-   - Test thoroughly after updates
-   - May still have upstream dependency issues
-3. **Option C**: Wait for ecosystem updates
-   - React Native transitioning to React 19
-   - Future versions will resolve conflicts
-   - Monitor upstream package release notes
+**Framework Version Status**:
+- **Expo**: `51.0.8` (Latest: 54.0.25) - 3 versions behind
+- **React Native**: `0.74.3` (Latest: 0.81.0 via SDK 54) - 7 versions behind
+- **Status**: 📋 Upgrade planned ([see docs/DEPENDENCY_UPGRADE_PLAN.md](docs/DEPENDENCY_UPGRADE_PLAN.md))
 
-**For Template Maintainers**:
-- Monitor React Native + Expo quarterly for updates
-- Test React 19 compatibility when ecosystem ready
-- Update template when stable migration path exists
+**Package Override Strategy**:
+- Uses npm "overrides" in package.json to force secure dependency versions
+- Resolves vulnerabilities while maintaining framework compatibility
+- Clear audit trail in SECURITY.md
+
+**For Template Users**:
+- No action required - template is secure out of the box
+- Regular `npm audit` should show 0 vulnerabilities
+- Override configuration is documented and maintained
 
 ---
 
 ## SaaS Level 1 Template
 
-**Status**: ✅ **4 moderate severity vulnerabilities** (verified with lockfile)
+**Status**: ✅ **0 vulnerabilities** - **SECURE**
 
-**Verified with lockfile** (package-lock.json included as of 2025-11-11):
-*   **4 moderate** severity vulnerabilities
+**Verified with lockfile** (package-lock.json audited 2025-11-22):
+*   **0** vulnerabilities across all dependencies
 
-**Recommended Actions**:
+**Important**: See `templates/saas-level-1/SECURITY.md` for full security documentation.
+
+**Status Summary**:
 1. ✅ Lockfile generated: `package-lock.json` committed
-2. Review and address 4 moderate severity findings
-3. Run `npm audit fix` or manual updates
-4. Test Next.js build and functionality after updates
+2. ✅ All dependencies clean and secure
+3. ✅ Security documentation created and maintained
+4. ✅ NextAuth.js security best practices implemented
+5. ✅ Prisma ORM for secure database operations
+
+**Framework Version Status**:
+- **Next.js**: `^14.0.0` (Latest: 16.0.3) - 2 major versions behind
+- **React**: `^18.0.0` (Latest: 19.0.0) - 1 major version behind
+- **Status**: 📋 Upgrade planned ([see docs/DEPENDENCY_UPGRADE_PLAN.md](docs/DEPENDENCY_UPGRADE_PLAN.md))
+
+**Template Security Features**:
+- NextAuth.js for secure authentication
+- Environment variable templates for sensitive configuration
+- TypeScript for type safety and reduced runtime errors
+- Security-focused ESLint rules
+- Next.js built-in security features (CSRF protection, secure headers)
 
 ---
 
 ## API Service Template
 
-**Status**: ⚠️ **8 low severity vulnerabilities** - **DOCUMENTED**
+**Status**: ⚠️ **8 dev-only vulnerabilities** - **PRODUCTION SECURE**
 
-**Verified with lockfile** (package-lock.json included as of 2025-11-11):
-*   **8 low** severity vulnerabilities - Development dependencies only
+**Verified with lockfile** (package-lock.json audited 2025-11-22):
+*   **0** production vulnerabilities
+*   **8** development-only vulnerabilities (documented and low-risk)
 
-**Important**: See `templates/api-service/SECURITY.md` for full details.
+**Important**: See `templates/api-service/SECURITY.md` and `.security-waivers.json` for full security documentation.
 
 **Status Summary**:
 1. ✅ Lockfile generated: `package-lock.json` committed
-2. ✅ Vulnerabilities documented in SECURITY.md
-3. ⚠️ Auto-fix attempted with `npm audit fix --force` - **FAILED**
-   - Git repository branch reference errors
-   - @lhci/cli version conflict
-4. ✅ Assessment: **Production builds are safe**
-   - All vulnerabilities in development dependencies only
-   - @lhci/cli is optional CI tooling, not runtime code
+2. ✅ Production dependencies clean and secure
+3. ✅ Security documentation updated and maintained
+4. ✅ js-yaml moderate vulnerability resolved
+5. ✅ Express.js security best practices implemented
+6. ✅ JWT authentication and input validation ready
+7. ⚠️ Dev-only vulnerabilities documented with waivers
 
-**Recommended Actions for Users**:
-1. **Option A (Recommended)**: Accept known issues, proceed with development
-   - Development dependencies only, production unaffected
-   - Consider removing @lhci/cli if not needed for performance auditing
-2. **Option B**: Remove Lighthouse CI dependency
-   - `npm uninstall @lhci/cli --save-dev`
-3. **Option C**: Update dependencies after project initialization
-   - `npm update && npm audit fix` after creating project
+**Framework Version Status**:
+- **Express**: `^4.18.0` (Latest: 5.1.0) - 1 major version behind
+- **Node.js**: Requires 18+ for Express 5.0 migration
+- **Status**: 📋 Upgrade planned ([see docs/DEPENDENCY_UPGRADE_PLAN.md](docs/DEPENDENCY_UPGRADE_PLAN.md))
+
+**Template Security Features**:
+- Helmet.js for security headers
+- Environment variable templates for sensitive configuration
+- TypeScript for type safety and reduced runtime errors
+- Security-focused ESLint rules
+- Joi schema validation for API inputs
+- JWT authentication middleware
+
+**Security Resolution Summary**:
+- **js-yaml moderate vulnerability**: ✅ Resolved through automatic dependency updates
+- **8 @lhci/cli low-severity vulnerabilities**: ⚠️ Remain as dev-only dependencies
+  - Documented in `.security-waivers.json` with justification
+  - No impact on production builds (dev dependencies only)
+  - Lighthouse CI tool needed for performance auditing
 
 ---
 
