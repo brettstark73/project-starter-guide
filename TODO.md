@@ -42,8 +42,8 @@ To audit dependencies for vulnerabilities:
 4. ✅ Template ready for production use
 
 **Framework Version Status**:
-- **Expo**: `51.0.8` (Latest: 54.0.25) - 3 versions behind
-- **React Native**: `0.74.3` (Latest: 0.81.0 via SDK 54) - 7 versions behind
+- **Expo**: `^54.0.3` (Latest: 54.0.25) - ✅ current
+- **React Native**: `0.81.4` (Latest: 0.81.4 via SDK 54) - ✅ current
 - **Status**: 📋 Upgrade planned ([see docs/DEPENDENCY_UPGRADE_PLAN.md](docs/DEPENDENCY_UPGRADE_PLAN.md))
 
 **Package Override Strategy**:
@@ -75,9 +75,9 @@ To audit dependencies for vulnerabilities:
 5. ✅ Prisma ORM for secure database operations
 
 **Framework Version Status**:
-- **Next.js**: `^14.0.0` (Latest: 16.0.3) - 2 major versions behind
-- **React**: `^18.0.0` (Latest: 19.0.0) - 1 major version behind
-- **Status**: 📋 Upgrade planned ([see docs/DEPENDENCY_UPGRADE_PLAN.md](docs/DEPENDENCY_UPGRADE_PLAN.md))
+- **Next.js**: `^16.0.4` (Latest: 16.0.4) - ✅ current
+- **React**: `^19.0.0` (Latest: 19.0.0) - ✅ current
+- **Status**: ✅ Upgrade completed (see docs/DEPENDENCY_UPGRADE_PLAN.md)
 
 **Template Security Features**:
 - NextAuth.js for secure authentication
@@ -108,9 +108,9 @@ To audit dependencies for vulnerabilities:
 7. ⚠️ Dev-only vulnerabilities documented with waivers
 
 **Framework Version Status**:
-- **Express**: `^4.18.0` (Latest: 5.1.0) - 1 major version behind
-- **Node.js**: Requires 18+ for Express 5.0 migration
-- **Status**: 📋 Upgrade planned ([see docs/DEPENDENCY_UPGRADE_PLAN.md](docs/DEPENDENCY_UPGRADE_PLAN.md))
+- **Express**: `^5.1.0` (Latest: 5.1.0) - ✅ current
+- **Node.js**: Requires 18+ for Express 5.0+ (covered via Volta 20.11.1)
+- **Status**: ✅ Upgrade completed (see docs/DEPENDENCY_UPGRADE_PLAN.md)
 
 **Template Security Features**:
 - Helmet.js for security headers

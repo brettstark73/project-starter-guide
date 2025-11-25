@@ -1,0 +1,4 @@
+echo "🔍 Running smart pre-push validation..."
+
+# Call smart test strategy script
+bash scripts/smart-test-strategy.sh

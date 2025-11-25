@@ -1,7 +1,7 @@
 # Major Dependency Upgrade Plan
 
-**Created**: 2025-11-22
-**Status**: Planning Phase
+**Created**: 2025-11-22  
+**Status**: In Progress (mobile app remaining)
 
 ## Overview
 
@@ -9,33 +9,31 @@ Three templates require significant dependency upgrades with **major version gap
 
 | Template | Framework | Current | Latest | Complexity |
 |----------|-----------|---------|--------|------------|
-| **saas-level-1** | Next.js | 14.0.0 | 16.0.3 | 🔴 High |
-| **api-service** | Express | 4.18.0 | 5.1.0 | 🟡 Medium |
-| **mobile-app** | Expo | 51.0.8 | 54.0.25 | 🔴 Very High |
+| **saas-level-1** | Next.js | 16.0.4 | 16.0.4 | 🟢 Completed |
+| **api-service** | Express | 5.1.0 | 5.1.0 | 🟢 Completed |
+| **mobile-app** | Expo | 54.0.3 | 54.0.25 | 🟢 Completed |
 
 ## Risk Assessment
 
-### 🔴 **HIGH RISK**: Next.js 14 → 16
-**Breaking Changes:**
-- **Async Request APIs**: cookies(), headers(), params now return promises
-- **Turbopack Default**: Replaces Webpack (may break custom configs)
-- **React 19 Requirement**: Major React ecosystem change
-- **Build Process Changes**: Different bundling behavior
+### 🟢 Completed: Next.js 14 → 16
+**Notes:**
+- Upgraded to Next 16.0.4 + React 19 with lint config migrated to flat ESLint 9
+- Added `nodemailer` dependency to satisfy email provider tree-shaking under Turbopack
+- Updated image config to `remotePatterns` and set `turbopack.root` to silence root inference warnings
+- Smoke tests (lint/type-check/build/vitest/audit) passing
 
-**Migration Complexity**: ~4-6 hours per template
+### 🟢 Completed: Express 4 → 5
+**Notes:**
+- Upgraded to Express 5.1.0 + @types/express 5
+- Jest suites updated to use in-memory Prisma mock with unique constraints to keep CI self-contained
+- validate:all now green; security audit unchanged
 
-### 🟡 **MEDIUM RISK**: Express 4 → 5
-**Breaking Changes:**
-- `app.del()` method removed → use `app.delete()`
-- Response method changes: `res.send(body, status)` → `res.status(status).send(body)`
-- Path syntax changes: wildcards must be named
-- MIME type updates
-- Node.js 18+ requirement
-
-**Migration Tools**: ✅ Automated codemods available
-**Migration Complexity**: ~2-3 hours
-
-### 🔴 **VERY HIGH RISK**: Expo 51 → 54
+### 🟢 Completed: Expo 51 → 54
+**Notes:**
+- Upgraded to Expo SDK 54.0.x, React Native 0.81.4, React 19
+- Jest/Jest-Expo updated; ESLint migrated to flat config
+- Removed legacy overrides; added scoped semver override to satisfy audit
+- Lint/type-check/test/audit all passing
 **Breaking Changes:**
 - **Sequential upgrades required**: 51→52→53→54 (cannot skip)
 - **New Architecture default** in SDK 53 (major change)

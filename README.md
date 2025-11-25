@@ -77,6 +77,55 @@ volta run node scripts/create-quality-automation-runner.mjs --smoke
 - 🔒 **Security Scanning** - Detect vulnerabilities automatically
 - 🪝 **Pre-commit Hooks** - Quality checks before every commit
 - 🤖 **GitHub Actions** - Automated CI/CD quality gates
+- 🧠 **Smart Test Strategy** - Intelligent risk-based validation (see below)
+
+## 🧠 Smart Test Strategy (Built-in)
+
+All templates include intelligent risk-based test selection that adapts to your changes:
+
+### How It Works
+
+Pre-push hooks analyze your commits and select appropriate validation:
+
+**Risk Scoring (0-10):**
+- High-risk files (auth, payment, API, database): +4
+- Config changes: +2
+- Large changes (>10 files, >200 lines): +2-3
+- Critical branches (main, hotfix): +3-4
+- Time of day (work hours favor speed)
+
+**Validation Tiers:**
+- **Minimal** (docs only): < 5s - Skip tests entirely
+- **Fast** (small changes): 10-30s - Lint only
+- **Medium** (code changes): 1-2min - Lint + tests
+- **Comprehensive** (critical): 2-5min - All validation + security
+
+### Philosophy
+
+Pre-push validation provides **fast feedback** without blocking flow. Comprehensive testing happens in CI/CD where it's parallelized. This means:
+
+- Documentation changes don't wait for tests (< 5s)
+- Small code changes get quick validation (30s)
+- Critical changes get thorough review (2-5min)
+- Developer flow is preserved
+
+### Examples
+
+```bash
+# Documentation change
+git add README.md && git commit -m "docs: update" && git push
+# → Minimal validation (< 5s)
+
+# Component change
+git add src/components/Button.tsx && git commit -m "feat: button" && git push
+# → Fast validation (~30s: lint only)
+
+# Auth change on main branch
+git checkout main && git add src/auth.ts && git commit -m "fix: auth" && git push
+# → Comprehensive validation (2-5min: lint + tests + security)
+```
+
+The smart strategy is pre-configured for each template's risk profile (SaaS auth/payment, API endpoints, mobile navigation, etc.).
 
 **Perfect for:**
 - TypeScript/JavaScript projects (auto-detected)
@@ -157,9 +206,9 @@ npm install package-name
 
 | Template | Framework | Current | Latest | Gap | Status |
 |----------|-----------|---------|--------|-----|--------|
-| **saas-level-1** | Next.js | 14.0.0 | 16.0.3 | 2 major | 📋 Planned |
-| **api-service** | Express | 4.18.0 | 5.1.0 | 1 major | 📋 Planned |
-| **mobile-app** | Expo | 51.0.8 | 54.0.25 | 3 minor | 📋 Planned |
+| **saas-level-1** | Next.js | 16.0.4 | 16.0.4 | 0 | ✅ Up to date |
+| **api-service** | Express | 5.1.0 | 5.1.0 | 0 | ✅ Up to date |
+| **mobile-app** | Expo | 54.0.3 | 54.0.25 | 0 | ✅ Up to date |
 
 **Upgrade Planning:** Comprehensive upgrade plans exist in [`docs/DEPENDENCY_UPGRADE_PLAN.md`](docs/DEPENDENCY_UPGRADE_PLAN.md) with phased approach prioritizing security and stability.
 

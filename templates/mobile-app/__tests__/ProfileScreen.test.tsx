@@ -3,10 +3,6 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import { Alert } from 'react-native'
 import ProfileScreen from '../src/screens/ProfileScreen'
-import type { StackNavigationProp } from '@react-navigation/stack'
-import type { RootStackParamList } from '../src/types/navigation'
-
-type MockNavigation = Partial<StackNavigationProp<RootStackParamList, 'Profile'>>
 
 // Mock Alert
 jest.spyOn(Alert, 'alert')
@@ -17,7 +13,7 @@ describe('ProfileScreen', () => {
   })
 
   it('shows account settings options', () => {
-    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as MockNavigation} />)
+    const { getByText } = render(<ProfileScreen />)
 
     expect(getByText('Account Settings')).toBeTruthy()
     expect(getByText('Support')).toBeTruthy()
@@ -25,7 +21,7 @@ describe('ProfileScreen', () => {
   })
 
   it('shows sign out alert when sign out button is pressed', () => {
-    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as MockNavigation} />)
+    const { getByText } = render(<ProfileScreen />)
 
     const signOutButton = getByText('Sign Out')
     fireEvent.press(signOutButton)
@@ -41,8 +37,8 @@ describe('ProfileScreen', () => {
   })
 
   it('executes sign out logic when confirmed', () => {
-    const consoleSpy = jest.spyOn(console, 'log')
-    const { getByText } = render(<ProfileScreen navigation={{ navigate: jest.fn() } as MockNavigation} />)
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    const { getByText } = render(<ProfileScreen />)
 
     const signOutButton = getByText('Sign Out')
     fireEvent.press(signOutButton)

@@ -224,7 +224,11 @@ fi
 
 # Run tests with test env (tests don't run in production mode)
 export NODE_ENV="test"
-run_if_script_exists test "npm test -- --runInBand"
+if [ "$TEMPLATE_PATH" = "saas-level-1" ]; then
+  run_if_script_exists test "npm test"
+else
+  run_if_script_exists test "npm test -- --runInBand"
+fi
 
 # Run security audit only if not already included in validate:all
 if [ "$SKIP_SECURITY_AUDIT" = false ]; then

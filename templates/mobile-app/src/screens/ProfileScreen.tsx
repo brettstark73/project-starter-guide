@@ -8,19 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/navigation";
-
-type ProfileScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Profile"
->;
-
-interface Props {
-  navigation: ProfileScreenNavigationProp;
-}
-
-export default function ProfileScreen({ navigation: _navigation }: Props) {
+export default function ProfileScreen() {
   const handleSignOut = () => {
     Alert.alert("Sign Out", "Are you sure you want to sign out?", [
       { text: "Cancel", style: "cancel" },
