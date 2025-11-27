@@ -1,7 +1,8 @@
-import request from "supertest";
-import app from "../src/app";
+import { describe, it, expect } from 'vitest'
+import request from 'supertest'
+import app from '../../src/app'
 
-describe("Health endpoints", () => {
+describe('Health endpoints', () => {
   describe("GET /health", () => {
     it("returns OK status with environment metadata", async () => {
       const response = await request(app).get("/health");

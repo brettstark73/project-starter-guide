@@ -1,6 +1,7 @@
 // Use the same Prisma client instance as the production app
 // This ensures database operations are synchronized between tests and app routes
-import { prisma } from "../../src/lib/prisma";
+import { beforeAll, beforeEach, afterAll } from 'vitest'
+import { prisma } from '../../src/lib/prisma'
 
 beforeAll(async () => {
   // Clean all data before test file starts

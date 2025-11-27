@@ -21,8 +21,11 @@ class EnvValidationError extends Error {
 }
 
 /**
- * Validates a single environment variable
+ * Validates a single environment variable.
+ * Restricts keys to a known allowlist to avoid object injection patterns flagged by eslint-plugin-security.
  */
+const ALLOWED_ENV_KEYS = new Set(['NODE_ENV', 'PORT', 'DATABASE_URL', 'JWT_SECRET', 'CORS_ORIGIN'])
+
 function getEnvVar(
   key: string,
   options: {
@@ -32,8 +35,28 @@ function getEnvVar(
     errorMessage?: string
   } = {}
 ): string {
+  if (!ALLOWED_ENV_KEYS.has(key)) {
+    throw new EnvValidationError(`Unexpected environment variable requested: ${key}`)
+  }
   const { required = true, defaultValue, validate, errorMessage } = options
-  const value = process.env[key]
+  let value: string | undefined
+  switch (key) {
+    case 'NODE_ENV':
+      value = process.env.NODE_ENV
+      break
+    case 'PORT':
+      value = process.env.PORT
+      break
+    case 'DATABASE_URL':
+      value = process.env.DATABASE_URL
+      break
+    case 'JWT_SECRET':
+      value = process.env.JWT_SECRET
+      break
+    case 'CORS_ORIGIN':
+      value = process.env.CORS_ORIGIN
+      break
+  }
 
   // Check if variable is missing
   if (!value) {

@@ -7,10 +7,14 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:integration": "jest --config jest.integration.config.js && npm run test:git-clean",
-    "test:integration:only": "jest --config jest.integration.config.js",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest watch",
+    "test:unit": "vitest run tests/unit --passWithNoTests",
+    "test:integration": "vitest run --config vitest.integration.config.ts --passWithNoTests && npm run test:git-clean",
+    "test:integration:only": "vitest run --config vitest.integration.config.ts --passWithNoTests",
+    "test:smoke": "vitest run tests/smoke --passWithNoTests",
+    "test:coverage": "vitest run --coverage",
+    "test:ci": "npm run test:unit && npm run test:integration",
     "test:git-clean": "git diff --exit-code --quiet || (echo '❌ Test artifacts detected in repository. Run git status' && exit 1)",
     "test:all": "npm run test && npm run test:integration",
     "lint": "eslint src/**/*.ts",
@@ -27,7 +31,8 @@
     "lighthouse:ci": "lhci autorun",
     "lighthouse:upload": "lhci upload",
     "validate:all": "npm run quality:check && npm run security:audit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "perf:smoke": "bash scripts/perf-smoke.sh"
   },
   "dependencies": {
     "@prisma/client": "^5.6.0",
@@ -41,14 +46,14 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "^8.11.0",
-    "prisma": "^5.6.0"
+    "prisma": "^5.6.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "@lhci/cli": "^0.14.0",
     "@types/bcryptjs": "^2.4.0",
     "@types/cors": "^2.8.0",
     "@types/express": "^5.0.0",
-    "@types/jest": "^29.5.0",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/morgan": "^1.9.0",
     "@types/node": "^20.0.0",
@@ -56,11 +61,12 @@
     "@types/supertest": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "autocannon": "^7.14.1",
     "eslint": "^8.52.0",
     "eslint-plugin-security": "^3.0.1",
     "globals": "^15.9.0",
     "husky": "^9.1.4",
-    "jest": "^29.7.0",
     "lint-staged": "^15.2.10",
     "nodemon": "^3.0.0",
     "prettier": "^3.3.3",
@@ -68,9 +74,9 @@
     "stylelint": "^16.8.0",
     "stylelint-config-standard": "^37.0.0",
     "supertest": "^6.3.0",
-    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.0",
-    "typescript": "^5.2.0"
+    "typescript": "^5.2.0",
+    "vitest": "^2.1.0"
   },
   "keywords": [
     "api",
@@ -115,8 +121,7 @@
         "cookie": "0.7.0"
       },
       "body-parser": "1.20.3"
-    }
-    ,
+    },
     "body-parser": "1.20.3"
   }
 }

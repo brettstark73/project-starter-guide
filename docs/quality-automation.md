@@ -173,6 +173,10 @@ npm run prepare        # Setup pre-commit hooks
 # Pre-commit hooks run automatically on git commit
 ```
 
+### **CI Safeguards (recommended)**
+- **Mobile App:** add a CI step `npm ci` in `templates/mobile-app` to catch lockfile/package.json drift early (fails fast on mismatch).
+- **Coverage Export:** enable coverage upload in CI for quick health signals: `npm run test -- --coverage` (API/Jest) and `npm run test -- --coverage` (SaaS/Vitest) with reports published as artifacts or to your coverage service.
+
 ---
 
 ## Configuration Files

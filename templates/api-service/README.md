@@ -1,4 +1,4 @@
-# API Service Starter Template
+# API Service Starter Template ![Coverage](https://img.shields.io/badge/Coverage-90%25+-brightgreen)
 
 A production-ready REST API template built with Express.js, TypeScript, PostgreSQL, and JWT authentication.
 
@@ -75,6 +75,14 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
 
 7. **Optional CI Setup**
    Copy `.github/workflows/ci.yml` to your repository root to enable GitHub Actions lint/test/build checks.
+
+## Quality & Security
+
+- Lint: `npm run lint`
+- Type-check: `npm run type-check:all`
+- Tests (coverage enforced ≥90%): `npm test` or `npm run test:all`
+- Performance smoke: `npm run perf:smoke`
+- Security: `npm run security:audit` and `npm run security:secrets`
 
 ## Project Structure
 

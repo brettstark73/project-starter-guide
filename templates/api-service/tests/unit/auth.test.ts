@@ -1,7 +1,8 @@
-import request from "supertest";
-import app from "../src/app";
+import { describe, it, expect } from 'vitest'
+import request from 'supertest'
+import app from '../../src/app'
 
-describe("Auth Endpoints", () => {
+describe('Auth Endpoints', () => {
   describe("POST /api/auth/register", () => {
     it("should register a new user with valid data", async () => {
       const userData = {

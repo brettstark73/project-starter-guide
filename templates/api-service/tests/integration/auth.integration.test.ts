@@ -1,8 +1,9 @@
 // Real integration tests with actual database operations
-import request from "supertest";
-import app from "../src/app";
-import jwt from "jsonwebtoken";
-import { prisma } from "./setup/testSetup";
+import { describe, it, expect } from 'vitest'
+import request from 'supertest'
+import app from '../../src/app'
+import jwt from 'jsonwebtoken'
+import { prisma } from '../setup/testSetup'
 
 // Helper function to generate unique email addresses for tests
 const generateUniqueEmail = (prefix: string = 'test') => {

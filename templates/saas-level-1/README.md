@@ -1,4 +1,4 @@
-# SaaS Level 1 Starter Template
+# SaaS Level 1 Starter Template ![Coverage](https://img.shields.io/badge/Coverage-90%25+-brightgreen)
 
 A **starter template** with modern tooling for building SaaS applications. Includes pre-configured Next.js 14, TypeScript, Tailwind CSS, NextAuth.js, Prisma, and Stripe setup.
 
@@ -91,6 +91,14 @@ This is a **starter template**, not a complete SaaS application. You'll need to 
 
 8. **Optional CI Setup**
    Use the sample workflow in `.github/workflows/ci.yml` as a starting point for GitHub Actions.
+
+## Quality & Security
+
+- Lint: `npm run lint`
+- Type-check: `npm run type-check`
+- Tests (coverage enforced ≥90%): `npm test`
+- Accessibility smoke: `npm run test:accessibility` (starts local dev + axe CLI)
+- Security: `npm run security:audit` and `npm run security:secrets`
 
 ## Project Structure
 

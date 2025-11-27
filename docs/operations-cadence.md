@@ -1,5 +1,11 @@
 # Operational Cadence Plan
 
+**Ops SLAs & Health Targets (templates)**
+- Uptime target: 99.9% with `/health` + `/health/ready` endpoints monitored.
+- Alerting: page on P1 (auth, payments, 5xx spike) within 5 minutes; Slack for P2.
+- MTTR goal: <60 minutes; postmortem within 48 hours; action items tracked in backlog.
+- Release guardrails: lockfile integrity check (mobile), secrets scan, coverage ≥90% gate in CI.
+
 ## Monthly Update Email
 
 **Send Date:** First Tuesday of each month (starting December 2, 2025).  

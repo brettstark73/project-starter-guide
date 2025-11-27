@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 describe('Environment Bootstrap', () => {
   let originalEnv: typeof process.env
@@ -8,7 +8,7 @@ describe('Environment Bootstrap', () => {
     originalEnv = { ...process.env }
 
     // Clear module cache to force re-import
-    jest.resetModules()
+    vi.resetModules()
   })
 
   afterEach(() => {

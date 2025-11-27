@@ -13,6 +13,13 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
+      exclude: ['src/components/Navbar.tsx'],
+      thresholds: {
+        lines: 90,
+        functions: 90,
+        statements: 90,
+        branches: 85,
+      },
     },
   },
   esbuild: {

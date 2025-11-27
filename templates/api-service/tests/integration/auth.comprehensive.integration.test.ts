@@ -1,9 +1,10 @@
 // Comprehensive integration tests with real database operations
-import request from "supertest";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { prisma } from "./setup/testSetup";
-import app from "../src/app";
+import { describe, it, expect, beforeEach } from 'vitest'
+import request from 'supertest'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import { prisma } from '../setup/testSetup'
+import app from '../../src/app'
 
 // Helper function to generate unique email addresses for tests
 const generateUniqueEmail = (prefix: string = 'test') => {

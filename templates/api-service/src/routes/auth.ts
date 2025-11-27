@@ -1,11 +1,17 @@
-import { Router } from "express";
-import { register, login, getProfile } from "../controllers/authController";
-import { authenticateToken } from "../middleware/auth";
+import { Router } from 'express'
+import { register, login, getProfile } from '../controllers/authController'
+import { authenticateToken } from '../middleware/auth'
+import { authLimiter, registrationLimiter } from '../middleware/rateLimiting'
 
-const router = Router();
+const router = Router()
 
-router.post("/register", register);
-router.post("/login", login);
-router.get("/profile", authenticateToken, getProfile);
+// Registration with stricter rate limiting (3 per hour)
+router.post('/register', registrationLimiter, register)
 
-export default router;
+// Login with auth rate limiting (5 per 15 minutes, skips successful requests)
+router.post('/login', authLimiter, login)
+
+// Profile (authenticated)
+router.get('/profile', authenticateToken, getProfile)
+
+export default router

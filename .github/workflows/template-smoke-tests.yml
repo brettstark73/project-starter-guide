@@ -31,6 +31,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ matrix.template }}-
 
+      - name: Lockfile integrity (mobile only)
+        if: matrix.template == 'mobile-app'
+        working-directory: templates/${{ matrix.template }}
+        run: npm ci --no-audit --no-fund --ignore-scripts --dry-run
+
+      - name: Secret scan
+        working-directory: templates/${{ matrix.template }}
+        run: |
+          echo "🔐 Running secret scan for ${{ matrix.template }}..."
+          if npm run -s security:secrets >/dev/null 2>&1; then
+            npm run security:secrets
+          else
+            echo "⏭️  No security:secrets script defined, skipping."
+          fi
+
       - name: Quick Security Check
         working-directory: templates/${{ matrix.template }}
         run: |
@@ -60,3 +75,71 @@ jobs:
           else
             echo "✅ Critical dependencies are reasonably current"
           fi
+
+  coverage:
+    needs: smoke-test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template: [saas-level-1, api-service]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: templates/${{ matrix.template }}/package-lock.json
+      - name: Install deps
+        working-directory: templates/${{ matrix.template }}
+        run: npm ci --no-audit --no-fund
+      - name: Run coverage
+        working-directory: templates/${{ matrix.template }}
+        env:
+          CI: true
+          PRISMA_GENERATE_SKIP: 1
+          DATABASE_URL: "file:./dev.db"
+          JWT_SECRET: "ci-coverage-secret-32-chars-minimum"
+        run: |
+          if [ "${{ matrix.template }}" = "saas-level-1" ]; then
+            npm run test -- --coverage
+          else
+            npm test
+          fi
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.template }}
+          path: templates/${{ matrix.template }}/coverage/**
+
+  accessibility-and-perf:
+    needs: coverage
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - template: saas-level-1
+            command: "npm run test:accessibility"
+          - template: api-service
+            command: "npm run perf:smoke"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: templates/${{ matrix.template }}/package-lock.json
+      - name: Install deps
+        working-directory: templates/${{ matrix.template }}
+        run: npm ci --no-audit --no-fund
+      - name: Run extended check
+        working-directory: templates/${{ matrix.template }}
+        env:
+          CI: true
+          PRISMA_GENERATE_SKIP: 1
+          DATABASE_URL: "file:./dev.db"
+          JWT_SECRET: "ci-extended-secret-32-chars-minimum"
+          NEXTAUTH_SECRET: "ci-axe-secret-32-chars-minimum"
+          NEXTAUTH_URL: "http://localhost:3100"
+        run: ${{ matrix.command }}

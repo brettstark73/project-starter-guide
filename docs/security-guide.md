@@ -6,6 +6,12 @@
 
 Security requirements and implementation strategies vary dramatically based on project complexity, user base, and data sensitivity. This guide provides practical security measures for each complexity level, from basic static sites to enterprise-grade systems.
 
+### Cross-Cutting Policies (apply to every template)
+- **Data retention:** define retention per data class (auth logs ≤90 days, analytics ≤13 months, PII only as long as contractually required). Document default values in each template README and in infra Terraform/Helm if used.
+- **Log hygiene:** strip or mask PII (emails, tokens, IPs) at log emit; ensure logs roll daily with 30–90 day retention; never log secrets. Apply masking middleware for API and request logging in SaaS.
+- **Breach readiness:** document contacts/on-call path and a 72-hour notification SLA; keep a runbook alongside `SECURITY.md`.
+- **Secrets management:** use `.env.example` only; store live secrets in vault (1Password/HashiCorp/Vercel env vars). Prohibit committing `.env` or console-dumping secrets during debugging.
+
 ---
 
 ## Level 1: Static Site Security 📄

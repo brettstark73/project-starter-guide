@@ -10,13 +10,13 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import rateLimit from 'express-rate-limit'
 
-import { errorHandler } from "./middleware/errorHandler";
-import { notFound } from "./middleware/notFound";
-import authRoutes from "./routes/auth";
-import userRoutes from "./routes/users";
-import healthRoutes from "./routes/health";
+import { errorHandler } from './middleware/errorHandler'
+import { notFound } from './middleware/notFound'
+import { globalLimiter, authLimiter, registrationLimiter } from './middleware/rateLimiting'
+import authRoutes from './routes/auth'
+import userRoutes from './routes/users'
+import healthRoutes from './routes/health'
 
 const app = express()
 
@@ -33,15 +33,8 @@ app.use(
   }),
 );
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: {
-    error: "Too many requests from this IP, please try again later.",
-  },
-});
-app.use(limiter);
+// Rate limiting (global)
+app.use(globalLimiter)
 
 // Logging
 app.use(morgan("combined"));
