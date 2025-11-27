@@ -53,6 +53,33 @@ found 0 vulnerabilities
 
 ## Security Implementation
 
+### Rate Limiting
+
+**Location:** `src/middleware/rateLimiting.ts`
+
+| Limiter | Limit | Window | Purpose |
+|---------|-------|--------|---------|
+| Global | 100 req | 15 min | General abuse prevention |
+| Auth | 5 req | 15 min | Brute force protection |
+| Registration | 3 req | 1 hour | Account spam prevention |
+| API | 10 req | 1 min | Expensive operations |
+
+### SSRF Protection
+
+**Location:** `src/middleware/ssrfProtection.ts`
+
+Protects against Server-Side Request Forgery when fetching external URLs:
+- Blocks private IP ranges (10.x, 172.16-31.x, 192.168.x)
+- Blocks localhost and loopback addresses
+- Blocks cloud metadata endpoints (169.254.169.254)
+- DNS rebinding protection (validates resolved IPs)
+
+**Usage:**
+```typescript
+import { validateExternalURL } from './middleware/ssrfProtection'
+const { valid, url, error } = await validateExternalURL(userUrl)
+```
+
 ### Express.js Security Features
 
 This template implements Express.js security best practices:

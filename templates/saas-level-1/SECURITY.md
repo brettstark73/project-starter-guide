@@ -26,19 +26,12 @@ found 0 vulnerabilities
 
 ## Framework Version Status
 
-### Current Framework Versions vs Latest
-- **Next.js**: `^14.0.0` (Latest: 16.0.3) - 2 major versions behind
-- **React**: `^18.0.0` (Latest: 19.0.0) - 1 major version behind
+### Current Framework Versions
+- **Next.js**: `^16.0.3` ✅ Current
+- **React**: `^19.0.0` ✅ Current
+- **Zod**: `^3.25.76` ✅ Current
 
-### Upgrade Planning
-**Status**: 📋 Planned migration in progress (see [docs/DEPENDENCY_UPGRADE_PLAN.md](../../docs/DEPENDENCY_UPGRADE_PLAN.md))
-
-**Why not latest?** Major framework upgrades require careful migration planning:
-- Next.js 16 introduces Turbopack as default (may break custom Webpack configs)
-- React 19 includes breaking changes requiring component updates
-- Comprehensive testing needed to ensure authentication flows remain secure
-
-**Security Impact**: Current versions receive security patches and are maintained by respective teams.
+**Security Impact**: All frameworks are on current major versions and receive active security patches.
 
 ## Vulnerability Resolution History
 
@@ -51,6 +44,45 @@ Previous documentation indicated 4 moderate vulnerabilities, but these have been
 - Proactive security monitoring
 
 ## Security Implementation
+
+### Role-Based Access Control (RBAC)
+
+**Location:** `src/lib/rbac.ts`
+
+Roles hierarchy (lowest to highest):
+- `user` - Basic authenticated access
+- `member` - Team member privileges
+- `admin` - Administrative access
+- `owner` - Full control
+
+**Usage:**
+```typescript
+import { requireRole, can, requirePermission } from '@/lib/rbac'
+
+// In API routes - require minimum role
+const user = await requireRole(request, 'admin')
+if (user instanceof NextResponse) return user
+
+// Check specific permission
+if (can(user, 'posts:delete')) {
+  // User can delete posts
+}
+```
+
+### Environment Validation (Zod)
+
+**Location:** `src/lib/env.ts`
+
+Zod-based validation with fail-fast in production:
+- Validates all required env vars at startup
+- Strong secret requirements in production (32+ chars)
+- Type-safe environment access
+
+**Usage:**
+```typescript
+import { env, isProduction } from '@/lib/env'
+console.log(env.DATABASE_URL) // Type-safe access
+```
 
 ### Next.js Security Features
 
