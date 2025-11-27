@@ -16,6 +16,7 @@
 
 import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 // Define available roles (ordered by privilege level)
 export const ROLES = {
@@ -140,7 +141,7 @@ export async function requireRole(
   _request: Request,
   requiredRole: Role
 ): Promise<RBACUser | NextResponse> {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
 
   if (!session?.user) {
     return NextResponse.json(
@@ -179,7 +180,7 @@ export async function requirePermission(
   _request: Request,
   permission: Permission
 ): Promise<RBACUser | NextResponse> {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
 
   if (!session?.user) {
     return NextResponse.json(

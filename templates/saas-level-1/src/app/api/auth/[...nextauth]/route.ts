@@ -122,7 +122,7 @@ const hasOAuthProviders = providers.some(p =>
   p.id === 'github' || p.id === 'google' || p.id === 'email'
 )
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   // Use Prisma adapter when OAuth/email providers are present
   // Credentials-only mode uses JWT (no database needed)
   adapter: hasOAuthProviders ? PrismaAdapter(getPrisma()) : undefined,

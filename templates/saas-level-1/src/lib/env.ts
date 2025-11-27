@@ -1,14 +1,17 @@
 /**
  * Environment Variable Validation with Zod
  *
- * Validates all required environment variables at startup.
- * Fails fast with helpful error messages in production.
+ * Server-only module - validates all required environment variables at startup.
+ * Fails fast with helpful error messages.
  *
- * Usage:
+ * Usage (server components/API routes only):
  *   import { env } from '@/lib/env'
  *   console.log(env.DATABASE_URL)
+ *
+ * WARNING: Never import this in client components - it contains secrets!
  */
 
+import 'server-only'
 import { z } from 'zod'
 
 const envSchema = z.object({
@@ -29,7 +32,7 @@ const envSchema = z.object({
       'DATABASE_URL must be a valid PostgreSQL or SQLite connection string'
     ),
 
-  // NextAuth
+  // NextAuth - always required, no defaults
   NEXTAUTH_SECRET: z
     .string()
     .min(1, 'NEXTAUTH_SECRET is required')
@@ -50,7 +53,7 @@ const envSchema = z.object({
     .optional()
     .default('http://localhost:3000'),
 
-  // Stripe
+  // Stripe - always required, no defaults (secrets should never have placeholders)
   STRIPE_SECRET_KEY: z
     .string()
     .min(1, 'STRIPE_SECRET_KEY is required')
@@ -91,37 +94,27 @@ export type Env = z.infer<typeof envSchema>
 
 /**
  * Validate environment variables
- * Returns validated env or throws with helpful error messages
+ * Always fails fast - no silent fallbacks for secrets
  */
 function validateEnv(): Env {
   const parsed = envSchema.safeParse(process.env)
 
   if (!parsed.success) {
+    const errors = parsed.error.flatten().fieldErrors
     console.error('❌ Invalid environment variables:')
-    console.error(parsed.error.flatten().fieldErrors)
+    console.error(JSON.stringify(errors, null, 2))
+    console.error('')
+    console.error('💡 Hint: Copy .env.example to .env and fill in required values')
 
-    // In production, fail immediately
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('Invalid environment variables')
-    }
-
-    // In development/test, warn but provide defaults where possible
-    console.warn('⚠️  Using fallback values for missing env vars')
-
-    // Return partial env with defaults for development
-    return {
-      NODE_ENV: (process.env.NODE_ENV as 'development' | 'production' | 'test') || 'development',
-      DATABASE_URL: process.env.DATABASE_URL || 'postgresql://localhost:5432/dev',
-      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'dev-secret-change-me',
-      NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder',
-      STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || 'whsec_placeholder',
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder',
-    } as Env
+    // Always fail fast - secrets should never have placeholders
+    throw new Error(
+      `Missing or invalid environment variables: ${Object.keys(errors).join(', ')}`
+    )
   }
 
-  console.log('✅ Environment variables validated')
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('✅ Environment variables validated')
+  }
   return parsed.data
 }
 

@@ -158,8 +158,8 @@ export async function validateURL(
 }
 
 /**
- * Express middleware to validate URLs in request body
- * Expects { url: string } in request body
+ * Express middleware to validate URLs in request body or query
+ * Expects { url: string } in request body or query params
  */
 export function ssrfProtection(options: SSRFOptions = {}) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -178,8 +178,10 @@ export function ssrfProtection(options: SSRFOptions = {}) {
       })
     }
 
-    // Attach validated URL to request for downstream handlers
-    req.body.validatedUrl = result.url
+    // Attach validated URL to request object (not req.body which may be undefined)
+    // Use a custom property that doesn't depend on body-parser being mounted
+    const reqWithUrl = req as Request & { validatedUrl?: URL }
+    reqWithUrl.validatedUrl = result.url
     next()
   }
 }

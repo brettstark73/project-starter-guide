@@ -30,13 +30,6 @@ interface LogEntry {
   environment: string
 }
 
-const LOG_LEVELS: Record<LogLevel, number> = {
-  debug: 0,
-  info: 1,
-  warn: 2,
-  error: 3,
-}
-
 class Logger {
   private service: string
   private environment: string
@@ -51,8 +44,23 @@ class Logger {
     this.minLevel = minLevel
   }
 
+  private getLogLevelValue(level: LogLevel): number {
+    switch (level) {
+      case 'debug':
+        return 0
+      case 'info':
+        return 1
+      case 'warn':
+        return 2
+      case 'error':
+        return 3
+      default:
+        return 0
+    }
+  }
+
   private shouldLog(level: LogLevel): boolean {
-    return LOG_LEVELS[level] >= LOG_LEVELS[this.minLevel]
+    return this.getLogLevelValue(level) >= this.getLogLevelValue(this.minLevel)
   }
 
   private formatError(error: unknown): object {
