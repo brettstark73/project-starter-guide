@@ -145,6 +145,59 @@ export default defineConfig({
 })
 ```
 
+## Pre-Push vs CI Strategy
+
+**Critical principle:** Pre-push hooks should complete in <30 seconds. Slow tests belong in CI.
+
+### What Runs Where
+
+| Test Type | Pre-Push (Local) | CI (GitHub) | Reason |
+|-----------|------------------|-------------|--------|
+| Lint + Format | ✅ | ✅ | Fast (<5s), catches common issues |
+| Type Check | ✅ | ✅ | Fast (<5s), catches type errors |
+| Unit Tests | ✅ | ✅ | Fast (<10s), catches logic bugs |
+| Integration | ✅ | ✅ | Medium speed, important |
+| Command Execution | ❌ | ✅ | Slow (1+ min), verifies npm scripts |
+| E2E | ❌ | ✅ | Slow, needs browser, CI has better infra |
+| Security Audit | ❌ | ✅ | Network dependent, CI more reliable |
+
+### Why This Split Matters
+
+**Pre-push hooks** run on YOUR machine before `git push` completes. They block your terminal until tests pass. Slow tests = frustrated developers = skipped quality gates.
+
+**CI (Continuous Integration)** runs on GitHub's servers AFTER you push. Tests run in parallel, don't block your terminal, and results appear in the PR.
+
+### Smart Test Strategy Configuration
+
+The `scripts/smart-test-strategy.sh` file implements risk-based test selection:
+
+```bash
+# HIGH RISK (≥7): All fast tests + security audit
+# - Does NOT include E2E or command execution tests locally
+# MEDIUM RISK (4-6): Unit + integration + smoke
+# LOW RISK (2-3): Lint + format + unit only
+# MINIMAL (<2): Lint + format only
+```
+
+### Optimizing Slow Tests
+
+If you have tests that spawn processes (like npm install):
+
+1. **Share environments**: Use `beforeAll()` to install dependencies once
+2. **Use npx directly**: Skip `npm run` wrapper overhead
+3. **Move to CI**: If tests take >60s, they belong in CI only
+
+Example optimization (from keyflash):
+```typescript
+// BEFORE: 403 seconds (7 minutes) - npm install in each test
+// AFTER: 53 seconds - shared npm install in beforeAll()
+
+beforeAll(() => {
+  sharedEnv = new IsolatedTestEnv()
+  sharedEnv.exec('npm install --no-save prettier eslint vitest')
+}, 120000)
+```
+
 ## Best Practices
 
 1. **Write tests first** for bug fixes (TDD for bugs)
@@ -153,6 +206,8 @@ export default defineConfig({
 4. **Name tests descriptively** - test names are documentation
 5. **Keep tests independent** - no shared state between tests
 6. **Run tests locally** before pushing
+7. **Keep pre-push under 30s** - move slow tests to CI
+8. **Share expensive setup** - use beforeAll() for npm installs
 
 ## Template-Specific Notes
 
