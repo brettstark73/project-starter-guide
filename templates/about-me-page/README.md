@@ -27,7 +27,7 @@ A modern, responsive personal portfolio website template perfect for developers,
    npm init -y
 
    # Add comprehensive quality automation
-   npx create-quality-automation@latest
+   npx create-qa-architect@latest
    npm install && npm run prepare
 
    # Now you have: ESLint, Prettier, security scanning, pre-commit hooks

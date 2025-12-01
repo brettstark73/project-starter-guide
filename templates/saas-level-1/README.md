@@ -44,7 +44,7 @@ This is a **starter template**, not a complete SaaS application. You'll need to 
 
    ```bash
    # Add comprehensive quality automation
-   npx create-quality-automation@latest
+   npx create-qa-architect@latest
    npm install && npm run prepare
 
    # Now you have: TypeScript linting, Prettier, security scanning, pre-commit hooks

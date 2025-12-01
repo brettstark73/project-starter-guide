@@ -35,7 +35,7 @@ A React Native Expo starter template with TypeScript, navigation, and essential 
 
    ```bash
    # Add comprehensive quality automation
-   npx create-quality-automation@latest
+   npx create-qa-architect@latest
    npm install && npm run prepare
 
    # React Native + TypeScript quality checks

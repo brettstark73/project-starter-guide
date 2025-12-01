@@ -27,7 +27,7 @@
 
 ### **Phase 1: Template Validation (Immediate)**
 
-Add to `create-quality-automation`:
+Add to `create-qa-architect`:
 
 ```javascript
 // Template validation script
@@ -161,7 +161,7 @@ Add to each template's `package.json`:
 ✅ Update documentation
 
 ### **Short Term (v2.2.0)**
-- Enhance `create-quality-automation` with template validation
+- Enhance `create-qa-architect` with template validation
 - Add configuration exposure detection
 - Include smoke testing framework
 
@@ -183,16 +183,16 @@ Add to each template's `package.json`:
 
 ```bash
 # Template validation
-npx create-quality-automation@latest --validate-template
+npx create-qa-architect@latest --validate-template
 
 # Security audit with enhanced checks
-npx create-quality-automation@latest --security-audit
+npx create-qa-architect@latest --security-audit
 
 # Full template health check
-npx create-quality-automation@latest --health-check
+npx create-qa-architect@latest --health-check
 
 # Documentation validation
-npx create-quality-automation@latest --validate-docs
+npx create-qa-architect@latest --validate-docs
 ```
 
 ### **Enhanced GitHub Actions**
@@ -223,7 +223,7 @@ jobs:
       - name: Validate template
         run: |
           cd templates/${{ matrix.template }}
-          npx create-quality-automation@latest --validate-template
+          npx create-qa-architect@latest --validate-template
           npm run smoke-test
 
       - name: Security audit

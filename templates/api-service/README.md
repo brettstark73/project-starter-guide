@@ -30,7 +30,7 @@ A production-ready REST API template built with Express.js, TypeScript, PostgreS
 
    ```bash
    # Add comprehensive quality automation
-   npx create-quality-automation@latest
+   npx create-qa-architect@latest
    npm install && npm run prepare
 
    # Critical for API security: linting, secret detection, input validation scanning

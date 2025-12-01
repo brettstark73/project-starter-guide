@@ -43,7 +43,7 @@ This cheat sheet keeps the essential commands for each starter in one place. Use
 ## About Me (Static HTML)
 - Location: `templates/about-me-page/`
 - Install & prepare: *(no dependencies)* — open `index.html` directly or serve with any static host.
-- Quality checks: run `npx create-quality-automation@latest` if you want linting/formatting.
+- Quality checks: run `npx create-qa-architect@latest` if you want linting/formatting.
 - Deployment: upload the folder to a static host (Netlify, GitHub Pages, Vercel).
 - Docs: [templates/about-me-page/README.md](../templates/about-me-page/README.md)
 

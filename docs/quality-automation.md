@@ -1,10 +1,10 @@
 # 🔧 Quality Automation Guide
 
-> **Comprehensive quality automation setup for all starter templates using `create-quality-automation`**
+> **Comprehensive quality automation setup for all starter templates using `create-qa-architect`**
 
 ## Overview
 
-Every project in this starter guide can be enhanced with production-grade quality automation using the [`create-quality-automation`](https://www.npmjs.com/package/create-quality-automation) CLI tool. This tool automatically detects your project type and sets up comprehensive linting, formatting, security scanning, and pre-commit hooks.
+Every project in this starter guide can be enhanced with production-grade quality automation using the [`create-qa-architect`](https://www.npmjs.com/package/create-qa-architect) CLI tool. This tool automatically detects your project type and sets up comprehensive linting, formatting, security scanning, and pre-commit hooks.
 
 **Key Benefits:**
 - 🔒 **Security scanning** for hardcoded secrets and vulnerabilities
@@ -27,7 +27,7 @@ After setting up any starter template, add quality automation:
 npm install  # or yarn install
 
 # 2. Add quality automation (one command!)
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 
 # 3. Install new dependencies and setup hooks
 npm install
@@ -74,7 +74,7 @@ The tool automatically detects your project and adds:
 
 ```bash
 cd templates/about-me-page
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 npm install && npm run prepare
 
 # Now you get:
@@ -94,7 +94,7 @@ npm run security:audit  # Check for vulnerabilities
 ```bash
 cd templates/saas-level-1
 npm install
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 npm install && npm run prepare
 
 # Auto-detects TypeScript and adds:
@@ -114,7 +114,7 @@ npm install && npm run prepare
 ```bash
 cd templates/api-service
 npm install
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 npm install && npm run prepare
 
 # Adds critical security checks:
@@ -134,7 +134,7 @@ npm install && npm run prepare
 ```bash
 cd templates/mobile-app
 npm install
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 npm install && npm run prepare
 
 # Mobile-specific benefits:
@@ -332,7 +332,7 @@ npm run security:secrets
 Works with workspaces and monorepos:
 ```bash
 # Run from root of monorepo
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 
 # Automatically detects and configures:
 # - Multiple package.json files
@@ -344,14 +344,14 @@ npx create-quality-automation@latest
 
 Kick off the CLI _and_ run the curated smoke-test suite in one step:
 ```bash
-volta run node scripts/create-quality-automation-runner.mjs --smoke=saas-level-1
+volta run node scripts/create-qa-architect-runner.mjs --smoke=saas-level-1
 ```
 
 - Omit a value (`--smoke`) or pass `all` to exercise every template (`saas-level-1`, `api-service`, `mobile-app`).
 - Provide a comma-delimited list to target specific templates:  
-  `volta run node scripts/create-quality-automation-runner.mjs --smoke=api-service,mobile-app`
-- Additional flags are forwarded to `create-quality-automation`; for example:  
-  `volta run node scripts/create-quality-automation-runner.mjs --smoke --update`
+  `volta run node scripts/create-qa-architect-runner.mjs --smoke=api-service,mobile-app`
+- Additional flags are forwarded to `create-qa-architect`; for example:  
+  `volta run node scripts/create-qa-architect-runner.mjs --smoke --update`
 
 The runner invokes `scripts/template-smoke-test.sh` so local results match the GitHub Actions smoke workflow.
 - The smoke script now runs `npm ci` with an isolated cache inside each template and disables Husky hooks (`HUSKY=0`), which avoids permission issues in sandboxes and keeps installs reproducible. Override `npm_config_cache` before invoking the runner if you want a shared cache.
@@ -361,7 +361,7 @@ The runner invokes `scripts/template-smoke-test.sh` so local results match the G
 Safe to run on existing projects:
 ```bash
 # Won't overwrite existing configs
-npx create-quality-automation@latest --update
+npx create-qa-architect@latest --update
 
 # Merges with existing:
 # - package.json scripts
@@ -388,7 +388,7 @@ git config core.hooksPath .husky
 rm .eslintrc.js .eslintrc.json .eslintrc.yml
 
 # Then re-run setup
-npx create-quality-automation@latest
+npx create-qa-architect@latest
 ```
 
 #### **TypeScript not detected**
@@ -478,7 +478,7 @@ Each starter template in this guide is designed to work seamlessly with quality 
 ### **Recommended Setup Order**
 
 1. **Setup template** (follow template README)
-2. **Add quality automation** (`npx create-quality-automation@latest`)
+2. **Add quality automation** (`npx create-qa-architect@latest`)
 3. **Install dependencies** (`npm install`)
 4. **Initialize hooks** (`npm run prepare`)
 5. **Test quality checks** (`npm run lint && npm run format:check`)
@@ -488,7 +488,7 @@ Each starter template in this guide is designed to work seamlessly with quality 
 
 ## Support & Resources
 
-- **Package**: [`create-quality-automation` on npm](https://www.npmjs.com/package/create-quality-automation)
+- **Package**: [`create-qa-architect` on npm](https://www.npmjs.com/package/create-qa-architect)
 - **Issues**: Report issues with quality automation setup
 - **Documentation**: This guide covers integration with starter templates
 - **Updates**: Tool is actively maintained with latest security rules
