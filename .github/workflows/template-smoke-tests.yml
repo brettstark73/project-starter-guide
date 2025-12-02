@@ -58,6 +58,10 @@ jobs:
         run: |
           bash scripts/template-smoke-test.sh "${{ matrix.template }}"
 
+      - name: Production validation (NextAuth guards)
+        if: matrix.template == 'saas-level-1'
+        run: bash scripts/test-production-validation.sh
+
       - name: Check for Critical Outdated Dependencies
         working-directory: templates/${{ matrix.template }}
         run: |
