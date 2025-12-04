@@ -4,8 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Project Starter Guide - Choose the Right Tech Stack for Any Project
+      Project Starter Guide - Free Templates & Architecture Guides for Developers
     </title>
+    <meta name="description" content="Free, open-source project templates and architecture guides. Production-ready SaaS, API, and mobile app starters with quality automation built-in." />
+    <link rel="canonical" href="https://vibebuildlab.com/project-starter-guide" />
+    <meta property="og:title" content="Project Starter Guide - Free Developer Templates" />
+    <meta property="og:description" content="Free production-ready templates for SaaS, APIs, and mobile apps. Choose the right tech stack with our decision matrix." />
+    <meta property="og:url" content="https://vibebuildlab.com/project-starter-guide" />
+    <meta property="og:type" content="website" />
     <style>
       * {
         margin: 0;
@@ -243,6 +249,157 @@
         opacity: 0.9;
       }
 
+      /* Getting Started Section */
+      .getting-started {
+        padding: 80px 20px;
+        background: white;
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .step-card {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 12px;
+        border-left: 4px solid #667eea;
+      }
+
+      .step-number {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        background: #667eea;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 36px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .step-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: #2d3748;
+      }
+
+      .step-card p {
+        color: #666;
+        margin-bottom: 15px;
+      }
+
+      .code-block {
+        background: #2d3748;
+        color: #48bb78;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 0.9rem;
+        overflow-x: auto;
+      }
+
+      .code-block .comment {
+        color: #718096;
+      }
+
+      /* Templates Section */
+      .templates-section {
+        padding: 80px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .templates-section .section-title,
+      .templates-section .section-subtitle {
+        color: white;
+      }
+
+      .templates-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-top: 40px;
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .template-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .template-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .template-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+
+      .template-card p {
+        opacity: 0.9;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+      }
+
+      .template-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tech-tag {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+      }
+
+      /* Footer */
+      footer {
+        background: #1a202c;
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      footer a {
+        color: #667eea;
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .footer-brand {
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         .hero h1 {
@@ -269,20 +426,20 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="container">
-        <h1>🚀 Project Starter Guide</h1>
-        <p>Choose the right architecture and tech stack for any project</p>
+        <h1>Stop Guessing. Start Building.</h1>
+        <p>Free production-ready templates for your next project</p>
         <p class="tagline">
-          From simple landing pages to enterprise systems — comprehensive
-          guides, decision matrices, and production-ready templates
+          SaaS apps, APIs, mobile apps — battle-tested starters with authentication,
+          payments, quality automation, and CI/CD already configured. Just clone and ship.
         </p>
         <div class="cta-buttons">
           <a
-            href="https://github.com/brettstark73/project-starter-guide"
+            href="https://github.com/vibebuildlab/project-starter-guide"
             class="btn btn-primary"
             target="_blank"
-            >View on GitHub</a
+            >Get Free Templates</a
           >
-          <a href="#decision-matrix" class="btn btn-secondary">Get Started</a>
+          <a href="#getting-started" class="btn btn-secondary">See How It Works</a>
         </div>
       </div>
     </section>
@@ -435,31 +592,147 @@
       </div>
     </section>
 
+    <!-- Getting Started Section -->
+    <section class="getting-started" id="getting-started">
+      <div class="container">
+        <h2 class="section-title">Get Started in 60 Seconds</h2>
+        <p class="section-subtitle">Clone, configure, deploy. It's that simple.</p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-number">1</span>
+            <h3>Clone the Repo</h3>
+            <p>Get the entire template collection with one command:</p>
+            <div class="code-block">
+              git clone https://github.com/vibebuildlab/project-starter-guide.git
+            </div>
+            <p style="margin-top: 12px; font-size: 0.9rem;">
+              Or <a href="https://github.com/vibebuildlab/project-starter-guide/archive/refs/heads/main.zip" style="color: #667eea;">download as ZIP</a>
+            </p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">2</span>
+            <h3>Pick Your Template</h3>
+            <p>Choose from production-ready starters:</p>
+            <div class="code-block">
+              <span class="comment"># SaaS with auth + payments</span><br>
+              cd templates/saas-level-1<br><br>
+              <span class="comment"># REST API service</span><br>
+              cd templates/api-service<br><br>
+              <span class="comment"># React Native mobile</span><br>
+              cd templates/mobile-app
+            </div>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">3</span>
+            <h3>Install & Run</h3>
+            <p>Standard npm workflow, quality tools pre-configured:</p>
+            <div class="code-block">
+              npm install<br>
+              npm run dev<br><br>
+              <span class="comment"># Quality checks ready</span><br>
+              npm run lint && npm test
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Templates Section -->
+    <section class="templates-section">
+      <div class="container">
+        <h2 class="section-title">What's Included</h2>
+        <p class="section-subtitle">Production-ready templates, not toy examples</p>
+
+        <div class="templates-grid">
+          <div class="template-card">
+            <h3>SaaS Level 1</h3>
+            <p>Full-stack SaaS starter with authentication, database, and payment integration ready to go.</p>
+            <div class="template-tech">
+              <span class="tech-tag">Next.js 14</span>
+              <span class="tech-tag">NextAuth</span>
+              <span class="tech-tag">Prisma</span>
+              <span class="tech-tag">Stripe</span>
+            </div>
+          </div>
+
+          <div class="template-card">
+            <h3>API Service</h3>
+            <p>RESTful API with validation, error handling, and OpenAPI docs. Deploy anywhere.</p>
+            <div class="template-tech">
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">Express</span>
+              <span class="tech-tag">Zod</span>
+              <span class="tech-tag">Jest</span>
+            </div>
+          </div>
+
+          <div class="template-card">
+            <h3>Mobile App</h3>
+            <p>Cross-platform React Native starter with navigation and state management configured.</p>
+            <div class="template-tech">
+              <span class="tech-tag">React Native</span>
+              <span class="tech-tag">Expo</span>
+              <span class="tech-tag">TypeScript</span>
+            </div>
+          </div>
+
+          <div class="template-card">
+            <h3>About Me Page</h3>
+            <p>Simple, elegant portfolio template. No framework needed — just HTML, CSS, and vanilla JS.</p>
+            <div class="template-tech">
+              <span class="tech-tag">HTML5</span>
+              <span class="tech-tag">CSS3</span>
+              <span class="tech-tag">Vanilla JS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- GitHub CTA Section -->
     <section class="github-cta">
       <div class="container">
-        <h2>Open Source & Community Driven</h2>
+        <h2>100% Free. MIT Licensed.</h2>
         <p>
-          MIT licensed. Star us on GitHub, contribute guides, or share your
-          success stories!
+          No strings attached. Use these templates for personal projects, client work, or startups.
+          Contributions welcome!
         </p>
         <div class="cta-buttons">
           <a
-            href="https://github.com/brettstark73/project-starter-guide"
+            href="https://github.com/vibebuildlab/project-starter-guide"
             class="btn btn-primary"
             target="_blank"
           >
-            ⭐ Star on GitHub
+            Download from GitHub
           </a>
           <a
-            href="https://github.com/brettstark73/project-starter-guide/issues"
+            href="https://github.com/vibebuildlab/project-starter-guide/issues"
             class="btn btn-secondary"
             target="_blank"
           >
-            💬 Contribute
+            Report Issues
           </a>
         </div>
       </div>
     </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-links">
+          <a href="https://github.com/vibebuildlab/project-starter-guide" target="_blank">GitHub</a>
+          <a href="https://github.com/vibebuildlab/project-starter-guide/blob/main/LICENSE" target="_blank">MIT License</a>
+          <a href="https://vibebuildlab.com" target="_blank">Vibe Build Lab</a>
+          <a href="https://vibebuildlab.com/privacy-policy" target="_blank">Privacy</a>
+          <a href="https://vibebuildlab.com/terms" target="_blank">Terms</a>
+        </div>
+        <p class="footer-brand">
+          Built by <a href="https://vibebuildlab.com" target="_blank">Vibe Build Lab</a> — AI-assisted product development for solo founders
+        </p>
+      </div>
+    </footer>
   </body>
 </html>
